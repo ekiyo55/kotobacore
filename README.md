@@ -76,11 +76,15 @@ KotobaCore の判定は機械学習モデルではなく、**同梱の人手メ�
 
 ### 任意の外部辞書
 
-`dic/` ディレクトリ（環境変数 `KOTOBACORE_DIC_DIR` で指定）に以下を置くと、感情の **confidence スコア** が補強されます。
+`dic/` ディレクトリ（環境変数 `KOTOBACORE_DIC_DIR` で指定）に以下を置くと、感情解析が強化されます。
 ライセンスの都合で本リポジトリには **同梱していません**（無くても内蔵辞書だけで動作します）。
 
 - **NRC Japanese Emotion-Intensity Lexicon**（約 9,800 語 / 8 Plutchik 感情の強度辞書）
-- **SNS 感情例文集**（例文ベースの Jaccard 類似度マッチ用）
+  内部辞書に無い感情語を **検出語彙として追加** します（内部辞書 `lex_weight=1.0` に対し外部は `0.5` の低めの重みで、文学的・稀少語を補完）。
+- **SNS 感情例文集**
+  例文ベースの Jaccard 類似度マッチに使われ、surface が一致しない文の **confidence を補強** します。
+
+感情の confidence は `lex_weight × 0.5 + ex_sim × 0.3 + intensity × 0.2` で算出され、NRC は第1項（検出語彙）、SNS 例文は第2項（類似度）に効きます。
 
 ```python
 from kotobacore.dictionary import load_user_bundle
