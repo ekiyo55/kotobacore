@@ -31,6 +31,7 @@ classifiers = [
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Topic :: Text Processing :: Linguistic",
   "Topic :: Scientific/Engineering :: Artificial Intelligence"
 ]
@@ -50,6 +51,12 @@ ui = [
   "streamlit>=1.36.0",
 ]
 
+[project.urls]
+Homepage = "https://github.com/ekiyo55/kotobacore"
+Repository = "https://github.com/ekiyo55/kotobacore"
+Issues = "https://github.com/ekiyo55/kotobacore/issues"
+Demo = "https://kotobacore.mooma.style/"
+
 [project.scripts]
 kotobacore = "kotobacore.cli.main:app"
 
@@ -57,7 +64,11 @@ kotobacore = "kotobacore.cli.main:app"
 include = ["kotobacore*"]
 
 [tool.setuptools.package-data]
-kotobacore = ["py.typed"]
+kotobacore = [
+  "py.typed",
+  "resources/dict/*.csv",
+  "resources/dict/*.txt",
+]
 
 [tool.ruff]
 line-length = 100

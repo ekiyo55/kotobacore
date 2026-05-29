@@ -378,11 +378,24 @@ def load_normalization(path: Path) -> list[NormalizationEntry]:
 # ---------------------------------------------------------------------------
 
 
-# In editable installs, resources/ sits next to the kotobacore package.
-# In wheel installs (future), we may need importlib.resources. For v0.1 this
-# path-based lookup is sufficient.
+# Seed dictionaries ship inside the package (``kotobacore/resources/dict``) so
+# they are included in wheels / sdists. The legacy top-level ``resources/dict``
+# (next to the package) is kept as a fallback for older editable layouts.
 _PACKAGE_ROOT = Path(__file__).resolve().parents[1]
-_DEFAULT_DICT_DIR = _PACKAGE_ROOT.parent / "resources" / "dict"
+
+
+def _resolve_default_dict_dir() -> Path:
+    candidates = [
+        _PACKAGE_ROOT / "resources" / "dict",         # packaged (wheel/sdist/editable)
+        _PACKAGE_ROOT.parent / "resources" / "dict",  # legacy top-level layout
+    ]
+    for c in candidates:
+        if c.exists():
+            return c
+    return candidates[0]
+
+
+_DEFAULT_DICT_DIR = _resolve_default_dict_dir()
 
 
 def load_dictionary_bundle(dict_dir: Path | str) -> DictionaryBundle:

@@ -399,8 +399,8 @@ def load_user_bundle(
 
     Resolution::
 
-        <project>/resources/dict/*.csv                          (internal seed)
-        <project>/resources/dict/Japanese-SNS-Emotion-Examples-v1.txt  (bundled examples)
+        kotobacore/resources/dict/*.csv                         (internal seed, packaged)
+        kotobacore/resources/dict/Japanese-SNS-Emotion-Examples-v1.txt  (bundled examples)
         <dic>/Japanese-NRC-Emotion-Intensity-Lexicon-v1.txt     (optional, user-supplied)
         <dic>/Japanese-SNS-Emotion-Examples-v1.txt              (optional override of bundled)
     """
