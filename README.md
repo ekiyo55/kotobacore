@@ -86,6 +86,37 @@ KotobaCore の判定は機械学習モデルではなく、**同梱の人手メ�
 
 感情の confidence は `lex_weight × 0.5 + ex_sim × 0.3 + intensity × 0.2` で算出され、NRC は第1項（検出語彙）、SNS 例文は第2項（類似度）に効きます。
 
+#### NRC 辞書の入手方法
+
+> **⚠️ ライセンス注意**: NRC Emotion Intensity Lexicon は **再配布が禁止** されているため本リポジトリには含まれません。
+> 各自で公式ページから入手してください。**非商用の研究用途は無償**ですが、**商用利用には NRC の商用ライセンスが別途必要** です。
+> 利用時は下記の引用と帰属表示が求められます。必ず[公式ページの利用規約](https://saifmohammad.com/WebPages/AffectIntensity.htm)をご自身で確認してください。
+
+1. 公式ページ **NRC Emotion/Affect Intensity Lexicon** から辞書を入手します（多言語自動翻訳版に日本語が含まれます）。
+   - https://saifmohammad.com/WebPages/AffectIntensity.htm
+2. 日本語訳データを次の **タブ区切り (TSV) 4 列** 形式に整え、`dic/` に配置します。
+   ```
+   English Word<TAB>Emotion<TAB>Emotion-Intensity-Score<TAB>Japanese Word
+   ```
+   - ファイル名: `dic/Japanese-NRC-Emotion-Intensity-Lexicon-v1.txt`
+   - `Emotion` は 8 軸（anger / anticipation / disgust / fear / joy / sadness / surprise / trust）
+3. `dic/` の場所は次の順で探索されます: 環境変数 `KOTOBACORE_DIC_DIR` → `<project>/dic` → `<project>/../dic`。
+
+**引用（必須）**:
+
+```bibtex
+@inproceedings{LREC18-AIL,
+  author    = {Mohammad, Saif M.},
+  title     = {Word Affect Intensities},
+  booktitle = {Proceedings of the 11th Edition of the Language Resources
+               and Evaluation Conference (LREC-2018)},
+  year      = {2018},
+  address   = {Miyazaki, Japan}
+}
+```
+
+**帰属表示の例**: "This product makes use of the NRC Emotion Intensity Lexicon, created by Saif M. Mohammad at the National Research Council Canada."
+
 ```python
 from kotobacore.dictionary import load_user_bundle
 bundle = load_user_bundle()   # 内蔵 seed + dic/ 配下の外部辞書を統合
