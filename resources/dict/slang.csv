@@ -1,0 +1,204 @@
+surface,normalized,meaning,emotion,category,intensity,keep_as_unit
+草,笑い,laugh,joy,sns,0.4,true
+しぬw,非常に面白い/つらい,exaggeration,exaggeration,sns,0.7,true
+しぬww,非常に面白い/つらい,exaggeration,exaggeration,sns,0.75,true
+しぬwww,非常に面白い/つらい,exaggeration,exaggeration,sns,0.8,true
+それな,同意,agreement,agreement,sns,0.5,true
+えぐい,非常にすごい/ひどい,intense,mixed,sns,0.8,true
+尊い,強い好意/称賛,admiration,admiration,sns,0.9,true
+尊すぎ,強い好意/称賛,admiration,admiration,sns,0.95,true
+無理すぎ,強い拒否,refusal,refusal,sns,0.85,true
+神,最高の称賛,admiration,admiration,sns,0.9,false
+www,笑い,laugh,joy,sns,0.3,true
+ワラッタ,笑った,laugh,joy,sns,0.45,true
+わらった,笑った,laugh,joy,sns,0.45,true
+ワロタ,笑った,laugh,joy,sns,0.5,true
+わろた,笑った,laugh,joy,sns,0.5,true
+ワロス,笑った,laugh,joy,sns,0.5,true
+草生える,笑った,laugh,joy,sns,0.55,true
+大草原,大笑い,laugh,joy,sns,0.65,true
+やばい,やばい,intense,exaggeration,sns,0.7,false
+ヤバい,やばい,intense,exaggeration,sns,0.7,false
+やばすぎ,やばすぎ,extremely intense,exaggeration,sns,0.8,true
+ヤバすぎ,ヤバすぎ,extremely intense,exaggeration,sns,0.8,true
+エモすぎ,エモすぎ,too emotional,moved,sns,0.85,true
+w,笑い,laugh,joy,sns,0.25,false
+ww,大笑い,laugh,joy,sns,0.35,false
+ウケる,笑える/面白い,laugh,joy,sns,0.55,true
+ウケた,笑えた/面白かった,laughed,joy,sns,0.55,true
+笑える,笑える,laughable,joy,sns,0.5,true
+笑い死に,笑い死に,dying of laughter,joy,sns,0.8,true
+草不可避,笑いが止まらない,can't stop laughing,joy,sns,0.75,true
+大草原不可避,大笑いが止まらない,extremely funny,joy,sns,0.8,true
+生えた,草が生えた,started laughing,joy,sns,0.55,true
+まじ,本当に,seriously/really,exaggeration,sns,0.5,true
+マジ,本当に,seriously/really,exaggeration,sns,0.5,false
+まじか,本当に?,surprise,exaggeration,sns,0.65,true
+マジか,本当に?,surprise,exaggeration,sns,0.65,true
+まじかよ,本当か?,disbelief,exaggeration,sns,0.7,true
+マジかよ,本当か?,disbelief,exaggeration,sns,0.7,true
+まじで,本当に,seriously,exaggeration,sns,0.6,true
+マジで,本当に,seriously,exaggeration,sns,0.6,true
+うそ,本当に?,disbelief,exaggeration,sns,0.6,true
+うそだろ,嘘でしょ,you're kidding,exaggeration,sns,0.7,true
+嘘だろ,嘘でしょ,you're kidding,exaggeration,sns,0.7,true
+えっ,えっ,surprise,exaggeration,sns,0.5,true
+はぁ,はぁ,sigh/confusion,mixed,sns,0.45,true
+神すぎ,神すぎる,too godly,admiration,sns,0.95,true
+天才すぎ,天才すぎる,too genius,admiration,sns,0.9,true
+天才,天才,genius,admiration,sns,0.85,false
+神回,神の回,god-tier episode,admiration,sns,0.85,false
+神曲,神の曲,godly song,admiration,sns,0.85,false
+神対応,神の対応,godly response,admiration,sns,0.9,false
+最高すぎ,最高すぎる,too great,admiration,sns,0.9,true
+さすが,さすが,as expected,admiration,sns,0.7,true
+さすがすぎ,さすがすぎる,too impressive,admiration,sns,0.8,true
+エモい,感情的な,emotional/nostalgic,moved,sns,0.75,true
+エモ,感情的,emotional,moved,sns,0.7,false
+全人類に見てほしい,全人類に見てほしい,want all to see,admiration,sns,0.9,true
+語彙力が死んだ,語彙力がなくなった,speechless with emotion,moved,sns,0.85,true
+語彙力なくした,語彙力がなくなった,lost vocabulary,moved,sns,0.8,true
+泣かせに来てる,泣かせようとしている,trying to make cry,moved,sns,0.8,true
+わかる,分かる,I understand/agree,agreement,sns,0.55,true
+わかりみ,深い理解,deep understanding,agreement,sns,0.7,true
+わかりみが深い,深く理解する,deep understanding,agreement,sns,0.8,true
+ほんそれ,本当にそれ,absolutely that,agreement,sns,0.75,true
+ほんまそれ,本当にそれ(関西),absolutely that,agreement,sns,0.75,true
+だよね,そうだよね,right?,agreement,sns,0.5,true
+だよな,そうだよな,right?,agreement,sns,0.5,true
+たしかに,確かに,indeed,agreement,sns,0.5,true
+たしかー,確かに,indeed~,agreement,sns,0.55,true
+せやな,そうだな(関西),right (Kansai),agreement,sns,0.6,true
+ほんとそれ,本当にそれ,absolutely that,agreement,sns,0.75,true
+ですよね,そうですよね,isn't it?,agreement,sns,0.5,true
+わかりすぎ,非常に共感する,deeply relatable,agreement,sns,0.75,true
+無理,不可能/嫌,impossible/hate,refusal,sns,0.7,true
+無理ゲー,不可能なゲーム,impossible game,refusal,sns,0.75,false
+ないわ,ありえない,no way,refusal,sns,0.75,true
+ないわー,ありえない,no way,refusal,sns,0.75,true
+ありえん,ありえない(関西),impossible,refusal,sns,0.75,true
+ありえない,ありえない,impossible,refusal,sns,0.7,true
+きつい,きつい,harsh/hard,refusal,sns,0.6,true
+きつすぎ,きつすぎる,too harsh,refusal,sns,0.75,true
+しんどい,しんどい,exhausting,sadness,sns,0.65,true
+しんどすぎ,しんどすぎる,too exhausting,sadness,sns,0.75,true
+うぜえ,うざい,annoying,anger,sns,0.75,true
+うざ,うざい,annoying,anger,sns,0.7,true
+うざい,うざい,annoying,anger,sns,0.7,true
+うざすぎ,うざすぎる,too annoying,anger,sns,0.8,true
+きっしょ,気持ち悪い,gross/disgusting,refusal,sns,0.8,true
+ドン引き,ドン引き,extremely put off,refusal,sns,0.8,false
+ドン引いた,ドン引いた,was put off,refusal,sns,0.8,true
+おこ,怒り,angry,anger,sns,0.6,true
+おこだよ,怒っているよ,I'm angry,anger,sns,0.65,true
+激おこ,激しく怒り,extremely angry,anger,sns,0.85,true
+ぷんぷん,怒り/拗ね,sulking,anger,sns,0.55,true
+クソが,くそ,damn it,anger,sns,0.8,true
+クソ,くそ,damn/crap,anger,sns,0.7,false
+ガチ切れ,本当に切れた,genuinely angry,anger,sns,0.85,true
+キレた,切れた,got angry,anger,sns,0.75,true
+ムカ,むかつく,irritating,anger,sns,0.6,false
+ぴえん,悲しい(ぴえんな顔),sad,sadness,sns,0.65,true
+ぴえんこえてぱおん,非常に悲しい,extremely sad,sadness,sns,0.8,true
+ぴえん超えてぱおん,非常に悲しい,extremely sad,sadness,sns,0.8,true
+しょんぼり,しょんぼり,dejected,sadness,sns,0.5,true
+テンション下がる,テンションが下がる,mood drops,sadness,sns,0.55,true
+テンション爆下がり,テンションが爆発的に下がる,mood crashes,sadness,sns,0.75,true
+病んでる,病んでいる,depressed,sadness,sns,0.7,true
+病んだ,病んだ,became depressed,sadness,sns,0.65,true
+闇落ち,闇に落ちた,fallen to dark side,sadness,sns,0.7,true
+テンション爆上がり,テンションが爆発的に上がる,mood skyrockets,joy,sns,0.85,true
+テンション上がる,テンションが上がる,mood rises,joy,sns,0.65,true
+わーい,わーい,yay,joy,sns,0.65,true
+よっしゃ,よし,yes/alright,joy,sns,0.7,true
+うおおお,うおおお,excitement cry,joy,sns,0.8,true
+キタ,来た,it's here,joy,sns,0.6,true
+チルい,まったりした,chill/relaxed,joy,sns,0.55,true
+チル,まったり,chill,joy,sns,0.5,false
+ガチ,本当に,seriously,exaggeration,sns,0.65,false
+ガチで,本当に,seriously,exaggeration,sns,0.7,true
+ガチ勢,熱狂的なファン,hardcore fan,admiration,sns,0.7,false
+ガチ恋,本当の恋愛感情,real romantic feelings,admiration,sns,0.8,false
+めっちゃ,非常に,very,exaggeration,sns,0.6,true
+めちゃ,非常に,very,exaggeration,sns,0.55,true
+めちゃくちゃ,非常に,extremely,exaggeration,sns,0.7,true
+バリ,非常に(福岡弁),very (Fukuoka),exaggeration,sns,0.55,false
+沼,ドはまり,deep obsession,admiration,sns,0.8,false
+沼った,ドはまりした,fell into obsession,admiration,sns,0.8,true
+沼落ち,ドはまりした,fell into obsession,admiration,sns,0.8,true
+推し,最愛の対象,favorite person/character,admiration,sns,0.8,false
+推せる,ファンになれる,can be a fan,admiration,sns,0.7,true
+尊死,尊くて死ぬ,die from cuteness,admiration,sns,0.9,true
+刺さる,深く共感する,resonates deeply,moved,sns,0.7,true
+刺さった,深く共感した,resonated deeply,moved,sns,0.75,true
+刺さりすぎ,共感しすぎる,resonates too much,moved,sns,0.8,true
+解釈一致,解釈が一致した,interpretation matches,admiration,sns,0.8,true
+解釈違い,解釈が違う,interpretation mismatch,refusal,sns,0.65,true
+バズる,拡散される,go viral,exaggeration,sns,0.65,true
+バズった,拡散された,went viral,exaggeration,sns,0.7,true
+バズり,拡散,going viral,exaggeration,sns,0.65,true
+大バズり,大規模拡散,huge viral,exaggeration,sns,0.8,true
+炎上,炎上,controversy/blowup,anger,sns,0.75,true
+炎上した,炎上した,blew up,anger,sns,0.8,true
+炎上案件,炎上する案件,controversy material,anger,sns,0.8,true
+あざす,ありがとうございます,thank you,joy,sns,0.5,true
+あざ,ありがとう,thank you,joy,sns,0.45,true
+あざます,ありがとうございます,thank you,joy,sns,0.5,true
+りょ,了解,roger/OK,agreement,sns,0.4,true
+りょーかい,了解,roger/OK,agreement,sns,0.45,true
+おけ,OK/了解,OK,agreement,sns,0.4,true
+おっけ,OK/了解,OK,agreement,sns,0.4,true
+おつ,お疲れ,good work,joy,sns,0.4,true
+おつかれ,お疲れ様,good work,joy,sns,0.45,true
+すこ,好き,like,joy,sns,0.6,true
+やばやば,やばい状況,panic/amazing,anxiety,sns,0.75,true
+どうしよ,どうしよう,what to do,anxiety,sns,0.6,true
+どうしよう,どうしよう,what to do,anxiety,sns,0.6,true
+ガバい,大雑把な,sloppy/rough,mixed,sns,0.55,true
+ガバ,大雑把,sloppy,mixed,sns,0.5,false
+にわか,にわかファン,casual fan,mixed,sns,0.45,true
+チー牛,暗いオタク(蔑称),otaku nerd (slang),mixed,sns,0.5,false
+界隈,コミュニティ,scene/community,mixed,sns,0.45,false
+推し活,ファン活動,fan activities,admiration,sns,0.75,true
+末永く,末永く推す,support forever,admiration,sns,0.55,true
+負け確,勝ち目がない,certain defeat,refusal,sns,0.7,false
+ワンチャン,一つのチャンス,one chance,anticipation,sns,0.55,true
+ツーチャン,二つのチャンス,two chances,anticipation,sns,0.5,true
+詰んだ,詰んだ(チェスメタファー),no moves left,refusal,sns,0.7,true
+詰み,詰み,checkmate/stuck,refusal,sns,0.65,true
+ワンオペ,一人での作業,working alone,sadness,sns,0.55,false
+きつすぎる,きつすぎる,too hard,sadness,sns,0.75,true
+しか勝たん,しか勝たない,nothing else wins,admiration,sns,0.85,true
+しかない,しかない,nothing else/only,admiration,sns,0.7,true
+すぎる,すぎる,too much,exaggeration,sns,0.5,true
+すごすぎ,すごすぎる,too amazing,admiration,sns,0.8,true
+すごすぎる,すごすぎる,too amazing,admiration,sns,0.8,true
+泣ける,泣ける,tear-jerking,moved,sns,0.75,true
+泣けた,泣けた,was tear-jerking,moved,sns,0.75,true
+エグい,非常にすごい/ひどい,intense,mixed,sns,0.8,true
+ヤバたん,やばい(可愛い表現),intense (cute form),exaggeration,sns,0.65,true
+わかりすぎる,非常に共感する,deeply relatable,agreement,sns,0.8,true
+死ぬほど,非常に,so much/dying,exaggeration,sns,0.75,true
+死ぬかと思った,とても驚いた/苦しかった,thought I'd die,exaggeration,sns,0.8,true
+泣いた,泣いた,cried,moved,sns,0.7,true
+爆泣き,激しく泣いた,crying hard,sadness,sns,0.8,true
+泣き崩れ,泣き崩れた,broke down crying,sadness,sns,0.85,true
+ガチ泣き,本当に泣いた,really cried,sadness,sns,0.8,true
+号泣した,号泣した,sobbed,moved,sns,0.8,true
+えぐすぎ,えぐすぎる,too intense,mixed,sns,0.85,true
+えぐすぎる,えぐすぎる,too intense,mixed,sns,0.85,true
+ぶっ刺さる,深く共感する,really resonates,moved,sns,0.8,true
+刺さりまくる,刺さりまくる,resonates a lot,moved,sns,0.8,true
+好きすぎ,好きすぎる,like too much,admiration,sns,0.85,true
+好きすぎる,好きすぎる,like too much,admiration,sns,0.85,true
+やばみ,やばい,intense (suffix form),exaggeration,sns,0.7,true
+かわよ,かわいい,cute (shortened),admiration,sns,0.7,true
+かわいすぎ,かわいすぎる,too cute,admiration,sns,0.85,true
+かわいすぎる,かわいすぎる,too cute,admiration,sns,0.85,true
+キュンとした,キュンとした,heart skipped,admiration,sns,0.75,true
+キュンきた,キュンが来た,heart fluttered,admiration,sns,0.75,true
+ときめく,ときめく,heart flutters,admiration,sns,0.7,true
+ときめいた,ときめいた,heart fluttered,admiration,sns,0.7,true
+萌える,萌える,feeling moe,admiration,sns,0.7,true
+萌えた,萌えた,felt moe,admiration,sns,0.7,true
+萌え死に,可愛さで死ぬ,die from cuteness,admiration,sns,0.85,true
