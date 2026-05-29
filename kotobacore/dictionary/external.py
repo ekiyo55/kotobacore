@@ -390,24 +390,39 @@ def load_user_bundle(
     examples_filename: str = "Japanese-SNS-Emotion-Examples-v1.txt",
     nrc_min_intensity: float = 0.75,
 ) -> DictionaryBundle:
-    """One-shot: load internal seed + NRC lexicon + SNS emotion examples in dic/.
+    """One-shot: load internal seed + bundled SNS examples + optional NRC lexicon.
 
-    Defaults assume the layout::
+    The SNS emotion examples (``Japanese-SNS-Emotion-Examples-v1.txt``) ship with
+    the package under ``resources/dict/`` and are loaded by default, so example-based
+    emotion matching works out of the box. The NRC lexicon is *not* redistributed
+    (license-restricted) and is loaded only when present in the external ``dic/``.
 
-        <project>/resources/dict/*.csv                      (internal seed)
-        <dic>/Japanese-NRC-Emotion-Intensity-Lexicon-v1.txt
-        <dic>/Japanese-SNS-Emotion-Examples-v1.txt
+    Resolution::
+
+        <project>/resources/dict/*.csv                          (internal seed)
+        <project>/resources/dict/Japanese-SNS-Emotion-Examples-v1.txt  (bundled examples)
+        <dic>/Japanese-NRC-Emotion-Intensity-Lexicon-v1.txt     (optional, user-supplied)
+        <dic>/Japanese-SNS-Emotion-Examples-v1.txt              (optional override of bundled)
     """
     from kotobacore.dictionary.loader import _DEFAULT_DICT_DIR
 
     seed_dir = Path(dict_dir) if dict_dir else _DEFAULT_DICT_DIR
     user_dic = _default_user_dic_dir()
 
-    if user_dic is None:
-        return load_dictionary_bundle(seed_dir)
+    # NRC is third-party and never bundled — load only if the user supplied it in dic/.
+    nrc_path = (
+        user_dic / nrc_filename
+        if user_dic is not None and (user_dic / nrc_filename).exists()
+        else None
+    )
 
-    nrc_path = user_dic / nrc_filename if (user_dic / nrc_filename).exists() else None
-    examples_path = user_dic / examples_filename if (user_dic / examples_filename).exists() else None
+    # SNS examples ship with the package; a copy in dic/ (if any) takes precedence
+    # as an explicit override. Exactly one source is loaded, so no duplication.
+    examples_path: Path | None = None
+    if user_dic is not None and (user_dic / examples_filename).exists():
+        examples_path = user_dic / examples_filename
+    elif (seed_dir / examples_filename).exists():
+        examples_path = seed_dir / examples_filename
 
     return load_bundle_with_external(
         seed_dir,

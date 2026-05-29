@@ -200,6 +200,17 @@ def test_load_user_bundle_merges_internal_and_external():
     assert len(bundle.emotion_examples) > 10
 
 
+def test_bundled_sns_examples_ship_with_package():
+    """SNS examples are bundled under resources/dict and load without an external dic/."""
+    from kotobacore.dictionary.loader import _DEFAULT_DICT_DIR
+
+    assert (_DEFAULT_DICT_DIR / "Japanese-SNS-Emotion-Examples-v1.txt").exists()
+    bundle = load_user_bundle()
+    # Merged & expanded SNS examples (hundreds of sentences) regardless of dic/ presence.
+    assert len(bundle.emotion_examples) >= 200
+    assert any(e.example_id.startswith("GEM-") for e in bundle.emotion_examples)
+
+
 def test_load_bundle_with_external_internal_priority(tmp_path: Path):
     # Internal dict
     seed = tmp_path / "seed"

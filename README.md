@@ -70,21 +70,22 @@ KotobaCore の判定は機械学習モデルではなく、**同梱の人手メ�
 | `stopwords.csv` | 113 | チャンク・キーワードから除外する助詞・副詞・接続詞 | surface, category |
 | `normalization.csv` | 21 | 表記ゆれ正規化（(株) → 株式会社 等） | source, target, type |
 | `intent_rules.csv` | 9 | 意図分類ルール（pricing_complaint / support_request / positive_feedback / negative_feedback / agreement / admiration / desire / question / request） | intent, pattern, score, priority |
-| `emotion_examples.csv` | 17 | 例文ベース感情マッチ（surface 一致しない文の確信度を補強）のシード | surface, base_emotion, plutchik_emotion, polarity, intensity, example |
+| `emotion_examples.csv` | 17 | 例文ベース感情マッチ（surface 一致しない文の確信度を補強）の手書きシード | surface, base_emotion, plutchik_emotion, polarity, intensity, example |
+| `Japanese-SNS-Emotion-Examples-v1.txt` | 546 語 / 約 2,746 例文 | SNS 感情例文集（喜び・悲しみ・怒り・恐れ・驚き等）。例文ベースの Jaccard 類似度マッチに使用 | word, emotion, intensity, context, examples, emojis |
 
 `entity.csv` の内訳は人名 230 / ブランド 140 / 組織 132 / 地名 89 / 作品 59 / サービス 39 ほか。
 
-### 任意の外部辞書
+`Japanese-SNS-Emotion-Examples-v1.txt` も `resources/dict/` に同梱され、デフォルトで読み込まれます（外部辞書なしでも例文マッチが効きます）。
+各行の `examples`（「、」区切りの複数例文）が展開され、入力文との bigram Jaccard 類似度で感情の confidence を補強します。
 
-`dic/` ディレクトリ（環境変数 `KOTOBACORE_DIC_DIR` で指定）に以下を置くと、感情解析が強化されます。
-ライセンスの都合で本リポジトリには **同梱していません**（無くても内蔵辞書だけで動作します）。
+### 任意の外部辞書（NRC、非同梱）
 
-- **NRC Japanese Emotion-Intensity Lexicon**（約 9,800 語 / 8 Plutchik 感情の強度辞書）
-  内部辞書に無い感情語を **検出語彙として追加** します（内部辞書 `lex_weight=1.0` に対し外部は `0.5` の低めの重みで、文学的・稀少語を補完）。
-- **SNS 感情例文集**
-  例文ベースの Jaccard 類似度マッチに使われ、surface が一致しない文の **confidence を補強** します。
+唯一の **非同梱** 辞書が **NRC Emotion Intensity Lexicon**（約 9,800 語 / 8 Plutchik 感情の強度辞書）です。
+`dic/`（環境変数 `KOTOBACORE_DIC_DIR` で指定）に置くと、内部辞書に無い感情語を **検出語彙として追加** します
+（内部辞書 `lex_weight=1.0` に対し外部は `0.5` の低めの重みで、文学的・稀少語を補完）。**無くても内蔵辞書だけで動作します。**
 
-感情の confidence は `lex_weight × 0.5 + ex_sim × 0.3 + intensity × 0.2` で算出され、NRC は第1項（検出語彙）、SNS 例文は第2項（類似度）に効きます。
+感情の confidence は `lex_weight × 0.5 + ex_sim × 0.3 + intensity × 0.2` で算出され、
+NRC は第1項（検出語彙）、同梱の SNS 例文は第2項（類似度）に効きます。
 
 #### NRC 辞書の入手方法
 
@@ -119,7 +120,7 @@ KotobaCore の判定は機械学習モデルではなく、**同梱の人手メ�
 
 ```python
 from kotobacore.dictionary import load_user_bundle
-bundle = load_user_bundle()   # 内蔵 seed + dic/ 配下の外部辞書を統合
+bundle = load_user_bundle()   # 内蔵 seed + 同梱 SNS 例文 + (あれば) dic/ の NRC を統合
 ```
 
 ---
