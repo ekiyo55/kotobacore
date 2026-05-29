@@ -24,6 +24,7 @@ from kotobacore.schema import (
 )
 
 __all__ = [
+    "__version__",
     "Analyzer",
     "AnalysisResult",
     "BackendInitializeError",

@@ -1,5 +1,11 @@
 # KotobaCore
 
+[![CI](https://github.com/ekiyo55/kotobacore/actions/workflows/ci.yml/badge.svg)](https://github.com/ekiyo55/kotobacore/actions/workflows/ci.yml)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
+
+[English](README_en.md) | **日本語**
+
 日本語テキストの意味を構造化データに変換するセマンティックエンジン。  
 LLM前処理・RAG・SNS解析・AIエージェント入力に使えます。
 
