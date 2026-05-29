@@ -57,6 +57,38 @@ KotobaCore は心理学者 Robert Plutchik が提唱した **8基本感情モデ
 
 ---
 
+## 内蔵辞書
+
+KotobaCore の判定は機械学習モデルではなく、**同梱の人手メンテナンス辞書（プレーンな CSV）** に基づきます。
+モデルのダウンロードや学習は不要で、CSV を編集するだけで語彙・ルールを追加・調整できます（`resources/dict/`）。
+
+| 辞書ファイル | 件数 | 役割 | 主な列 |
+|---|---:|---|---|
+| `entity.csv` | 701 | 固有表現（人名・ブランド・組織・地名・作品・サービス等）。`aliases` 列で別名表記も認識 | surface, type, normalized, aliases, priority, keep_as_unit |
+| `emotion.csv` | 507 | 感情語。11 カテゴリ（joy / sadness / admiration / refusal / moved / anger / anxiety / exaggeration / anticipation / irritation / agreement）を Plutchik 8 軸へマップ | surface, base_emotion, polarity, intensity, keep_as_unit |
+| `slang.csv` | 203 | SNS・ネットスラング（草 / しぬw / ワロタ 等） | surface, normalized, meaning, emotion, category, intensity, keep_as_unit |
+| `stopwords.csv` | 113 | チャンク・キーワードから除外する助詞・副詞・接続詞 | surface, category |
+| `normalization.csv` | 21 | 表記ゆれ正規化（(株) → 株式会社 等） | source, target, type |
+| `intent_rules.csv` | 9 | 意図分類ルール（pricing_complaint / support_request / positive_feedback / negative_feedback / agreement / admiration / desire / question / request） | intent, pattern, score, priority |
+| `emotion_examples.csv` | 17 | 例文ベース感情マッチ（surface 一致しない文の確信度を補強）のシード | surface, base_emotion, plutchik_emotion, polarity, intensity, example |
+
+`entity.csv` の内訳は人名 230 / ブランド 140 / 組織 132 / 地名 89 / 作品 59 / サービス 39 ほか。
+
+### 任意の外部辞書
+
+`dic/` ディレクトリ（環境変数 `KOTOBACORE_DIC_DIR` で指定）に以下を置くと、感情の **confidence スコア** が補強されます。
+ライセンスの都合で本リポジトリには **同梱していません**（無くても内蔵辞書だけで動作します）。
+
+- **NRC Japanese Emotion-Intensity Lexicon**（約 9,800 語 / 8 Plutchik 感情の強度辞書）
+- **SNS 感情例文集**（例文ベースの Jaccard 類似度マッチ用）
+
+```python
+from kotobacore.dictionary import load_user_bundle
+bundle = load_user_bundle()   # 内蔵 seed + dic/ 配下の外部辞書を統合
+```
+
+---
+
 ## インストール
 
 ```bash
