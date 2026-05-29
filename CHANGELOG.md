@@ -2,6 +2,19 @@
 
 All notable changes to KotobaCore will be documented in this file.
 
+## [0.1.12] - 2026-05-29
+
+### Added
+
+- 自作の SNS 感情例文集 `Japanese-SNS-Emotion-Examples-v1.txt`（546語/約2,746例文）をパッケージに同梱し、デフォルトでロード（外部辞書なしでも例文ベース感情マッチが有効）
+- 英語 README (`README_en.md`) と言語切替リンク
+- GitHub Actions CI（pytest 3.10–3.13 + ruff）と PyPI Trusted Publishing (OIDC) リリースワークフロー
+
+### Changed
+
+- 辞書を `resources/dict/` から `kotobacore/resources/dict/` へ移設し wheel/sdist に同梱（PyPI 配布対応）。パス解決はパッケージ内優先＋旧レイアウトフォールバックで後方互換
+- NRC 辞書は再配布禁止のため非同梱。README に入手方法・ライセンス・引用を明記
+
 ## [0.1.11] - 2026-05-19
 
 ### Added
