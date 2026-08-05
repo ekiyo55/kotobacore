@@ -303,9 +303,14 @@ def test_conjugated_adjective_lemma_matches():
 
 def test_adversative_clause_wins():
     # 「〜でしたが成功しました」— 逆接の後節が primary/polarity を支配
-    # (成功 は外部辞書経由のためフルパイプラインの Analyzer で検証)
+    # (成功 は NRC 外部辞書由来 — 外部辞書が無い環境ではスキップ)
+    import pytest
+
     from kotobacore import Analyzer
-    r = Analyzer().analyze("難しい判断でしたが成功しました").emotion
+    a = Analyzer()
+    if not a._get_bundle().external_emotion:
+        pytest.skip("external dictionary (NRC) not available")
+    r = a.analyze("難しい判断でしたが成功しました").emotion
     assert r.primary == "joy"
     assert r.polarity == "positive"
 

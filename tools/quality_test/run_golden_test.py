@@ -67,11 +67,18 @@ def main() -> int:
         rows = list(csv.DictReader(f))
 
     a = Analyzer()
+    # 外部辞書 (NRC) が無い環境 (CI 等) では needs_external=1 の行をスキップ
+    has_external = bool(a._get_bundle().external_emotion)
+
     total = 0
+    skipped = 0
     failed: list[tuple[str, str, list[str]]] = []
     per_category: dict[str, list[int]] = {}
 
     for row in rows:
+        if (row.get("needs_external") or "").strip() == "1" and not has_external:
+            skipped += 1
+            continue
         total += 1
         fails = check_row(a, row)
         cat = row["category"]
@@ -83,7 +90,8 @@ def main() -> int:
             per_category[cat][0] += 1
 
     print("=" * 66)
-    print(f"実文ゴールデンセット  {total - len(failed)}/{total} PASS")
+    suffix = f" (外部辞書なしのため {skipped} 件スキップ)" if skipped else ""
+    print(f"実文ゴールデンセット  {total - len(failed)}/{total} PASS{suffix}")
     print("=" * 66)
     for cat, (ok, n) in per_category.items():
         mark = "✅" if ok == n else "❌"

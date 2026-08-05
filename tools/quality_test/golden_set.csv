@@ -1,4 +1,4 @@
-id,category,text,emotion,polarity,intent,rag_includes,note
+id,category,text,emotion,polarity,intent,rag_includes,note,needs_external
 G001,デモ指摘,締め切りが近いのにバグが出た。もう無理かも...,anxiety,negative,,締め切りが近い,2026-08-05 指摘: 焦り無視・締め切り脱落
 G002,デモ指摘,思ったより難しい課題が...どうしよう。,anxiety,negative,question,課題|難しい,2026-08-05 指摘: 難しい が無視
 G003,デモ指摘,また仕様変更？さっき決めたばかりなのに...,anger,negative,negative_feedback,仕様変更,2026-08-05 指摘: 感情の帰属先
@@ -18,8 +18,8 @@ G030,否定,全然好きじゃない,sadness,negative,,,否定で joy 反転
 G031,否定,不安はない,none,,,,負感情の否定は中立化
 G032,否定,心配ない、大丈夫,none,,,,
 G033,否定,嬉しくない,none|sadness,,,,トークン内部否定
-G040,逆接,難しい判断でしたが成功しました,joy,positive,,,逆接後勝ち
-G041,逆接,頑張ったけど失敗した,sadness,negative,,,
+G040,逆接,難しい判断でしたが成功しました,joy,positive,,,逆接後勝ち(成功=NRC由来),1
+G041,逆接,頑張ったけど失敗した,sadness,negative,,,失敗=NRC由来,1
 G050,交ぜ書き,打ち合わせは明日です,none,,,打ち合わせ,送り仮名複合語
 G051,交ぜ書き,思い出の写真を整理した,none,,,思い出,
 G052,交ぜ書き,買い物に行くのが楽しみ,joy|anticipation,positive,,買い物,
