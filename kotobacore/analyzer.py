@@ -7,6 +7,8 @@ Per 04_内部設計書 §5 and 06_API §4. Phase 13 wires all preceding phases:
 
 from __future__ import annotations
 
+import os
+
 from kotobacore._version import __version__
 from kotobacore.dictionary import (
     DictionaryBundle,
@@ -38,6 +40,7 @@ from kotobacore.tokenizer import (
     refine_verb_adjective_pos,
     split_hiragana_tokens,
 )
+from kotobacore.tokenizer.lattice import lattice_tokenize
 
 
 class Analyzer:
@@ -54,9 +57,14 @@ class Analyzer:
         config_path: str | None = None,
         user_dict_path: str | None = None,
         use_external_dictionaries: bool = True,
+        pipeline: str | None = None,
     ) -> None:
         self.mode = mode
         self.backend = backend
+        # Karuizawa の実行モード: "lattice" (v0.2 デフォルト — 格子+Viterbi の
+        # 一発分割) または "cascade" (〜v0.1 の5段補修パス、互換用に残置)。
+        # 環境変数 KOTOBACORE_PIPELINE で比較評価時に切替可能。
+        self.pipeline = pipeline or os.environ.get("KOTOBACORE_PIPELINE", "lattice")
         self.enable_semantic_chunk = enable_semantic_chunk
         self.enable_emotion = enable_emotion
         self.enable_intent = enable_intent
@@ -105,6 +113,8 @@ class Analyzer:
             return []
         normalized = self.normalize(text)
         bundle = self._get_bundle()
+        if self.pipeline == "lattice":
+            return lattice_tokenize(normalized, bundle)
         raw = self._get_backend().tokenize(normalized, mode=self.mode)
         tokens = merge_keep_as_unit(raw, normalized, bundle)
         tokens = split_hiragana_tokens(tokens, bundle)
@@ -122,12 +132,15 @@ class Analyzer:
         # Tokenize → Token Normalizer (keep_as_unit merge, per 04_内部設計書 §3.1)
         tokens: list[Token] = []
         if text:
-            raw = self._get_backend().tokenize(normalized, mode=self.mode)
-            tokens = merge_keep_as_unit(raw, normalized, bundle)
-            tokens = split_hiragana_tokens(tokens, bundle)
-            tokens = heuristic_proper_noun_merge(tokens, normalized)
-            tokens = merge_okurigana_compounds(tokens)
-            tokens = refine_verb_adjective_pos(tokens, bundle)
+            if self.pipeline == "lattice":
+                tokens = lattice_tokenize(normalized, bundle)
+            else:
+                raw = self._get_backend().tokenize(normalized, mode=self.mode)
+                tokens = merge_keep_as_unit(raw, normalized, bundle)
+                tokens = split_hiragana_tokens(tokens, bundle)
+                tokens = heuristic_proper_noun_merge(tokens, normalized)
+                tokens = merge_okurigana_compounds(tokens)
+                tokens = refine_verb_adjective_pos(tokens, bundle)
 
         # SemanticToken builder (always when chunks enabled OR for downstream)
         semantic_tokens = []
