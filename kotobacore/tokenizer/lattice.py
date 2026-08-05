@@ -110,17 +110,21 @@ def _lattice_resources(bundle: DictionaryBundle):
             return _MERGED_POS, surf
         return "名詞-普通名詞-一般", surf
 
-    for entries, get_surface in (
-        (bundle.emotion, lambda e: e.surface),
-        (bundle.slang, lambda e: e.surface),
-        (bundle.entity, lambda e: e.surface),
+    for entries, is_entity in (
+        (bundle.emotion, False),
+        (bundle.slang, False),
+        (bundle.entity, True),
     ):
         for e in entries:
-            surf = get_surface(e)
+            surf = e.surface
             if not surf or len(surf) < 2 or surf in seen:
                 continue
             seen.add(surf)
-            pos, dform = _classify_dict_surface(surf)
+            if is_entity:
+                # Entities are nouns even when written in hiragana (もも 等)
+                pos, dform = "名詞-普通名詞-一般", surf
+            else:
+                pos, dform = _classify_dict_surface(surf)
             patterns.append(surf)
             payloads.append((pos, dform, _COST_DICT))
     for e in bundle.entity:
@@ -394,8 +398,20 @@ def _propose_nodes(text: str, bundle: DictionaryBundle) -> list[list[_Node]]:
 
 
 # --------------------------------------------------------------------------
-# Viterbi
+# Viterbi (with a minimal bigram connection cost)
 # --------------------------------------------------------------------------
+
+# Two directly adjacent NOUN nodes without a particle between them are rare in
+# Japanese (nouns normally connect via を/の/も…), so noun→noun adjacency
+# pays a connection penalty. This is what lets the classic
+# すもももももももものうち resolve to すもも|も|もも|も|もも rather than the
+# dictionary-greedy すもも|もも|もも|もも (given すもも/もも in a dictionary).
+# Same-script runs can never split into two adjacent noun nodes, so ordinary
+# compound nouns (single KANJI/KATAKANA runs) are unaffected.
+_NOUN_ADJ_PENALTY = 6.0
+
+_CLS_NOUN = 0
+_CLS_OTHER = 1
 
 
 def lattice_tokenize(text: str, bundle: DictionaryBundle) -> list[Token]:
@@ -407,26 +423,36 @@ def lattice_tokenize(text: str, bundle: DictionaryBundle) -> list[Token]:
     by_start = _propose_nodes(text, bundle)
 
     INF = float("inf")
-    best: list[float] = [INF] * (n + 1)
-    best[0] = 0.0
-    back: list[_Node | None] = [None] * (n + 1)
+    # DP state: (position, class of last emitted node) — class distinguishes
+    # 名詞 from everything else so the noun→noun connection cost applies.
+    best = [[INF, INF] for _ in range(n + 1)]
+    best[0][_CLS_OTHER] = 0.0
+    back: list[list[tuple[_Node, int] | None]] = [[None, None] for _ in range(n + 1)]
 
     for i in range(n):
-        if best[i] == INF:
-            continue
-        for node in by_start[i]:
-            c = best[i] + node.cost
-            if c < best[node.end]:
-                best[node.end] = c
-                back[node.end] = node
+        for cls in (_CLS_NOUN, _CLS_OTHER):
+            base = best[i][cls]
+            if base == INF:
+                continue
+            for node in by_start[i]:
+                ncls = _CLS_NOUN if node.pos.startswith("名詞") else _CLS_OTHER
+                c = base + node.cost
+                if cls == _CLS_NOUN and ncls == _CLS_NOUN:
+                    c += _NOUN_ADJ_PENALTY
+                if c < best[node.end][ncls]:
+                    best[node.end][ncls] = c
+                    back[node.end][ncls] = (node, cls)
 
-    # Reconstruct
+    # Reconstruct from the cheaper terminal class
+    end_cls = _CLS_NOUN if best[n][_CLS_NOUN] <= best[n][_CLS_OTHER] else _CLS_OTHER
     path: list[_Node] = []
     pos = n
+    cls = end_cls
     while pos > 0:
-        node = back[pos]
-        if node is None:  # unreachable — should not happen (runs cover all)
+        entry = back[pos][cls]
+        if entry is None:  # unreachable — should not happen (runs cover all)
             break
+        node, cls = entry
         path.append(node)
         pos = node.start
     path.reverse()

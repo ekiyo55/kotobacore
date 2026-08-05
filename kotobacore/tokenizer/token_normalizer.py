@@ -176,7 +176,7 @@ _HIRAGANA_KNOWN_WORDS: frozenset[str] = frozenset({
     "だいたい", "たいてい",
     "しっかり", "ゆっくり", "のんびり", "ちゃんと",
     # Common hiragana nouns
-    "もの", "こと", "とき", "ところ", "ひと",
+    "もの", "こと", "とき", "ところ", "ひと", "うち",
     # Common auxiliaries (anchor so adjacent particles are cleanly split)
     "できる", "できた", "できない",
     "わかる", "わかった", "わからない",
