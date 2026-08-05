@@ -136,9 +136,9 @@ def optimize_rag(
     # ---------------------------------------------------- semantic phrases
     semantic_phrases: list[str] = []
     for c in chunks:
-        if c.type in {"service", "product", "compound_noun", "topic", "entity"}:
-            if c.text not in semantic_phrases and c.text not in stopwords:
-                semantic_phrases.append(c.text)
+        if (c.type in {"service", "product", "compound_noun", "topic", "entity"}
+                and c.text not in semantic_phrases and c.text not in stopwords):
+            semantic_phrases.append(c.text)
 
     # ------------------------------------------------------- summary hint
     summary_hint: str | None = None

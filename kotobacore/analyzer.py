@@ -27,7 +27,8 @@ from kotobacore.schema import (
     TextInfo,
     Token,
 )
-from kotobacore.semantic import build_semantic_tokens, chunk as _chunk
+from kotobacore.semantic import build_semantic_tokens
+from kotobacore.semantic import chunk as _chunk
 from kotobacore.tokenizer import (
     KaruizawaBackend,
     TokenizerBackend,

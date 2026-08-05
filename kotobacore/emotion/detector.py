@@ -24,7 +24,6 @@ from kotobacore.dictionary import DictionaryBundle
 from kotobacore.schema import EmotionExpression, EmotionResult, Token
 from kotobacore.semantic.builder import BASE_TO_PLUTCHIK
 
-
 # ---------------------------------------------------------------------------
 # Similarity (char-bigram Jaccard) — v0.1 lightweight substitute for
 # embedding-based similarity.
@@ -202,13 +201,11 @@ def detect_emotion(
         # We deliberately require the END to be on a token boundary (not the
         # start) to avoid prefix false-positives such as "はい" matching the
         # start of the "はいつもの" token.
-        if (end - start >= 2
+        return (end - start >= 2
                 and end in token_ends
                 and start in pos_to_token_idx
                 and (end - 1) in pos_to_token_idx
-                and pos_to_token_idx[start] == pos_to_token_idx[end - 1]):
-            return True
-        return False
+                and pos_to_token_idx[start] == pos_to_token_idx[end - 1])
 
     # Examples grouped by surface — cached on the bundle.
     examples_by_surface = bundle.emotion_examples_by_surface()
@@ -244,8 +241,7 @@ def detect_emotion(
                 sim = _jaccard(input_bigrams, _bigrams(ex.example))
                 if sim > 0.05:  # noise floor
                     matched_ids.append(ex.example_id)
-                if sim > ex_sim_per_emotion[ex.base_emotion]:
-                    ex_sim_per_emotion[ex.base_emotion] = sim
+                ex_sim_per_emotion[ex.base_emotion] = max(ex_sim_per_emotion[ex.base_emotion], sim)
 
             ex_sim = ex_sim_per_emotion.get(base_emotion, 0.0)
 
@@ -288,8 +284,7 @@ def detect_emotion(
                 sim = _jaccard(input_bigrams, _bigrams(ex.example))
                 if sim > 0.05:
                     matched_ids.append(ex.example_id)
-                if sim > ex_sim_per_emotion[ex.base_emotion]:
-                    ex_sim_per_emotion[ex.base_emotion] = sim
+                ex_sim_per_emotion[ex.base_emotion] = max(ex_sim_per_emotion[ex.base_emotion], sim)
             ex_sim = ex_sim_per_emotion.get(base_emotion, 0.0)
             confidence = min(max(lex_weight * 0.5 + ex_sim * 0.3 + intensity * 0.2, 0.0), 1.0)
             expressions.append(

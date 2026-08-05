@@ -74,7 +74,7 @@ def _make_token(tok_id: int, text: str, begin: int, end: int, cat: str) -> Token
 class KaruizawaBackend(TokenizerBackend):
     """Character-category boundary tokenizer.  No external dependencies."""
 
-    def tokenize(self, text: str, mode: str = "C") -> list[Token]:  # noqa: ARG002
+    def tokenize(self, text: str, mode: str = "C") -> list[Token]:
         if not text:
             return []
 

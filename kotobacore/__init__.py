@@ -24,9 +24,8 @@ from kotobacore.schema import (
 )
 
 __all__ = [
-    "__version__",
-    "Analyzer",
     "AnalysisResult",
+    "Analyzer",
     "BackendInitializeError",
     "ConfigError",
     "DictionaryLoadError",
@@ -42,4 +41,5 @@ __all__ = [
     "SemanticToken",
     "TextInfo",
     "Token",
+    "__version__",
 ]

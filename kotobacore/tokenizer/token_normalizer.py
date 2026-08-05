@@ -336,11 +336,12 @@ def _split_hiragana_gap(gap: str) -> list[str]:
             pos += 2
             continue
         # Try 1-char particle — small-kana guard prevents splitting "やっ…"
-        if gap[pos] in _PARTICLES_1:
-            if not (pos + 1 < n and gap[pos + 1] in _SMALL_KANA):
-                result.append(gap[pos])
-                pos += 1
-                continue
+        if gap[pos] in _PARTICLES_1 and not (
+            pos + 1 < n and gap[pos + 1] in _SMALL_KANA
+        ):
+            result.append(gap[pos])
+            pos += 1
+            continue
         # Unknown content: emit the rest as one segment and stop
         result.append(gap[pos:])
         break
@@ -699,7 +700,7 @@ def merge_okurigana_compounds(tokens: list[Token]) -> list[Token]:
 
 def heuristic_proper_noun_merge(
     tokens: list[Token],
-    text: str,  # noqa: ARG001 — reserved for future context-aware rules
+    text: str,
 ) -> list[Token]:
     """Best-effort merge for KANJI + HIRAGANA proper-noun compounds.
 
