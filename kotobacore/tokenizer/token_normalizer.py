@@ -24,6 +24,7 @@ from the gaps between those anchors.
 from __future__ import annotations
 
 from kotobacore.dictionary import DictionaryBundle
+from kotobacore.matching import SurfaceMatcher
 from kotobacore.schema import Token
 
 # POS assigned to a merged keep_as_unit token. SNS emotional expressions
@@ -267,7 +268,13 @@ def _grammar_split(text: str) -> list[tuple[str, str, str]]:
 
 
 def _build_known_hiragana(bundle: DictionaryBundle) -> frozenset[str]:
-    """Merge bundle all-hiragana surfaces with the hardcoded word list."""
+    """Merge bundle all-hiragana surfaces with the hardcoded word list.
+
+    Deterministic from the bundle → built once and cached on it.
+    """
+    cached = bundle._cache.get("known_hiragana")
+    if cached is not None:
+        return cached
     words: set[str] = set(_HIRAGANA_KNOWN_WORDS)
     for e in bundle.emotion:
         if len(e.surface) >= 2 and all(0x3040 <= ord(c) <= 0x309F for c in e.surface):
@@ -275,7 +282,9 @@ def _build_known_hiragana(bundle: DictionaryBundle) -> frozenset[str]:
     for s in bundle.slang:
         if len(s.surface) >= 2 and all(0x3040 <= ord(c) <= 0x309F for c in s.surface):
             words.add(s.surface)
-    return frozenset(words)
+    result = frozenset(words)
+    bundle._cache["known_hiragana"] = result
+    return result
 
 
 def _find_hiragana_anchors(
@@ -478,26 +487,26 @@ def merge_keep_as_unit(
         return tokens
 
     kau_surface_pos = bundle.keep_as_unit_surfaces()  # {surface: merged_pos}
-    # Only surfaces >= 2 chars can ever be split across tokens.
-    surfaces = sorted((s for s in kau_surface_pos if len(s) >= 2), key=lambda s: -len(s))
+    # Only surfaces >= 2 chars can ever be split across tokens. The sorted
+    # list + its Aho-Corasick matcher are deterministic → cached on the bundle.
+    kau_scan = bundle._cache.get("kau_scan")
+    if kau_scan is None:
+        surfaces = sorted((s for s in kau_surface_pos if len(s) >= 2), key=lambda s: -len(s))
+        kau_scan = (surfaces, SurfaceMatcher(surfaces) if surfaces else None)
+        bundle._cache["kau_scan"] = kau_scan
+    surfaces, matcher = kau_scan
     if not surfaces:
         return tokens
 
-    # Find non-overlapping keep_as_unit spans in the text (longest-match first).
+    # Find non-overlapping keep_as_unit spans (longest-match first — the
+    # (rank, pos) match order reproduces the previous per-surface find loops).
     claimed = bytearray(len(normalized_text))
     spans: list[tuple[int, int, str]] = []
-    for surf in surfaces:  # surf → surface string
-        start = 0
-        while True:
-            pos = normalized_text.find(surf, start)
-            if pos < 0:
-                break
-            end = pos + len(surf)
-            if not any(claimed[pos:end]):
-                spans.append((pos, end, surf))
-                for i in range(pos, end):
-                    claimed[i] = 1
-            start = pos + 1
+    for rank, pos, end in matcher.find_all(normalized_text):
+        if not any(claimed[pos:end]):
+            spans.append((pos, end, surfaces[rank]))
+            for i in range(pos, end):
+                claimed[i] = 1
 
     if not spans:
         return tokens
@@ -931,11 +940,15 @@ def refine_verb_adjective_pos(
         return tokens
 
     # Surfaces that must stay intact so the semantic layer can match them.
-    protected: set[str] = set()
-    protected.update(e.surface for e in bundle.emotion)
-    protected.update(e.surface for e in bundle.external_emotion)
-    protected.update(s.surface for s in bundle.slang)
-    protected.update(e.surface for e in bundle.entity)
+    # Deterministic from the bundle → built once and cached on it.
+    protected: set[str] | None = bundle._cache.get("refine_protected")
+    if protected is None:
+        protected = set()
+        protected.update(e.surface for e in bundle.emotion)
+        protected.update(e.surface for e in bundle.external_emotion)
+        protected.update(s.surface for s in bundle.slang)
+        protected.update(e.surface for e in bundle.entity)
+        bundle._cache["refine_protected"] = protected
 
     result: list[Token] = []
     i = 0
@@ -953,12 +966,18 @@ def refine_verb_adjective_pos(
             kind = _classify_okurigana(nxt.surface)
             if kind:
                 new_surf = tok.surface + nxt.surface
+                # Adjectives get their い-base lemma as dictionary_form
+                # (嬉しくない → 嬉しい, 楽しかった → 楽しい) so the semantic
+                # layer can match conjugated forms against the lexicon.
+                dform = new_surf
+                if kind == "adj":
+                    dform = _adjective_lemma(new_surf) or new_surf
                 result.append(
                     Token(
                         id=tok.id,
                         surface=new_surf,
                         normalized=new_surf,
-                        dictionary_form=new_surf,
+                        dictionary_form=dform,
                         reading=None,
                         pos="動詞-一般" if kind == "verb" else "形容詞-一般",
                         begin=tok.begin,

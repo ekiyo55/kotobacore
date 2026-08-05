@@ -18,11 +18,32 @@ Per 05_辞書設計書 §6 and 06_API §11. v0.1 algorithm:
 
 from __future__ import annotations
 
+import re
 from collections import defaultdict
 
+from kotobacore.clause import Clause, clause_at, split_clauses
 from kotobacore.dictionary import DictionaryBundle
+from kotobacore.matching import SurfaceMatcher
 from kotobacore.schema import EmotionExpression, EmotionResult, Token
 from kotobacore.semantic.builder import BASE_TO_PLUTCHIK
+
+# ---------------------------------------------------------------------------
+# Negation scope
+# ---------------------------------------------------------------------------
+
+# Negation immediately following an expression (optionally via a particle):
+# 好き[じゃない] / 不安[はない] / 元気[がなく] / 嬉しく[ない] …
+# Must be matched WITHIN the expression's clause (see kotobacore.clause).
+_NEG_AFTER_RE = re.compile(r"(?:は|も|が)?(?:じゃ|では)?な(?:かった|くて|く|い)")
+
+# Token-internal negation: a conjugated-adjective token whose lemma matched
+# the lexicon (嬉しくない → lemma 嬉しい) but whose surface is negated.
+_NEG_TOKEN_SUFFIXES: tuple[str, ...] = ("くなかった", "くなくて", "くない")
+
+# Positive bases flip to a mild negative reading under negation
+# (好きじゃない ≈ 嫌い → sadness). Negated NEGATIVE emotions (不安はない /
+# 心配ない) are neutralized — the taxonomy has no "relief", so they drop.
+_POSITIVE_BASES: frozenset[str] = frozenset({"joy", "admiration", "moved", "agreement"})
 
 # ---------------------------------------------------------------------------
 # Similarity (char-bigram Jaccard) — v0.1 lightweight substitute for
@@ -49,21 +70,6 @@ def _jaccard(a: set[str], b: set[str]) -> float:
 # ---------------------------------------------------------------------------
 # Surface scanning
 # ---------------------------------------------------------------------------
-
-
-def _find_occurrences(text: str, surface: str) -> list[int]:
-    """All non-overlapping start positions of ``surface`` in ``text``."""
-    if not surface:
-        return []
-    out = []
-    start = 0
-    while True:
-        pos = text.find(surface, start)
-        if pos < 0:
-            break
-        out.append(pos)
-        start = pos + len(surface)
-    return out
 
 
 def _polarity_for(base_emotion: str) -> str:
@@ -147,6 +153,14 @@ def _get_emotion_candidates(
     return c
 
 
+def _get_emotion_matcher(bundle: DictionaryBundle) -> SurfaceMatcher:
+    m = bundle._cache.get("emotion_matcher")
+    if m is None:
+        m = SurfaceMatcher([c[0] for c in _get_emotion_candidates(bundle)])
+        bundle._cache["emotion_matcher"] = m
+    return m
+
+
 # ---------------------------------------------------------------------------
 # Main entry
 # ---------------------------------------------------------------------------
@@ -212,6 +226,20 @@ def detect_emotion(
 
     input_bigrams = _bigrams(text)
     expressions: list[EmotionExpression] = []
+    clause_weights: list[float] = []  # parallel to expressions
+
+    # Clause segmentation — ex_sim scope, 逆接 weighting, negation boundary.
+    clauses = split_clauses(text)
+    _clause_bigrams: dict[int, set[str]] = {}
+
+    def _bigrams_for(clause: Clause | None) -> set[str]:
+        if clause is None:
+            return input_bigrams
+        bg = _clause_bigrams.get(clause.start)
+        if bg is None:
+            bg = _bigrams(text[clause.start:clause.end])
+            _clause_bigrams[clause.start] = bg
+        return bg
 
     # Emotion candidate list (emotion.csv ∪ slang.csv ∪ NRC ∪ example-based),
     # sorted longest-surface-first. Deterministic from the bundle → cached.
@@ -221,50 +249,88 @@ def detect_emotion(
     # (e.g. "課金高すぎ" claims positions covering "高すぎ").
     claimed = bytearray(len(text))
 
-    for surface, base_emotion, polarity, intensity, lex_weight, _source in candidates:
-        positions = _find_occurrences(text, surface)
-        for pos in positions:
-            end = pos + len(surface)
-            if not _aligned(pos, end):
-                continue
-            if any(claimed[pos:end]):
-                continue
-            for i in range(pos, end):
-                claimed[i] = 1
+    def _emit(
+        display_text: str,
+        ex_key: str,
+        base_emotion: str,
+        polarity: str,
+        intensity: float,
+        lex_weight: float,
+        start: int,
+        end: int,
+        internal_neg: bool,
+    ) -> None:
+        """Score one candidate span, applying negation and clause scoping."""
+        clause = clause_at(clauses, start)
 
-            # Compute example similarity per emotion — polysemous words (e.g.
-            # "やばい" as 恐れ vs 喜び) are scored against only the examples
-            # that share their candidate emotion, not the global max.
-            ex_sim_per_emotion: dict[str, float] = defaultdict(float)
-            matched_ids: list[str] = []
-            for ex in examples_by_surface.get(surface, []):
-                sim = _jaccard(input_bigrams, _bigrams(ex.example))
-                if sim > 0.05:  # noise floor
-                    matched_ids.append(ex.example_id)
-                ex_sim_per_emotion[ex.base_emotion] = max(ex_sim_per_emotion[ex.base_emotion], sim)
+        # --- negation ---------------------------------------------------
+        neg_len = 0
+        if not internal_neg:
+            m = _NEG_AFTER_RE.match(text, end)
+            if m and (clause is None or m.end() <= clause.end):
+                neg_len = m.end() - end
+        if internal_neg or neg_len:
+            if base_emotion in _POSITIVE_BASES:
+                # 好きじゃない ≈ 嫌い — flip to a mild negative reading.
+                base_emotion = "sadness"
+                polarity = "negative"
+                intensity = round(intensity * 0.8, 3)
+                if neg_len:
+                    display_text = text[start:end + neg_len]
+            else:
+                # 不安はない / 心配ない — neutralized; span stays claimed.
+                return
+            if neg_len:
+                for i in range(end, end + neg_len):
+                    claimed[i] = 1
 
-            ex_sim = ex_sim_per_emotion.get(base_emotion, 0.0)
-
-            # Confidence formula from 05_辞書設計書 §6.9.3
-            confidence = lex_weight * 0.5 + ex_sim * 0.3 + intensity * 0.2
-            confidence = min(max(confidence, 0.0), 1.0)
-
-            expressions.append(
-                EmotionExpression(
-                    text=surface,
-                    emotion=base_emotion,
-                    plutchik_emotion=_plutchik_for(base_emotion),
-                    polarity=polarity,
-                    intensity=intensity,
-                    confidence=round(confidence, 3),
-                    matched_examples=matched_ids,
-                )
+        # --- example similarity (clause-scoped) -------------------------
+        scope_bigrams = _bigrams_for(clause)
+        ex_sim_per_emotion: dict[str, float] = defaultdict(float)
+        matched_ids: list[str] = []
+        for ex in examples_by_surface.get(ex_key, []):
+            sim = _jaccard(scope_bigrams, _bigrams(ex.example))
+            if sim > 0.05:  # noise floor
+                matched_ids.append(ex.example_id)
+            ex_sim_per_emotion[ex.base_emotion] = max(
+                ex_sim_per_emotion[ex.base_emotion], sim
             )
+        ex_sim = ex_sim_per_emotion.get(base_emotion, 0.0)
 
-    # dictionary_form pass: the Token Normalizer's grammar splitter labels
-    # conjugated adjectives with their い-base dictionary_form (おかしく →
-    # おかしい). Match those lemmas against the lexicon so inflected forms are
-    # detected without registering every conjugation as its own surface.
+        # Confidence formula from 05_辞書設計書 §6.9.3
+        confidence = min(max(lex_weight * 0.5 + ex_sim * 0.3 + intensity * 0.2, 0.0), 1.0)
+
+        expressions.append(
+            EmotionExpression(
+                text=display_text,
+                emotion=base_emotion,
+                plutchik_emotion=_plutchik_for(base_emotion),
+                polarity=polarity,
+                intensity=intensity,
+                confidence=round(confidence, 3),
+                matched_examples=matched_ids,
+            )
+        )
+        clause_weights.append(clause.weight if clause else 1.0)
+
+    # Single Aho-Corasick pass over the text — matches arrive in
+    # (candidate_rank, position) order, i.e. longest-surface-first claiming,
+    # identical to the previous per-candidate str.find loops.
+    for rank, pos, end in _get_emotion_matcher(bundle).find_all(text):
+        surface, base_emotion, polarity, intensity, lex_weight, _source = candidates[rank]
+        if not _aligned(pos, end):
+            continue
+        if any(claimed[pos:end]):
+            continue
+        for i in range(pos, end):
+            claimed[i] = 1
+        _emit(surface, surface, base_emotion, polarity, intensity,
+              lex_weight, pos, end, internal_neg=False)
+
+    # dictionary_form pass: the Token Normalizer labels conjugated verbs /
+    # adjectives with their lemma (おかしく → おかしい, 楽しかった → 楽しい).
+    # Match those lemmas against the lexicon so inflected forms are detected
+    # without registering every conjugation as its own surface.
     if tokens:
         lex_by_surface: dict[str, tuple[str, str, float, float]] = {}
         for surf, base_emotion, polarity, intensity, lex_weight, _src in candidates:
@@ -278,26 +344,9 @@ def detect_emotion(
             for i in range(tok.begin, tok.end):
                 claimed[i] = 1
             base_emotion, polarity, intensity, lex_weight = lex_by_surface[df]
-            ex_sim_per_emotion = defaultdict(float)
-            matched_ids = []
-            for ex in examples_by_surface.get(df, []):
-                sim = _jaccard(input_bigrams, _bigrams(ex.example))
-                if sim > 0.05:
-                    matched_ids.append(ex.example_id)
-                ex_sim_per_emotion[ex.base_emotion] = max(ex_sim_per_emotion[ex.base_emotion], sim)
-            ex_sim = ex_sim_per_emotion.get(base_emotion, 0.0)
-            confidence = min(max(lex_weight * 0.5 + ex_sim * 0.3 + intensity * 0.2, 0.0), 1.0)
-            expressions.append(
-                EmotionExpression(
-                    text=tok.surface,
-                    emotion=base_emotion,
-                    plutchik_emotion=_plutchik_for(base_emotion),
-                    polarity=polarity,
-                    intensity=intensity,
-                    confidence=round(confidence, 3),
-                    matched_examples=matched_ids,
-                )
-            )
+            internal_neg = tok.surface.endswith(_NEG_TOKEN_SUFFIXES)
+            _emit(tok.surface, df, base_emotion, polarity, intensity,
+                  lex_weight, tok.begin, tok.end, internal_neg=internal_neg)
 
     if not expressions:
         return EmotionResult(
@@ -305,24 +354,26 @@ def detect_emotion(
             plutchik={}, expressions=[],
         )
 
-    # Aggregate Plutchik distribution (sum of confidence * intensity)
+    # Aggregate Plutchik distribution (confidence × intensity × clause weight)
     plutchik_dist: dict[str, float] = defaultdict(float)
-    for exp in expressions:
+    for exp, w in zip(expressions, clause_weights):
         key = exp.plutchik_emotion or "mixed"
-        plutchik_dist[key] += exp.intensity * exp.confidence
+        plutchik_dist[key] += exp.intensity * exp.confidence * w
 
     # Normalize Plutchik distribution to [0, 1] (relative)
-    if plutchik_dist:
-        max_v = max(plutchik_dist.values())
-        if max_v > 0:
-            plutchik = {k: round(v / max_v, 3) for k, v in plutchik_dist.items()}
-        else:
-            plutchik = {k: 0.0 for k in plutchik_dist}
+    max_v = max(plutchik_dist.values())
+    if max_v > 0:
+        plutchik = {k: round(v / max_v, 3) for k, v in plutchik_dist.items()}
     else:
-        plutchik = {}
+        plutchik = {k: 0.0 for k in plutchik_dist}
 
-    # Primary = highest-intensity * confidence expression
-    primary_exp = max(expressions, key=lambda e: e.intensity * e.confidence)
+    # Primary = highest intensity × confidence × clause weight expression.
+    # 逆接 weighting means the clause after けど/ですが/のに… dominates.
+    primary_idx = max(
+        range(len(expressions)),
+        key=lambda i: expressions[i].intensity * expressions[i].confidence * clause_weights[i],
+    )
+    primary_exp = expressions[primary_idx]
     overall_intensity = round(
         sum(e.intensity * e.confidence for e in expressions)
         / max(1.0, sum(e.confidence for e in expressions)),
@@ -332,11 +383,18 @@ def detect_emotion(
         sum(e.confidence for e in expressions) / len(expressions), 3
     )
 
-    # Polarity: majority vote weighted by confidence
+    # Polarity: majority vote weighted by confidence × clause weight. When the
+    # vote contradicts the primary expression's polarity and the margin is
+    # thin, trust the primary (keeps primary/polarity mutually consistent).
     polarity_score: dict[str, float] = defaultdict(float)
-    for exp in expressions:
-        polarity_score[exp.polarity] += exp.confidence
-    polarity = max(polarity_score, key=polarity_score.get) if polarity_score else None
+    for exp, w in zip(expressions, clause_weights):
+        polarity_score[exp.polarity] += exp.confidence * w
+    polarity = max(polarity_score, key=polarity_score.get)
+    if polarity != primary_exp.polarity:
+        top = polarity_score[polarity]
+        second = polarity_score.get(primary_exp.polarity, 0.0)
+        if top > 0 and (top - second) / top < 0.2:
+            polarity = primary_exp.polarity
 
     return EmotionResult(
         primary=primary_exp.emotion,

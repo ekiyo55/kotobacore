@@ -261,3 +261,72 @@ def test_bakari_nanoni_carries_the_complaint():
     # 汎用性: 別の動詞でも発火する
     r2 = _detect("昨日直したばっかりなのにまた壊れた")
     assert r2.primary == "anger"
+
+
+# ---------------------------------------------------------------------------
+# Negation scope (v0.1.15)
+# ---------------------------------------------------------------------------
+
+
+def test_negated_positive_flips_to_negative():
+    # 好きじゃない ≈ 嫌い — joy が positive のまま残ってはいけない
+    r = _detect("全然好きじゃない")
+    assert r.primary != "joy"
+    assert r.polarity != "positive"
+
+
+def test_negated_negative_is_neutralized():
+    # 不安はない / 心配ない — 否定された負感情は中立化(検出なし)
+    for s in ["不安はない", "心配ない、大丈夫"]:
+        r = _detect(s)
+        assert r.primary is None, f"{s}: {r.primary}"
+
+
+def test_negated_adjective_token_internal():
+    # 嬉しくない — 活用形レンマ照合 + トークン内部否定
+    r = _detect("嬉しくない")
+    assert r.primary != "joy"
+    assert r.polarity != "positive"
+
+
+def test_conjugated_adjective_lemma_matches():
+    # 楽しかった → lemma 楽しい で joy 検出 (活用形を辞書登録せずに)
+    r = _detect("楽しかった一日")
+    assert r.primary == "joy"
+    assert r.polarity == "positive"
+
+
+# ---------------------------------------------------------------------------
+# Clause segmentation: 逆接 weighting + clause-scoped ex_sim (v0.1.15)
+# ---------------------------------------------------------------------------
+
+
+def test_adversative_clause_wins():
+    # 「〜でしたが成功しました」— 逆接の後節が primary/polarity を支配
+    # (成功 は外部辞書経由のためフルパイプラインの Analyzer で検証)
+    from kotobacore import Analyzer
+    r = Analyzer().analyze("難しい判断でしたが成功しました").emotion
+    assert r.primary == "joy"
+    assert r.polarity == "positive"
+
+
+def test_noni_keeps_pre_clause_emotion():
+    # のに は節分割のみ(重み変更なし) — 前節の焦りが primary を維持
+    from kotobacore import Analyzer
+    r = Analyzer().analyze("締め切りが近いのにバグが出た。もう無理かも...").emotion
+    assert r.primary == "anxiety"
+
+
+def test_ex_sim_is_clause_scoped():
+    # 長文でも感情語の節スコープで ex_sim が計算され confidence が希釈されない
+    from kotobacore import Analyzer
+    a = Analyzer()
+    short = "思ったより難しい課題が...どうしよう。"
+    long = (
+        "今朝は晴れていたので自転車で出社した。"
+        "昼は同僚とカレーを食べ、午後の打ち合わせでは来月の段取りを確認した。"
+    ) + short
+    def conf(s):
+        r = a.analyze(s)
+        return [x.confidence for x in r.emotion.expressions if x.text == "どうしよう"][0]
+    assert conf(short) == conf(long)

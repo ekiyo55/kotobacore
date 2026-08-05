@@ -147,7 +147,7 @@ class Analyzer:
 
         intent_result: IntentResult | None = None
         if self.enable_intent:
-            intent_result = classify_intent(normalized, bundle)
+            intent_result = classify_intent(normalized, bundle, emotion_result)
         else:
             intent_result = IntentResult(label=None, confidence=0.0, candidates=[])
 

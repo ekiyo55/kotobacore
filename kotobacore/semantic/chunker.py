@@ -17,6 +17,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from kotobacore.dictionary import DictionaryBundle, EmotionEntry, EntityEntry, SlangEntry
+from kotobacore.matching import SurfaceMatcher
 from kotobacore.schema import SemanticChunk, Token
 
 
@@ -126,28 +127,26 @@ def _scan_dictionary_matches(
     claimed = bytearray(len(text))  # 0 = free, 1 = claimed
     matches: list[_Match] = []
 
-    for cand in candidates:
-        surf = cand.surface
-        n = len(surf)
-        if n == 0:
-            continue
-        start = 0
-        while True:
-            pos = text.find(surf, start)
-            if pos < 0:
-                break
-            end_pos = pos + n
-            if (
-                pos in token_begins
-                and end_pos in token_ends
-                and not any(claimed[pos:end_pos])
-            ):
-                matches.append(
-                    _Match(pos, end_pos, surf, cand.chunk_type, cand.entry_kind, cand.intensity)
-                )
-                for i in range(pos, end_pos):
-                    claimed[i] = 1
-            start = pos + 1
+    # Single Aho-Corasick pass — (rank, pos) order reproduces the previous
+    # longest-surface-first claiming exactly.
+    matcher: SurfaceMatcher | None = bundle._cache.get("chunk_matcher")
+    if matcher is None:
+        matcher = SurfaceMatcher([c.surface for c in candidates])
+        bundle._cache["chunk_matcher"] = matcher
+
+    for rank, pos, end_pos in matcher.find_all(text):
+        if (
+            pos in token_begins
+            and end_pos in token_ends
+            and not any(claimed[pos:end_pos])
+        ):
+            cand = candidates[rank]
+            matches.append(
+                _Match(pos, end_pos, cand.surface, cand.chunk_type,
+                       cand.entry_kind, cand.intensity)
+            )
+            for i in range(pos, end_pos):
+                claimed[i] = 1
 
     # dictionary_form pass — match a token's lemma (set by the Token
     # Normalizer's grammar splitter, e.g. おかしく → おかしい) against the

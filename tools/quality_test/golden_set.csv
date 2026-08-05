@@ -1,0 +1,37 @@
+id,category,text,emotion,polarity,intent,rag_includes,note
+G001,デモ指摘,締め切りが近いのにバグが出た。もう無理かも...,anxiety,negative,,締め切りが近い,2026-08-05 指摘: 焦り無視・締め切り脱落
+G002,デモ指摘,思ったより難しい課題が...どうしよう。,anxiety,negative,question,課題|難しい,2026-08-05 指摘: 難しい が無視
+G003,デモ指摘,また仕様変更？さっき決めたばかりなのに...,anger,negative,negative_feedback,仕様変更,2026-08-05 指摘: 感情の帰属先
+G004,デモ指摘,また仕様変更？了解です。,none,,,仕様変更,仕様変更+了解 は感情なし
+G005,デモ指摘,仕様変更を反映しました。,none,,unknown,仕様変更,中立な業務報告
+G010,固定コーパス,OpenAI APIの課金高すぎてしぬw,anger|exaggeration,negative|mixed,pricing_complaint,OpenAI API,
+G011,固定コーパス,このアニメ尊すぎて泣いた,admiration|moved,positive,,,
+G012,固定コーパス,もう無理。請求まわりを確認して,refusal|sadness,negative,support_request,,
+G013,固定コーパス,今日は新しいプロジェクトがスタート！ワクワクする！,joy,positive,positive_feedback,,
+G014,固定コーパス,チームメンバーとの初ミーティング。みんな頼もしい！,admiration,positive,admiration,,
+G015,固定コーパス,お昼はいつもの定食屋で。安定の美味しさ。,joy|admiration,positive,,,はい 誤爆の回帰確認
+G016,固定コーパス,先輩が助けてくれた！なんとか解決できそう！,joy,positive,positive_feedback,,
+G017,固定コーパス,今日は本当に色々あったけど、良いチームで良かった。,joy,positive,,,逆接後勝ち
+G018,固定コーパス,社内FAQをRAG化したい,none|anticipation,,desire,,
+G019,固定コーパス,東京都に行った,none,,unknown,東京都,entity認識
+G030,否定,全然好きじゃない,sadness,negative,,,否定で joy 反転
+G031,否定,不安はない,none,,,,負感情の否定は中立化
+G032,否定,心配ない、大丈夫,none,,,,
+G033,否定,嬉しくない,none|sadness,,,,トークン内部否定
+G040,逆接,難しい判断でしたが成功しました,joy,positive,,,逆接後勝ち
+G041,逆接,頑張ったけど失敗した,sadness,negative,,,
+G050,交ぜ書き,打ち合わせは明日です,none,,,打ち合わせ,送り仮名複合語
+G051,交ぜ書き,思い出の写真を整理した,none,,,思い出,
+G052,交ぜ書き,買い物に行くのが楽しみ,joy|anticipation,positive,,買い物,
+G053,交ぜ書き,引っ越しの準備で忙しい,,,,引っ越し,
+G054,交ぜ書き,問い合わせが増えている,none,,,問い合わせ,
+G060,中立業務,バグを修正しました,none,,unknown,バグ,中立な作業報告
+G061,中立業務,会議は15時からです,none,,unknown,会議,
+G062,中立業務,資料を添付します,none,,unknown,資料,
+G070,SNS,この課題むずい,anxiety,negative,,課題,
+G071,SNS,ワロタwww,joy,positive,positive_feedback,,
+G072,SNS,それな、わかる,,positive,agreement,,
+G073,SNS,推しが尊すぎて無理,admiration,,,,無理 は強調用法(既知の限界許容: 極性チェックなし)
+G080,ビジネス,納期に間に合わないかもしれない,anxiety,negative,,納期,
+G081,ビジネス,値上げの連絡が来て困っています,anxiety,negative,pricing_complaint|support_request,値上げ,値上げ entity + 困っています 辞書の回帰確認
+G082,ビジネス,昨日直したばっかりなのにまた壊れた,anger,negative,negative_feedback,,ばかりなのに 汎用発火

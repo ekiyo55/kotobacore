@@ -700,3 +700,5 @@ IWC,BRAND,IWC,,75,false
 円高,TOPIC,円高,,70,false
 増税,TOPIC,増税,,70,false
 利上げ,TOPIC,利上げ,,70,true
+値上げ,TOPIC,値上げ,値上,70,true
+仕上げ,TOPIC,仕上げ,,70,true

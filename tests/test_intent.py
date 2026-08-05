@@ -109,3 +109,37 @@ def test_tabako_does_not_falsely_trigger_positive():
     # containing 草 (煙草 = cigarette etc.) do not false-fire positive_feedback.
     r = _classify("煙草を買ってきた")
     assert r.label != "positive_feedback"
+
+
+# ---------------------------------------------------------------------------
+# v0.1.15: 中立トピック語の除去 + 文末形式 + 感情連動
+# ---------------------------------------------------------------------------
+
+
+def test_neutral_topic_words_do_not_trigger_feedback():
+    # 仕様変更/バグ/高い は不満とは限らない — 中立文は unknown
+    from kotobacore import Analyzer
+    a = Analyzer()
+    for s in ["バグを修正しました", "仕様変更を反映しました。", "高い山に登る"]:
+        r = a.analyze(s)
+        assert r.intent.label == "unknown", f"{s}: {r.intent.label}"
+
+
+def test_sentence_final_question_mark():
+    from kotobacore import Analyzer
+    r = Analyzer().analyze("また仕様変更？")
+    assert r.intent.label == "question"
+
+
+def test_emotion_derived_feedback():
+    # ルール未マッチでも感情層の帰属済み極性から feedback を導出
+    from kotobacore import Analyzer
+    r = Analyzer().analyze("楽しかった一日")
+    assert r.intent.label == "positive_feedback"
+
+
+def test_rule_hits_beat_emotion_fallback():
+    # 明示的な support_request が感情由来 negative_feedback に勝つ
+    from kotobacore import Analyzer
+    r = Analyzer().analyze("もう無理。請求まわりを確認して")
+    assert r.intent.label == "support_request"

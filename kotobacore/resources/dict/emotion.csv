@@ -482,6 +482,10 @@ surface,base_emotion,polarity,intensity,keep_as_unit
 間に合わない,anxiety,negative,0.75,true
 間に合わなそう,anxiety,negative,0.75,true
 難しい,anxiety,negative,0.45,false
+困った,anxiety,negative,0.6,false
+困っている,anxiety,negative,0.6,false
+困っています,anxiety,negative,0.6,false
+困り果て,anxiety,negative,0.7,false
 難しすぎ,anxiety,negative,0.7,false
 難しすぎる,anxiety,negative,0.7,false
 むずい,anxiety,negative,0.55,true
