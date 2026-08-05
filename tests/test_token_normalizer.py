@@ -142,3 +142,61 @@ def test_dictionary_word_not_swallowed_by_verb_merge():
     assert "ワクワク" in surfaces
     # emotion still detected
     assert r.emotion is not None and r.emotion.primary is not None
+
+
+# ---------------------------------------------------------------------------
+# Okurigana compound merge (merge_okurigana_compounds)
+# ---------------------------------------------------------------------------
+
+
+def test_okurigana_compound_shimekiri():
+    # 締め切り fragments into 締|め|切|り without the merge layer.
+    a = Analyzer()
+    toks = a.analyze("締め切りが近いのにバグが出た。もう無理かも...").tokens
+    surfaces = [t.surface for t in toks]
+    assert "締め切り" in surfaces
+    assert "名詞" in (_pos_of(toks, "締め切り") or "")
+
+
+def test_okurigana_compound_common_nouns():
+    a = Analyzer()
+    for sentence, compound in [
+        ("思い出の写真", "思い出"),
+        ("買い物に行く", "買い物"),
+        ("引っ越しの準備", "引っ越し"),
+        ("打ち合わせは明日", "打ち合わせ"),
+        ("問い合わせが多い", "問い合わせ"),
+        ("真っ白な雪", "真っ白"),
+    ]:
+        toks = a.analyze(sentence).tokens
+        surfaces = [t.surface for t in toks]
+        assert compound in surfaces, f"{sentence}: {surfaces}"
+
+
+def test_adjective_stem_not_fused_by_sandwich():
+    # 良い天気: 良+い must become adjective 良い, NOT one noun 良い天気.
+    a = Analyzer()
+    for sentence, adj, noun in [
+        ("良い天気ですね", "良い", "天気"),
+        ("高い山に登る", "高い", "山"),
+    ]:
+        toks = a.analyze(sentence).tokens
+        surfaces = [t.surface for t in toks]
+        assert adj in surfaces and noun in surfaces, f"{sentence}: {surfaces}"
+        assert "形容詞" in (_pos_of(toks, adj) or "")
+
+
+def test_verb_stem_not_absorbed_by_trailing_rule():
+    # 走りきった: plain KANJI verb stem must not absorb り as a noun.
+    a = Analyzer()
+    toks = a.analyze("走りきった").tokens
+    assert "動詞" in (_pos_of(toks, "走りきった") or "")
+
+
+def test_shimekiri_anxiety_detected():
+    # 締め切りが近い → anxiety (焦り), and 締め切り reaches RAG keywords.
+    a = Analyzer()
+    r = a.analyze("締め切りが近いのにバグが出た。もう無理かも...")
+    assert r.emotion.primary == "anxiety"
+    assert r.emotion.polarity == "negative"
+    assert any("締め切り" in k for k in r.rag.keywords)

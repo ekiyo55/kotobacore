@@ -17,6 +17,7 @@ from kotobacore.tokenizer.karuizawa_backend import KaruizawaBackend
 from kotobacore.tokenizer.token_normalizer import (
     heuristic_proper_noun_merge,
     merge_keep_as_unit,
+    merge_okurigana_compounds,
     refine_verb_adjective_pos,
     split_hiragana_tokens,
 )
@@ -81,5 +82,6 @@ class KaruizawaTokenizer:
         tokens = merge_keep_as_unit(raw, text, bundle)
         tokens = split_hiragana_tokens(tokens, bundle)
         tokens = heuristic_proper_noun_merge(tokens, text)
+        tokens = merge_okurigana_compounds(tokens)
         tokens = refine_verb_adjective_pos(tokens, bundle)
         return [KaruizawaToken(t) for t in tokens]

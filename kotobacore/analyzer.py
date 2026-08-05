@@ -33,6 +33,7 @@ from kotobacore.tokenizer import (
     TokenizerBackend,
     heuristic_proper_noun_merge,
     merge_keep_as_unit,
+    merge_okurigana_compounds,
     refine_verb_adjective_pos,
     split_hiragana_tokens,
 )
@@ -107,6 +108,7 @@ class Analyzer:
         tokens = merge_keep_as_unit(raw, normalized, bundle)
         tokens = split_hiragana_tokens(tokens, bundle)
         tokens = heuristic_proper_noun_merge(tokens, normalized)
+        tokens = merge_okurigana_compounds(tokens)
         return refine_verb_adjective_pos(tokens, bundle)
 
     # ------------------------------------------------------------------
@@ -123,6 +125,7 @@ class Analyzer:
             tokens = merge_keep_as_unit(raw, normalized, bundle)
             tokens = split_hiragana_tokens(tokens, bundle)
             tokens = heuristic_proper_noun_merge(tokens, normalized)
+            tokens = merge_okurigana_compounds(tokens)
             tokens = refine_verb_adjective_pos(tokens, bundle)
 
         # SemanticToken builder (always when chunks enabled OR for downstream)

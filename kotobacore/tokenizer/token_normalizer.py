@@ -560,6 +560,139 @@ def merge_keep_as_unit(
 
 
 # ---------------------------------------------------------------------------
+# Okurigana compound merge (runs AFTER heuristic_proper_noun_merge)
+# ---------------------------------------------------------------------------
+
+# Okurigana that may close a compound produced by the sandwich merge
+# (締め切 + り).  Deliberately excludes verb-inflection endings (た/て/ろ …)
+# so plain verb stems (走 + り) are never absorbed.
+_TRAILING_OKURIGANA: frozenset[str] = frozenset("りめいえみけきげしせち")
+
+# 2-char okurigana tails that close a compound (打ち合 + わせ → 打ち合わせ).
+_TRAILING_OKURIGANA_2: frozenset[str] = frozenset({"わせ", "あい", "がえ"})
+
+# Adjective stems: KANJI + い forms an i-adjective (良い/近い/高い …), which
+# refine_verb_adjective_pos must assemble — the sandwich rule stays out.
+# Without this guard 良+い+天気 would wrongly fuse into one noun 良い天気.
+_ADJ_STEMS: frozenset[str] = frozenset(
+    "良悪近遠高安低強弱早速遅古濃薄深浅広狭長短多軽重丸白黒赤青若旨"
+    "細太固硬堅暗偉凄酷淡荒粗緩鋭鈍賢幼熱暑寒痛甘辛苦渋眠怖無憎醜聡"
+) | frozenset({"上手"})
+
+
+def _has_kanji(s: str) -> bool:
+    return any(
+        0x4E00 <= ord(c) <= 0x9FFF or 0x3400 <= ord(c) <= 0x4DBF for c in s
+    )
+
+
+def merge_okurigana_compounds(tokens: list[Token]) -> list[Token]:
+    """Merge 交ぜ書き compound nouns split at okurigana boundaries.
+
+    Karuizawa splits by character category, so KANJI+HIRAGANA+KANJI compound
+    nouns fragment into e.g. 締|め|切|り — the 1-char hiragana stranded as
+    助詞 even though め/り are not particles.  Runs after
+    ``heuristic_proper_noun_merge`` (which has already isolated trailing
+    particles: りが → り + が).  Two conservative rules:
+
+    1. Sandwich: KANJI noun + single non-particle hiragana + KANJI noun
+       → one 名詞-普通名詞-一般 token (締め切 / 思い出 / 行き先 / 真っ白).
+       Genuine particles (_PARTICLES_1: は/が/の/に …) never trigger it, and
+       adjective stems (_ADJ_STEMS: 良+い+天気 …) are left for
+       ``refine_verb_adjective_pos`` to assemble as adjectives.
+    2. Trailing: a compound produced by rule 1 may absorb ONE following
+       okurigana from a closed set (締め切 + り → 締め切り).  Plain KANJI
+       nouns do not absorb trailing hiragana, so verb stems stay intact.
+    """
+    if not tokens:
+        return tokens
+
+    result: list[Token] = []
+    compound_flags: list[bool] = []
+    i = 0
+    n = len(tokens)
+    while i < n:
+        tok = tokens[i]
+        is_single = len(tok.surface) == 1
+        if (
+            tok.pos == "助詞"
+            and _is_all_hiragana(tok.surface)
+            and (
+                (is_single and tok.surface not in _PARTICLES_1)
+                or tok.surface in _TRAILING_OKURIGANA_2
+            )
+            and result
+            and result[-1].end == tok.begin
+        ):
+            prev = result[-1]
+            prev_ok = (
+                prev.pos.startswith("名詞-普通名詞")
+                and _has_kanji(prev.surface)
+                and not (tok.surface == "い" and prev.surface in _ADJ_STEMS)
+            )
+            nxt = tokens[i + 1] if i + 1 < n else None
+            if (
+                is_single
+                and prev_ok
+                and nxt is not None
+                and tok.end == nxt.begin
+                and nxt.pos.startswith("名詞-普通名詞")
+                and _has_kanji(nxt.surface)
+            ):
+                # Rule 1: sandwich merge  prev + okurigana + next
+                result.pop()
+                compound_flags.pop()
+                surf = prev.surface + tok.surface + nxt.surface
+                result.append(
+                    Token(
+                        id=prev.id,
+                        surface=surf,
+                        normalized=surf,
+                        dictionary_form=surf,
+                        reading=None,
+                        pos="名詞-普通名詞-一般",
+                        begin=prev.begin,
+                        end=nxt.end,
+                        unknown=False,
+                    )
+                )
+                compound_flags.append(True)
+                i += 2
+                continue
+            if compound_flags[-1] and (
+                tok.surface in _TRAILING_OKURIGANA
+                or tok.surface in _TRAILING_OKURIGANA_2
+            ):
+                # Rule 2: close the compound with its final okurigana
+                prev = result.pop()
+                compound_flags.pop()
+                surf = prev.surface + tok.surface
+                result.append(
+                    Token(
+                        id=prev.id,
+                        surface=surf,
+                        normalized=surf,
+                        dictionary_form=surf,
+                        reading=None,
+                        pos="名詞-普通名詞-一般",
+                        begin=prev.begin,
+                        end=tok.end,
+                        unknown=False,
+                    )
+                )
+                compound_flags.append(True)
+                i += 1
+                continue
+        result.append(tok)
+        compound_flags.append(False)
+        i += 1
+
+    for new_id, t in enumerate(result):
+        t.id = new_id
+    return result
+
+
+# ---------------------------------------------------------------------------
 # Heuristic proper-noun merge (runs AFTER merge_keep_as_unit)
 # ---------------------------------------------------------------------------
 

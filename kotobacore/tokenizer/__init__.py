@@ -5,6 +5,7 @@ from kotobacore.tokenizer.karuizawa_backend import KaruizawaBackend
 from kotobacore.tokenizer.token_normalizer import (
     heuristic_proper_noun_merge,
     merge_keep_as_unit,
+    merge_okurigana_compounds,
     refine_verb_adjective_pos,
     split_hiragana_tokens,
 )
@@ -14,6 +15,7 @@ __all__ = [
     "TokenizerBackend",
     "heuristic_proper_noun_merge",
     "merge_keep_as_unit",
+    "merge_okurigana_compounds",
     "refine_verb_adjective_pos",
     "split_hiragana_tokens",
 ]
