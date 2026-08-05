@@ -702,3 +702,5 @@ IWC,BRAND,IWC,,75,false
 利上げ,TOPIC,利上げ,,70,true
 値上げ,TOPIC,値上げ,値上,70,true
 仕上げ,TOPIC,仕上げ,,70,true
+すもも,TOPIC,すもも,李,60,false
+もも,TOPIC,もも,桃,60,false

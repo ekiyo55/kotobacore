@@ -401,17 +401,33 @@ def _propose_nodes(text: str, bundle: DictionaryBundle) -> list[list[_Node]]:
 # Viterbi (with a minimal bigram connection cost)
 # --------------------------------------------------------------------------
 
-# Two directly adjacent NOUN nodes without a particle between them are rare in
-# Japanese (nouns normally connect via を/の/も…), so noun→noun adjacency
-# pays a connection penalty. This is what lets the classic
-# すもももももももものうち resolve to すもも|も|もも|も|もも rather than the
-# dictionary-greedy すもも|もも|もも|もも (given すもも/もも in a dictionary).
-# Same-script runs can never split into two adjacent noun nodes, so ordinary
-# compound nouns (single KANJI/KATAKANA runs) are unaffected.
+# Bigram connection costs — two small pieces of Japanese grammar:
+#
+# * Two directly adjacent NOUN nodes without a particle between them are rare
+#   (nouns normally connect via を/の/も…) → noun→noun adjacency penalty.
+#   Same-script runs can never split into two adjacent noun nodes, so
+#   ordinary compound nouns (single KANJI/KATAKANA runs) are unaffected.
+# * The SAME single-char particle never repeats back-to-back (も|も is not
+#   grammatical — もも there is a word) → same-particle repetition penalty.
+#
+# Together these resolve the classic すもももももももものうち to
+# すもも|も|もも|も|もも|の|うち (given すもも/もも in the dictionary),
+# instead of the dictionary-greedy すもも|もも|もも|もも.
 _NOUN_ADJ_PENALTY = 6.0
+_SAME_PARTICLE_PENALTY = 8.0
 
-_CLS_NOUN = 0
-_CLS_OTHER = 1
+_ST_NOUN = "N"
+_ST_OTHER = "O"
+
+
+def _node_state(node: _Node, text: str) -> str | tuple[str, str]:
+    if node.pos.startswith("名詞"):
+        return _ST_NOUN
+    if node.pos == "助詞" and node.end - node.start == 1:
+        ch = text[node.start]
+        if ch in _PARTICLES_1:
+            return ("P", ch)
+    return _ST_OTHER
 
 
 def lattice_tokenize(text: str, bundle: DictionaryBundle) -> list[Token]:
@@ -422,37 +438,39 @@ def lattice_tokenize(text: str, bundle: DictionaryBundle) -> list[Token]:
 
     by_start = _propose_nodes(text, bundle)
 
-    INF = float("inf")
-    # DP state: (position, class of last emitted node) — class distinguishes
-    # 名詞 from everything else so the noun→noun connection cost applies.
-    best = [[INF, INF] for _ in range(n + 1)]
-    best[0][_CLS_OTHER] = 0.0
-    back: list[list[tuple[_Node, int] | None]] = [[None, None] for _ in range(n + 1)]
+    # DP over (position, state of last emitted node). States: noun / single
+    # particle (by char) / other — just enough context for the two bigram
+    # connection costs above.
+    best: list[dict] = [{} for _ in range(n + 1)]
+    back: list[dict] = [{} for _ in range(n + 1)]
+    best[0][_ST_OTHER] = 0.0
 
     for i in range(n):
-        for cls in (_CLS_NOUN, _CLS_OTHER):
-            base = best[i][cls]
-            if base == INF:
-                continue
-            for node in by_start[i]:
-                ncls = _CLS_NOUN if node.pos.startswith("名詞") else _CLS_OTHER
+        states = best[i]
+        if not states:
+            continue
+        for node in by_start[i]:
+            nstate = _node_state(node, text)
+            for pstate, base in states.items():
                 c = base + node.cost
-                if cls == _CLS_NOUN and ncls == _CLS_NOUN:
+                if pstate == _ST_NOUN and nstate == _ST_NOUN:
                     c += _NOUN_ADJ_PENALTY
-                if c < best[node.end][ncls]:
-                    best[node.end][ncls] = c
-                    back[node.end][ncls] = (node, cls)
+                elif pstate == nstate and isinstance(nstate, tuple):
+                    c += _SAME_PARTICLE_PENALTY
+                cur = best[node.end].get(nstate)
+                if cur is None or c < cur:
+                    best[node.end][nstate] = c
+                    back[node.end][nstate] = (node, pstate)
 
-    # Reconstruct from the cheaper terminal class
-    end_cls = _CLS_NOUN if best[n][_CLS_NOUN] <= best[n][_CLS_OTHER] else _CLS_OTHER
+    if not best[n]:
+        return []  # unreachable — should not happen (runs cover all)
+
+    # Reconstruct from the cheapest terminal state
+    state = min(best[n], key=best[n].get)
     path: list[_Node] = []
     pos = n
-    cls = end_cls
     while pos > 0:
-        entry = back[pos][cls]
-        if entry is None:  # unreachable — should not happen (runs cover all)
-            break
-        node, cls = entry
+        node, state = back[pos][state]
         path.append(node)
         pos = node.start
     path.reverse()

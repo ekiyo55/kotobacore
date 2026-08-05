@@ -64,3 +64,15 @@ def test_adjective_stem_guard_in_lattice():
     s = _surfaces(a, "良い天気ですね")
     assert "良い" in s
     assert "天気" in s
+
+
+def test_sumomo_classic_sentence():
+    # 教科書の難文。すもも/もも は entity.csv (TOPIC) 登録 + 名詞隣接ペナルティ
+    # + 同一助詞連続ペナルティ (も|も はあり得ない) の3点で完全解になる。
+    a = Analyzer(pipeline="lattice")
+    r = a.analyze("すもももももももものうち")
+    assert [t.surface for t in r.tokens] == [
+        "すもも", "も", "もも", "も", "もも", "の", "うち"
+    ]
+    assert [c.text for c in r.chunks] == ["すもも", "もも", "もも"]
+    assert "すもも" in r.rag.keywords and "もも" in r.rag.keywords
