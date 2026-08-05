@@ -220,3 +220,44 @@ def test_regression_hai_substring_not_falsely_detected():
     # The genuine emotion word 美味しさ should be picked up instead.
     assert "美味しさ" in surfaces
     assert r.polarity == "positive"
+
+
+def test_muzukashii_detected_as_anxiety():
+    # デモ指摘: 「思ったより難しい課題が...どうしよう。」で どうしよう しか
+    # 拾われなかった。難しい (anxiety) も感情表現として検出されること。
+    r = _detect("思ったより難しい課題が...どうしよう。")
+    assert r.primary == "anxiety"
+    assert r.polarity == "negative"
+    surfaces = {e.text for e in r.expressions}
+    assert "どうしよう" in surfaces
+    assert "難しい" in surfaces
+
+
+def test_muzukashii_does_not_override_positive_context():
+    # 難しい は低 intensity (0.45) — ポジティブ文脈では primary を奪わない。
+    r = _detect("難しい問題を解くのが好き")
+    assert r.primary == "joy"
+    assert r.polarity == "positive"
+
+
+def test_shiyouhenkou_is_neutral_topic_not_emotion():
+    # デモ指摘: 仕様変更 は不満とは限らない。感情の担い手は「〜ばかりなのに」
+    # (直前完了+逆接=不満の語用論マーカー)。中立文脈では感情なしになること。
+    for neutral in ["また仕様変更？了解です。", "仕様変更を反映しました。"]:
+        r = _detect(neutral)
+        surfaces = {e.text for e in r.expressions}
+        assert "仕様変更" not in surfaces, f"{neutral}: {surfaces}"
+        assert r.primary is None, f"{neutral}: {r.primary}"
+
+
+def test_bakari_nanoni_carries_the_complaint():
+    # 不満は ばかりなのに が運ぶ。仕様変更 はトピックとして RAG に残る。
+    r = _detect("また仕様変更？さっき決めたばかりなのに...")
+    assert r.primary == "anger"
+    assert r.polarity == "negative"
+    surfaces = {e.text for e in r.expressions}
+    assert "ばかりなのに" in surfaces
+    assert "仕様変更" not in surfaces
+    # 汎用性: 別の動詞でも発火する
+    r2 = _detect("昨日直したばっかりなのにまた壊れた")
+    assert r2.primary == "anger"

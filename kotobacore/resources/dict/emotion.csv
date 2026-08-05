@@ -23,7 +23,8 @@ surface,base_emotion,polarity,intensity,keep_as_unit
 ワクワク,joy,positive,0.85,false
 頼もしい,admiration,positive,0.75,false
 どうしよう,anxiety,negative,0.7,true
-仕様変更,anger,negative,0.65,true
+ばかりなのに,anger,negative,0.6,true
+ばっかりなのに,anger,negative,0.65,true
 イライラ,irritation,negative,0.8,false
 イライラする,irritation,negative,0.85,true
 悲しい,sadness,negative,0.75,true
@@ -476,6 +477,15 @@ surface,base_emotion,polarity,intensity,keep_as_unit
 すてきだ,admiration,positive,0.7,true
 すてきすぎ,admiration,positive,0.85,true
 焦り,anxiety,negative,0.7,true
+締め切りが近い,anxiety,negative,0.75,false
+締め切り間近,anxiety,negative,0.75,false
+間に合わない,anxiety,negative,0.75,true
+間に合わなそう,anxiety,negative,0.75,true
+難しい,anxiety,negative,0.45,false
+難しすぎ,anxiety,negative,0.7,false
+難しすぎる,anxiety,negative,0.7,false
+むずい,anxiety,negative,0.55,true
+ムズい,anxiety,negative,0.55,true
 落ち着かない,anxiety,negative,0.7,true
 胸騒ぎ,anxiety,negative,0.7,true
 そわそわ,anxiety,negative,0.65,true
