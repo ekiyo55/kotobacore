@@ -1,7 +1,7 @@
 # KotobaCore
 
 [![CI](https://github.com/ekiyo55/kotobacore/actions/workflows/ci.yml/badge.svg)](https://github.com/ekiyo55/kotobacore/actions/workflows/ci.yml)
-[![PyPI](https://img.shields.io/pypi/v/kotobacore.svg)](https://pypi.org/project/kotobacore/)
+[![PyPI](https://img.shields.io/pypi/v/kotobacore)](https://pypi.org/project/kotobacore/)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 
@@ -36,10 +36,12 @@ keywords : ["クラウドAPI", "課金"]
 ```
 入力テキスト
   └─ 正規化 (NFKC / SNS表現保持)
-       └─ トークナイズ (外部依存ゼロの内蔵トークナイザー)
+       └─ トークナイズ — Karuizawa (外部依存ゼロの内蔵トークナイザー)
+          v0.2〜 格子+Viterbi の一発分割 (辞書表層/文法形態素/活用組み立て/
+          交ぜ書き複合語をノード提案し、接続コスト付き最良経路探索で確定)
             └─ セマンティックチャンク生成
-                 ├─ 感情検出 + Plutchik 8軸マッピング
-                 ├─ 意図分類
+                 ├─ 感情検出 (節分割・否定スコープ・逆接考慮) + Plutchik 8軸
+                 ├─ 意図分類 (ルール + 文末形式 + 感情連動)
                  └─ RAGキーワード抽出
 ```
 
@@ -71,8 +73,8 @@ KotobaCore の判定は機械学習モデルではなく、**同梱の人手メ�
 
 | 辞書ファイル | 件数 | 役割 | 主な列 |
 |---|---:|---|---|
-| `entity.csv` | 701 | 固有表現（人名・ブランド・組織・地名・作品・サービス等）。`aliases` 列で別名表記も認識 | surface, type, normalized, aliases, priority, keep_as_unit |
-| `emotion.csv` | 507 | 感情語。11 カテゴリ（joy / sadness / admiration / refusal / moved / anger / anxiety / exaggeration / anticipation / irritation / agreement）を Plutchik 8 軸へマップ | surface, base_emotion, polarity, intensity, keep_as_unit |
+| `entity.csv` | 705 | 固有表現（人名・ブランド・組織・地名・作品・サービス等）と TOPIC（一般概念名詞: 円安 / 値上げ / すもも 等）。`aliases` 列で別名表記も認識 | surface, type, normalized, aliases, priority, keep_as_unit |
+| `emotion.csv` | 521 | 感情語。11 カテゴリ（joy / sadness / admiration / refusal / moved / anger / anxiety / exaggeration / anticipation / irritation / agreement）を Plutchik 8 軸へマップ | surface, base_emotion, polarity, intensity, keep_as_unit |
 | `slang.csv` | 203 | SNS・ネットスラング（草 / しぬw / ワロタ 等） | surface, normalized, meaning, emotion, category, intensity, keep_as_unit |
 | `stopwords.csv` | 113 | チャンク・キーワードから除外する助詞・副詞・接続詞 | surface, category |
 | `normalization.csv` | 21 | 表記ゆれ正規化（(株) → 株式会社 等） | source, target, type |
@@ -216,8 +218,14 @@ KotobaCoreが埋めているのは「感情・意図・RAGキーワードを一�
 
 ## ステータス
 
-v0.1.11 pre-alpha。5000例文の品質評価で 感情正確度 95.2% / 極性正確度 96.1% / 意図正確度 68.1%、処理エラー 0件。
-処理速度はサーバー実機で 1文あたり平均 3.77ms（p99 21.83ms、外部依存ゼロ）。149 テスト全 PASS。
+**v0.2.2** pre-alpha。5000例文の品質評価で 感情正確度 95.2% / 極性正確度 96.0% / 意図正確度 68.1% /
+意図検出率 70.8%、処理エラー 0件。処理速度はサーバー実機で 1文あたり平均 **1.81ms**（p99 2.35ms、外部依存ゼロ）。
+**186 テスト全 PASS**（実文ゴールデンセット 36文を含む）。
+
+v0.2 の主な変更: Karuizawa の格子+Viterbi 一発分割（bigram 接続コストで
+「すもももももももものうち」も完全解）、否定スコープ処理（好きじゃない → negative）、
+節分割による逆接考慮（〜でしたが成功しました → positive）、Aho-Corasick 統一マッチ層。
+詳細は [CHANGELOG](CHANGELOG.md) を参照。
 
 ---
 

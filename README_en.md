@@ -1,7 +1,7 @@
 # KotobaCore
 
 [![CI](https://github.com/ekiyo55/kotobacore/actions/workflows/ci.yml/badge.svg)](https://github.com/ekiyo55/kotobacore/actions/workflows/ci.yml)
-[![PyPI](https://img.shields.io/pypi/v/kotobacore.svg)](https://pypi.org/project/kotobacore/)
+[![PyPI](https://img.shields.io/pypi/v/kotobacore)](https://pypi.org/project/kotobacore/)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 
@@ -36,10 +36,15 @@ It's not just a tokenizer — it returns **emotion, intent, and RAG keywords in 
 ```
 input text
   └─ normalization (NFKC / preserves SNS expressions)
-       └─ tokenization (built-in, zero external dependencies)
+       └─ tokenization — Karuizawa (built-in, zero external dependencies)
+          v0.2+: single-pass lattice + Viterbi (dictionary surfaces, grammar
+          morphemes, conjugation assembly and mixed-script compounds proposed
+          as nodes; best path chosen with bigram connection costs)
             └─ semantic chunking
-                 ├─ emotion detection + Plutchik 8-axis mapping
-                 ├─ intent classification
+                 ├─ emotion detection (clause splitting / negation scope /
+                 │   adversative weighting) + Plutchik 8-axis mapping
+                 ├─ intent classification (rules + sentence-final forms +
+                 │   emotion-derived fallback)
                  └─ RAG keyword extraction
 ```
 
@@ -72,8 +77,8 @@ vocabulary and rules (`resources/dict/`).
 
 | Dictionary file | Entries | Role | Key columns |
 |---|---:|---|---|
-| `entity.csv` | 701 | Named entities (people, brands, organizations, places, works, services). `aliases` column matches alternative spellings | surface, type, normalized, aliases, priority, keep_as_unit |
-| `emotion.csv` | 507 | Emotion words. 11 categories (joy / sadness / admiration / refusal / moved / anger / anxiety / exaggeration / anticipation / irritation / agreement) mapped to Plutchik's 8 axes | surface, base_emotion, polarity, intensity, keep_as_unit |
+| `entity.csv` | 705 | Named entities (people, brands, organizations, places, works, services) plus TOPIC common nouns (円安, 値上げ, すもも, …). `aliases` column matches alternative spellings | surface, type, normalized, aliases, priority, keep_as_unit |
+| `emotion.csv` | 521 | Emotion words. 11 categories (joy / sadness / admiration / refusal / moved / anger / anxiety / exaggeration / anticipation / irritation / agreement) mapped to Plutchik's 8 axes | surface, base_emotion, polarity, intensity, keep_as_unit |
 | `slang.csv` | 203 | Social-media / internet slang (草, しぬw, ワロタ, etc.) | surface, normalized, meaning, emotion, category, intensity, keep_as_unit |
 | `stopwords.csv` | 113 | Particles / adverbs / conjunctions excluded from chunks and keywords | surface, category |
 | `normalization.csv` | 21 | Spelling normalization ((株) → 株式会社, etc.) | source, target, type |
@@ -224,9 +229,15 @@ KotobaCore fills the niche of "structuring emotion, intent, and RAG keywords int
 
 ## Status
 
-v0.1.11 pre-alpha. On a 5,000-sentence quality evaluation: emotion accuracy 95.2% / polarity accuracy
-96.1% / intent accuracy 68.1%, with 0 processing errors. Throughput on a production server is ~3.77ms
-per sentence on average (p99 21.83ms, zero external dependencies). All 150 tests pass.
+**v0.2.2** pre-alpha. On a 5,000-sentence quality evaluation: emotion accuracy 95.2% / polarity accuracy
+96.0% / intent accuracy 68.1% / intent detection 70.8%, with 0 processing errors. Throughput on a
+production server averages **1.81ms** per sentence (p99 2.35ms, zero external dependencies).
+**All 186 tests pass** (including a 36-sentence real-text golden set).
+
+Highlights of v0.2: Karuizawa's single-pass lattice + Viterbi tokenization (with bigram connection
+costs — even the classic すもももももももものうち parses perfectly), negation-scope handling
+(好きじゃない → negative), clause-based adversative weighting (〜でしたが成功しました → positive),
+and a unified Aho-Corasick matching layer. See the [CHANGELOG](CHANGELOG.md) for details.
 
 ---
 
