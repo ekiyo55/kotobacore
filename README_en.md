@@ -77,7 +77,7 @@ vocabulary and rules (`resources/dict/`).
 
 | Dictionary file | Entries | Role | Key columns |
 |---|---:|---|---|
-| `entity.csv` | 705 | Named entities (people, brands, organizations, places, works, services) plus TOPIC common nouns (円安, 値上げ, すもも, …). `aliases` column matches alternative spellings | surface, type, normalized, aliases, priority, keep_as_unit |
+| `entity.csv` | 1106 | Named entities (people, brands, organizations, places, works, services) plus TOPIC common nouns (円安, 値上げ, すもも, …). `aliases` column matches alternative spellings | surface, type, normalized, aliases, priority, keep_as_unit |
 | `emotion.csv` | 521 | Emotion words. 11 categories (joy / sadness / admiration / refusal / moved / anger / anxiety / exaggeration / anticipation / irritation / agreement) mapped to Plutchik's 8 axes | surface, base_emotion, polarity, intensity, keep_as_unit |
 | `slang.csv` | 203 | Social-media / internet slang (草, しぬw, ワロタ, etc.) | surface, normalized, meaning, emotion, category, intensity, keep_as_unit |
 | `stopwords.csv` | 113 | Particles / adverbs / conjunctions excluded from chunks and keywords | surface, category |
@@ -86,7 +86,7 @@ vocabulary and rules (`resources/dict/`).
 | `emotion_examples.csv` | 17 | Hand-written seed for example-based emotion matching | surface, base_emotion, plutchik_emotion, polarity, intensity, example |
 | `Japanese-SNS-Emotion-Examples-v1.txt` | 546 words / ~2,746 examples | SNS emotion-example corpus. Used for example-based Jaccard-similarity matching | word, emotion, intensity, context, examples, emojis |
 
-`entity.csv` breaks down as people 230 / brands 140 / organizations 132 / places 89 / works 59 / services 39, and more.
+`entity.csv` breaks down as organizations 478 (including 400+ major Japanese companies) / people 230 / brands 195 / places 89 / works 59 / services 39, and more.
 
 `Japanese-SNS-Emotion-Examples-v1.txt` ships under `resources/dict/` and loads by default
 (example matching works without any external dictionary). Each row's `examples` (multiple sentences
