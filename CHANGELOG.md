@@ -17,6 +17,11 @@ All notable changes to KotobaCore will be documented in this file.
   語尾ルール+Wikipedia カテゴリ投票で分類 → 人手精査 (メタ記事名
   「日本の〜」等 63 件除外、一般名詞 100 余語を TOPIC へ型修正)
 - 未分類 634 件は `wikipedia_日本_未分類オプション.csv` として辞書外に保留
+- **オプション辞書 zip を同梱** (`resources/dict/optional/optional_dictionaries.zip`):
+  JPX 全上場企業 3,459 社 (内国株式、データ日付 2026-07-31、entity.csv 互換 +
+  証券コード/市場/業種メタ列) と Wikipedia 未分類 634 件。ローダーは
+  resources/dict/ 直下の固定 7 ファイルしか読まないため、この zip は
+  展開・投入の指示があるまで一切参照されない保留データ
 
 ### Results
 

@@ -68,6 +68,7 @@ kotobacore = [
   "py.typed",
   "resources/dict/*.csv",
   "resources/dict/*.txt",
+  "resources/dict/optional/*.zip",
 ]
 
 [tool.ruff]
