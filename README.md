@@ -73,7 +73,7 @@ KotobaCore の判定は機械学習モデルではなく、**同梱の人手メ�
 
 | 辞書ファイル | 件数 | 役割 | 主な列 |
 |---|---:|---|---|
-| `entity.csv` | 1106 | 固有表現（人名・ブランド・組織・地名・作品・サービス等）と TOPIC（一般概念名詞: 円安 / 値上げ / すもも 等）。`aliases` 列で別名表記も認識 | surface, type, normalized, aliases, priority, keep_as_unit |
+| `entity.csv` | 1786 | 固有表現（人名・ブランド・組織・地名・作品・サービス等）と TOPIC（一般概念名詞: 円安 / 値上げ / すもも 等）。`aliases` 列で別名表記も認識 | surface, type, normalized, aliases, priority, keep_as_unit |
 | `emotion.csv` | 521 | 感情語。11 カテゴリ（joy / sadness / admiration / refusal / moved / anger / anxiety / exaggeration / anticipation / irritation / agreement）を Plutchik 8 軸へマップ | surface, base_emotion, polarity, intensity, keep_as_unit |
 | `slang.csv` | 203 | SNS・ネットスラング（草 / しぬw / ワロタ 等） | surface, normalized, meaning, emotion, category, intensity, keep_as_unit |
 | `stopwords.csv` | 113 | チャンク・キーワードから除外する助詞・副詞・接続詞 | surface, category |
@@ -82,7 +82,7 @@ KotobaCore の判定は機械学習モデルではなく、**同梱の人手メ�
 | `emotion_examples.csv` | 17 | 例文ベース感情マッチ（surface 一致しない文の確信度を補強）の手書きシード | surface, base_emotion, plutchik_emotion, polarity, intensity, example |
 | `Japanese-SNS-Emotion-Examples-v1.txt` | 546 語 / 約 2,746 例文 | SNS 感情例文集（喜び・悲しみ・怒り・恐れ・驚き等）。例文ベースの Jaccard 類似度マッチに使用 | word, emotion, intensity, context, examples, emojis |
 
-`entity.csv` の内訳は組織 478（日本の主要企業 400 社超を収録）/ 人名 230 / ブランド 195 / 地名 89 / 作品 59 / サービス 39 ほか。
+`entity.csv` の内訳は組織 571（日本の主要企業 400 社超・行政機関・国際機関）/ トピック 363（歴史・宗教・言語・食・祝日等）/ 地名 279（国名 117 含む）/ 人名 272 / ブランド 195 / 作品 59 / サービス 39 ほか。
 
 `Japanese-SNS-Emotion-Examples-v1.txt` も `resources/dict/` に同梱され、デフォルトで読み込まれます（外部辞書なしでも例文マッチが効きます）。
 各行の `examples`（「、」区切りの複数例文）が展開され、入力文との bigram Jaccard 類似度で感情の confidence を補強します。
