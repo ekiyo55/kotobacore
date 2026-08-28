@@ -58,6 +58,92 @@ _COST_GRAMMAR = (3.0, 2.0)     # particle / auxiliary
 _COST_RUN = (7.0, 3.0)         # non-hira category run fallback
 _COST_HIRA_RUN = (9.0, 1.0)    # unknown hiragana run fallback
 _COST_STRAY_HIRA = 14.0        # single non-particle hiragana (discouraged)
+_COST_SUFFIX = (0.0, 6.0)      # honorific / plural suffix after a nominal (さん/ちゃん/たち)
+_COST_PROPER = (6.0, 5.0)      # KANJI + small-kana hiragana proper noun (坊っちゃん)
+
+# --------------------------------------------------------------------------
+# v0.2.5 additions
+# --------------------------------------------------------------------------
+
+# Honorific / plural suffixes that attach to a preceding non-hiragana token
+# (田中さん / 花ちゃん / 子供たち). Only proposed when the previous character
+# is NOT hiragana, so pure-hiragana words (みなさん / たくさん / ちゃんと) are
+# never split.
+_NOMINAL_SUFFIXES: frozenset[str] = frozenset({
+    "さん", "ちゃん", "くん", "さま", "たち", "ども",
+})
+_MAX_SUFFIX_LEN = max(len(w) for w in _NOMINAL_SUFFIXES)
+
+# す-verb conjugations after a KANJI-ending 交ぜ書き compound (思い出+した /
+# 引き出+して). Plain KANJI + した stays サ変 (勉強|した) — this set is only
+# consulted for compounds, never for single-run stems.
+_SU_VERB_TAILS: frozenset[str] = frozenset({
+    "した", "して", "します", "しない", "したい", "しません", "しました",
+    "してる", "していた", "している", "しておく", "しよう", "せば",
+})
+
+# Small-form kana that can never begin a standalone Japanese word. A hiragana
+# run starting with one of these right after a KANJI run is the tail of a
+# cross-script proper noun (坊っちゃん) — ported from the cascade's
+# heuristic_proper_noun_merge, which the v0.2 lattice had dropped.
+_SMALL_KANA: frozenset[str] = frozenset("っゃゅょぁぃぅぇぉゎ")
+
+# Bodies that look like small-kana proper-noun tails but are verb/adjective
+# conjugation (言って / 買った / 走っちゃう / 子供っぽい) — never merge.
+_PROPER_EXCLUDE_PREFIXES: tuple[str, ...] = (
+    "った", "って", "っちゃう", "っちゃっ", "っちゃい", "っちゃえ", "っちま",
+    "っぽ", "っとく", "っとい", "っとけ", "っつ",
+)
+
+# Characters at which a small-kana proper-noun body is cut (particle / copula
+# boundary): 坊っちゃん|は / 坊っちゃん|だ.
+_PROPER_BODY_TERMINATORS: frozenset[str] = _PARTICLES_1 | frozenset("だ")
+
+# Multi-character compound particles written in pure hiragana (として is
+# deliberately absent — it would split 落と|して). Without these
+# the lattice splits における → に|おけ|る, where the SNS interjection おけ
+# wrongly fires emotion=trust (found 2026-08-20 in the mini-GPT experiments).
+_COMPOUND_PARTICLES: frozenset[str] = frozenset({
+    "における", "において", "においては", "においても",
+    "にとって", "にとっては", "について", "については",
+    "によって", "により", "によると", "によれば",
+    "とともに",
+    "にわたって", "にわたり", "につれて", "にしては", "をもって",
+})
+# Pure-hiragana function words with their own POS. Without these the run
+# fallback glues a conjunction to the first char of the next word
+# (けれどもそ|の|とき / しかしまだ) and greetings split (こんにち|は).
+_FUNCTION_WORDS: dict[str, str] = {}
+for _w in ("しかし", "けれども", "けれど", "そうして", "そして", "だが", "ただし",
+           "それで", "それから", "また", "つまり", "すなわち", "やがて",
+           "ところが", "さて", "ところで", "それでも", "しかも", "なぜなら",
+           "したがって", "ゆえに", "および", "または", "あるいは", "ならびに",
+           "なお", "そこで", "すると", "だから", "でも"):
+    _FUNCTION_WORDS[_w] = "接続詞"
+for _w in ("この", "その", "あの", "どの", "こんな", "そんな", "あんな", "どんな"):
+    _FUNCTION_WORDS[_w] = "連体詞"
+for _w in ("まだ", "もう", "もはや", "やはり", "やっぱり", "なかなか", "ちょうど",
+           "ずっと", "きっと", "たぶん", "まったく", "ぜんぜん", "いつも",
+           "すぐ", "すこし", "ちょっと", "とても", "かなり", "すでに", "ついに",
+           "やがて", "しばらく", "もちろん", "たしかに", "ただ", "なんだか"):
+    _FUNCTION_WORDS.setdefault(_w, "副詞")
+for _w in ("こんにちは", "こんばんは", "おはよう", "おやすみ", "さようなら",
+           "ただいま", "おかえり", "いただきます", "ごちそうさま", "はじめまして"):
+    _FUNCTION_WORDS[_w] = "感動詞-一般"
+_MAX_FUNCTION_LEN = max(len(w) for w in _FUNCTION_WORDS)
+
+# Copula tails so しかし|そう|だ does not lose to the whole-run fallback.
+_COPULA_TAILS: frozenset[str] = frozenset({
+    "そうだ", "ようだ", "のだ", "んだ", "だろう", "だった", "だって",
+    "である", "であった", "であろう", "でしょ", "なのだ",
+})
+
+# Subset claimed ahead of keep_as_unit surfaces: the SNS interjection おけ is
+# keep_as_unit, so における can only win if it is claimed first. Kept minimal
+# on purpose — として would wrongly claim 落と|して.
+_PRIORITY_PARTICLES: frozenset[str] = frozenset({
+    "における", "において", "においては", "においても",
+})
 
 
 class _Node:
@@ -92,7 +178,12 @@ def _lattice_resources(bundle: DictionaryBundle):
     payloads: list[tuple[str, str | None, tuple[float, float]]] = []  # (pos, dform, cost)
 
     seen: set[str] = set()
-    # keep_as_unit surfaces first, longest first — their pattern ranks then
+    # Priority compound particles first (see _PRIORITY_PARTICLES).
+    for surf in sorted(_PRIORITY_PARTICLES, key=lambda s: -len(s)):
+        seen.add(surf)
+        patterns.append(surf)
+        payloads.append(("助詞", surf, _COST_KAU))
+    # keep_as_unit surfaces next, longest first — their pattern ranks then
     # reproduce merge_keep_as_unit's greedy longest-match claiming exactly.
     for surf in sorted((s for s in kau if len(s) >= 2), key=lambda s: -len(s)):
         if surf in seen:
@@ -158,7 +249,8 @@ def _lattice_resources(bundle: DictionaryBundle):
 # --------------------------------------------------------------------------
 
 _GRAMMAR_WORDS: frozenset[str] = (
-    _GRAMMAR_TAIL_MORPHEMES | _SURU_FORMS | _PARTICLES_2
+    _GRAMMAR_TAIL_MORPHEMES | _SURU_FORMS | _PARTICLES_2 | _COMPOUND_PARTICLES
+    | _COPULA_TAILS
 )
 _MAX_GRAMMAR_LEN = max(len(w) for w in _GRAMMAR_WORDS)
 
@@ -298,6 +390,25 @@ def _propose_nodes(text: str, bundle: DictionaryBundle) -> list[list[_Node]]:
                 seg = text[i:i + ln]
                 if seg in _GRAMMAR_WORDS:
                     by_start[i].append(_Node(i, i + ln, "助詞", seg, _cost(_COST_GRAMMAR, ln)))
+            # 9. Function words with their own POS (接続詞 / 連体詞 / 副詞 / 感動詞)
+            for ln in range(min(_MAX_FUNCTION_LEN, cap - i), 1, -1):
+                seg = text[i:i + ln]
+                fpos = _FUNCTION_WORDS.get(seg)
+                # Conjunctions only at a run head (sentence start / after
+                # punctuation) — mid-run だが would split からだ|が.
+                if fpos is not None and not (fpos == "接続詞" and i != rs):
+                    by_start[i].append(_Node(i, i + ln, fpos, seg, _cost(_COST_KNOWN_HIRA, ln)))
+            # 7. Honorific / plural suffix right after a non-hiragana token
+            # (田中|さん / 花|ちゃん / 子供|たち). Previous char must not be
+            # hiragana so みなさん / ちゃんと stay whole.
+            if i == rs and i > 0 and run_of[i - 1] is not None \
+                    and run_of[i - 1][2] not in ("HIRAGANA", "SPACE", "SYMBOL"):
+                for ln in range(min(_MAX_SUFFIX_LEN, cap - i), 1, -1):
+                    seg = text[i:i + ln]
+                    if seg in _NOMINAL_SUFFIXES:
+                        by_start[i].append(
+                            _Node(i, i + ln, "接尾辞", seg, _cost(_COST_SUFFIX, ln))
+                        )
             # known hiragana content words (pronouns / adverbs / dict words)
             for ln in range(min(10, cap - i), 1, -1):
                 seg = text[i:i + ln]
@@ -358,6 +469,29 @@ def _propose_nodes(text: str, bundle: DictionaryBundle) -> list[list[_Node]]:
                         _Node(i, h, pos, dform, _cost(_COST_VERB_ADJ, h - i))
                     )
 
+            # 8. Cross-script proper noun: KANJI + hiragana body starting with
+            # a small kana (坊っちゃん). Body ends at the first particle /
+            # copula char or grammar word; verb conjugations are excluded.
+            if re_ < n and run_of[re_][2] == "HIRAGANA":
+                hs, he, _hc = run_of[re_]
+                he_eff = min(he, _cap(hs, he))
+                if he_eff - hs >= 2 and text[hs] in _SMALL_KANA:
+                    body_end = he_eff
+                    for p in range(hs + 1, he_eff):
+                        if text[p] in _PROPER_BODY_TERMINATORS or any(
+                            text[p:p + ln] in _GRAMMAR_WORDS
+                            for ln in range(2, min(_MAX_GRAMMAR_LEN, he_eff - p) + 1)
+                        ):
+                            body_end = p
+                            break
+                    body = text[hs:body_end]
+                    if len(body) >= 2 and not body.startswith(_PROPER_EXCLUDE_PREFIXES) \
+                            and _free(i, body_end):
+                        by_start[i].append(
+                            _Node(i, body_end, "名詞-固有名詞-一般", text[i:body_end],
+                                  _cost(_COST_PROPER, body_end - i))
+                        )
+
             # 4. 交ぜ書き compound: KANJI+ kana KANJI+ (+ trailing okurigana)
             if re_ < n and run_of[re_][2] == "HIRAGANA":
                 hs, he, _hc = run_of[re_]
@@ -376,6 +510,37 @@ def _propose_nodes(text: str, bundle: DictionaryBundle) -> list[list[_Node]]:
                                 _Node(i, end, "名詞-普通名詞-一般", text[i:end],
                                       _cost(_COST_COMPOUND, end - i))
                             )
+                            # compound verb conjugation (思い出+した / 飛び込+んだ /
+                            # 取り扱+った) — same okurigana rules as source 3.
+                            if (
+                                end < n
+                                and run_of[end] is not None
+                                and run_of[end][2] == "HIRAGANA"
+                                and text[i:end + 1] not in protected
+                                and text[i:end + 2] not in protected
+                            ):
+                                hs2, he2, _ = run_of[end]
+                                he2_eff = min(he2, _cap(hs2, he2))
+                                for p in range(hs2 + 1, he2_eff):
+                                    if content_start[p]:
+                                        he2_eff = p
+                                        break
+                                for h in range(hs2 + 1, he2_eff + 1):
+                                    oku = text[hs2:h]
+                                    if oku.startswith(("され", "きり")):
+                                        break
+                                    # noun-closing okurigana + サ変 (打ち合わせ|した /
+                                    # 取り引き|した) — the compound stays a noun.
+                                    if oku[:2] in _TRAILING_OKURIGANA_2 or (
+                                        oku[0] in _TRAILING_OKURIGANA
+                                        and oku[1:] in _SU_VERB_TAILS
+                                    ):
+                                        break
+                                    if _classify_okurigana(oku) == "verb" or oku in _SU_VERB_TAILS:
+                                        by_start[i].append(
+                                            _Node(i, h, "動詞-一般", text[i:h],
+                                                  _cost(_COST_VERB_ADJ, h - i))
+                                        )
                             # trailing okurigana (締め切+り / 打ち合+わせ)
                             if end < n and run_of[end] is not None \
                                     and run_of[end][2] == "HIRAGANA":
