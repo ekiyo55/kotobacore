@@ -19,6 +19,7 @@ def _make_analyzer(
     no_rag: bool,
     config: str | None,
     user_dict: str | None,
+    granularity: str = "coarse",
 ) -> Analyzer:
     return Analyzer(
         mode=mode,
@@ -27,6 +28,7 @@ def _make_analyzer(
         enable_rag=not no_rag,
         config_path=config,
         user_dict_path=user_dict,
+        granularity=granularity,
     )
 
 
@@ -51,9 +53,12 @@ def analyze(
     no_rag: bool = typer.Option(False, "--no-rag", help="Disable RAG optimization"),
     config: str | None = typer.Option(None, "--config", help="Path to YAML config"),
     user_dict: str | None = typer.Option(None, "--dict", help="Path to user dictionary CSV"),
+    granularity: str = typer.Option(
+        "coarse", "--granularity", help="Token granularity: coarse (semantic units) | fine (語幹/送り仮名/活用語尾)"
+    ),
 ) -> None:
     """Analyze Japanese text and emit JSON."""
-    analyzer = _make_analyzer(mode, no_emotion, no_intent, no_rag, config, user_dict)
+    analyzer = _make_analyzer(mode, no_emotion, no_intent, no_rag, config, user_dict, granularity)
     result = analyzer.analyze(text)
     payload = result.to_dict()
 
@@ -69,9 +74,12 @@ def tokenize(
     text: str,
     mode: str = typer.Option("C", "--mode", help="Tokenizer mode (accepted for compatibility)"),
     pretty: bool = typer.Option(False, "--pretty"),
+    granularity: str = typer.Option(
+        "coarse", "--granularity", help="Token granularity: coarse (semantic units) | fine (語幹/送り仮名/活用語尾)"
+    ),
 ) -> None:
     """Emit token list only."""
-    analyzer = Analyzer(mode=mode)
+    analyzer = Analyzer(mode=mode, granularity=granularity)
     tokens = analyzer.tokenize(text)
     # Token may be dataclass list or empty (Phase 5 fills in).
     if tokens and hasattr(tokens[0], "__dict__"):

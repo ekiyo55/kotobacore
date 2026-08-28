@@ -58,6 +58,7 @@ class Analyzer:
         user_dict_path: str | None = None,
         use_external_dictionaries: bool = True,
         pipeline: str | None = None,
+        granularity: str = "coarse",
     ) -> None:
         self.mode = mode
         self.backend = backend
@@ -65,6 +66,13 @@ class Analyzer:
         # 一発分割) または "cascade" (〜v0.1 の5段補修パス、互換用に残置)。
         # 環境変数 KOTOBACORE_PIPELINE で比較評価時に切替可能。
         self.pipeline = pipeline or os.environ.get("KOTOBACORE_PIPELINE", "lattice")
+        # トークン粒度: "coarse" (意味単位、既定) / "fine" (語幹・送り仮名・活用語尾に
+        # 分解 — LM 語彙用途)。lattice パイプラインのみ有効。analyze() では
+        # 意味層 (chunks/emotion/intent/rag) は常に coarse トークンで計算し、
+        # tokens / semantic_tokens だけが fine になる。
+        if granularity not in ("coarse", "fine"):
+            raise ValueError(f"Unknown granularity: {granularity}")
+        self.granularity = granularity
         self.enable_semantic_chunk = enable_semantic_chunk
         self.enable_emotion = enable_emotion
         self.enable_intent = enable_intent
@@ -108,13 +116,13 @@ class Analyzer:
             text = text.replace(src, tgt)
         return text
 
-    def tokenize(self, text: str) -> list[Token]:
+    def tokenize(self, text: str, granularity: str | None = None) -> list[Token]:
         if not text:
             return []
         normalized = self.normalize(text)
         bundle = self._get_bundle()
         if self.pipeline == "lattice":
-            return lattice_tokenize(normalized, bundle)
+            return lattice_tokenize(normalized, bundle, granularity or self.granularity)
         raw = self._get_backend().tokenize(normalized, mode=self.mode)
         tokens = merge_keep_as_unit(raw, normalized, bundle)
         tokens = split_hiragana_tokens(tokens, bundle)
@@ -163,6 +171,11 @@ class Analyzer:
             intent_result = classify_intent(normalized, bundle, emotion_result)
         else:
             intent_result = IntentResult(label=None, confidence=0.0, candidates=[])
+
+        if self.granularity == "fine" and self.pipeline == "lattice" and tokens:
+            tokens = lattice_tokenize(normalized, bundle, "fine")
+            if self.enable_semantic_chunk:
+                semantic_tokens = build_semantic_tokens(tokens, bundle)
 
         rag_result: RagResult | None = None
         if self.enable_rag:

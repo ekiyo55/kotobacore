@@ -155,6 +155,20 @@ result = Analyzer().analyze("クラウドAPIの課金高すぎてしぬw")
 print(result.to_json())
 ```
 
+### トークン粒度 (`granularity`)
+
+既定の `coarse` は意味単位 (思い出した / 締め切り) を 1 トークンに保ちます。
+言語モデルの語彙を作る用途などで細かい表層が欲しい場合は `fine` を指定すると、
+組み立てた動詞・形容詞・交ぜ書き複合語・未知ひらがなランを
+語幹 / 送り仮名 / 活用語尾に分解します (辞書エンティティは割りません)。
+
+```python
+Analyzer(granularity="fine").tokenize("思い出した")
+# 思(動詞-語幹) い(送り仮名) 出(動詞-語幹) した(動詞-活用語尾)
+```
+
+`analyze()` の chunks / emotion / intent / rag は粒度に関係なく coarse で計算されます。
+
 ## 出力 JSON 構造
 
 ```json
@@ -186,6 +200,7 @@ print(result.to_json())
 ```bash
 kotobacore analyze "今日のランチが絶品だった" --pretty
 kotobacore tokenize "東京都に行った"
+kotobacore tokenize "思い出した" --granularity fine
 kotobacore version
 ```
 

@@ -140,3 +140,65 @@ def test_compound_verb_conjugation():
     # サ変名詞 + した は名詞を保つ
     assert _surfaces(a, "打ち合わせした")[0] == "打ち合わせ"
     assert _surfaces(a, "思い出が多い")[0] == "思い出"
+
+
+# ---------------------------------------------------------------------------
+# v0.2.6: 過剰結合の抑制 + granularity="fine"
+# ---------------------------------------------------------------------------
+
+
+def test_prefix_noun_does_not_join_verb():
+    a = Analyzer(pipeline="lattice")
+    assert _surfaces(a, "突然云い出した") == ["突然", "云い出した"]
+    assert _surfaces(a, "昨日買った本") == ["昨日", "買った", "本"]
+    # 接頭語リストに無い漢字ランは従来通り (無条件分割で 昨|日買った を作らない)
+    assert "走り出した" in _surfaces(a, "急に走り出した")
+
+
+def test_hiragana_verbs_and_fixed_words():
+    a = Analyzer(pipeline="lattice")
+    assert _surfaces(a, "何時間かかります") == ["何時間", "かかります"]
+    assert _surfaces(a, "ここにあります") == ["ここ", "に", "あります"]
+    assert _surfaces(a, "同じである") == ["同じ", "である"]
+    assert _surfaces(a, "初めて会った") == ["初めて", "会った"]
+    # ひらがな動詞は感情語を飲み込まない
+    assert "うんざり" in _surfaces(a, "順番を抜かされてうんざりしている")
+
+
+def test_okurigana_length_cap():
+    a = Analyzer(pipeline="lattice")
+    toks = _surfaces(a, "張りのあるまでどうかやってもらいたい")
+    assert toks[0] != "張りのあるまでどうかやってもらいたい"
+    assert all(len(t) <= 10 for t in toks)
+
+
+def test_fine_granularity_splits_assembled_nodes():
+    coarse = Analyzer(pipeline="lattice")
+    fine = Analyzer(pipeline="lattice", granularity="fine")
+    assert _surfaces(coarse, "思い出した") == ["思い出した"]
+    toks = fine.tokenize("思い出した")
+    assert [t.surface for t in toks] == ["思", "い", "出", "した"]
+    assert [t.pos for t in toks] == ["動詞-語幹", "送り仮名", "動詞-語幹", "動詞-活用語尾"]
+    assert _surfaces(fine, "締め切り") == ["締", "め", "切", "り"]
+    assert _surfaces(fine, "あります") == ["あ", "ります"]
+    # 辞書エンティティ / keep_as_unit は割らない
+    assert _surfaces(fine, "坊っちゃんは正直だ")[0] == "坊っちゃん"
+    assert _surfaces(fine, "吾輩は猫である")[0] == "吾輩は猫である"
+    # tokenize(granularity=) で都度指定もできる
+    assert coarse.tokenize("思い出した", granularity="fine")[0].surface == "思"
+
+
+def test_fine_granularity_splits_unknown_hiragana_runs():
+    fine = Analyzer(pipeline="lattice", granularity="fine")
+    toks = _surfaces(fine, "あとをわざとぼかしてしまった")
+    assert "しまった" in toks
+    assert all(len(t) <= 4 for t in toks)
+
+
+def test_fine_analyze_keeps_semantic_layer_coarse():
+    fine = Analyzer(pipeline="lattice", granularity="fine")
+    r = fine.analyze("締め切りが近いのにバグが出た。もう無理かも...")
+    assert r.tokens[0].surface == "締"
+    assert r.emotion.primary == "anxiety"
+    assert "締め切りが近い" in r.rag.keywords
+    assert len(r.semantic_tokens) == len(r.tokens)

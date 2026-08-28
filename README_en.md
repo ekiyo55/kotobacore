@@ -166,6 +166,21 @@ result = Analyzer().analyze("クラウドAPIの課金高すぎてしぬw")
 print(result.to_json())
 ```
 
+### Token granularity (`granularity`)
+
+The default `coarse` keeps semantic units as single tokens (思い出した / 締め切り).
+For language-model vocabularies and other surface-level uses, `fine` splits the
+assembled verbs / adjectives / mixed-script compounds / unknown hiragana runs into
+stem, okurigana and inflection pieces (dictionary entities are never split).
+
+```python
+Analyzer(granularity="fine").tokenize("思い出した")
+# 思(動詞-語幹) い(送り仮名) 出(動詞-語幹) した(動詞-活用語尾)
+```
+
+`analyze()` always computes chunks / emotion / intent / rag on coarse tokens,
+whatever the granularity.
+
 ## Output JSON structure
 
 ```json
@@ -197,6 +212,7 @@ print(result.to_json())
 ```bash
 kotobacore analyze "今日のランチが絶品だった" --pretty
 kotobacore tokenize "東京都に行った"
+kotobacore tokenize "思い出した" --granularity fine
 kotobacore version
 ```
 
