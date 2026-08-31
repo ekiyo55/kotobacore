@@ -6,7 +6,7 @@ Per 05_辞書設計書 v0.1. All CSVs are UTF-8 encoded, with a header row.
 from __future__ import annotations
 
 import csv
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 
 from kotobacore.errors import DictionaryLoadError
@@ -374,6 +374,59 @@ def load_normalization(path: Path) -> list[NormalizationEntry]:
 
 
 # ---------------------------------------------------------------------------
+# Kana-variant expansion (カタカナ⇔ひらがな表記ゆれの吸収)
+# ---------------------------------------------------------------------------
+
+_HIRA_START, _HIRA_END = 0x3041, 0x3096  # ぁ-ゖ
+_KATA_START, _KATA_END = 0x30A1, 0x30F6  # ァ-ヶ
+_KANA_OFFSET = _KATA_START - _HIRA_START
+_PROLONGED_MARK = "ー"
+
+
+def _kana_variant(surface: str) -> str | None:
+    """Return the opposite-kana-script writing of a pure-kana surface.
+
+    ワクワク → わくわく / うれしい → ウレシイ. Surfaces shorter than 3 chars
+    are skipped — 2-char slang like キタ would collide with ordinary verbs
+    (来た→きた) when folded. Mixed-script / non-kana surfaces return None.
+    """
+    if len(surface) < 3:
+        return None
+    if all(_HIRA_START <= ord(c) <= _HIRA_END or c == _PROLONGED_MARK for c in surface):
+        return "".join(
+            chr(ord(c) + _KANA_OFFSET) if c != _PROLONGED_MARK else c for c in surface
+        )
+    if all(_KATA_START <= ord(c) <= _KATA_END or c == _PROLONGED_MARK for c in surface):
+        return "".join(
+            chr(ord(c) - _KANA_OFFSET) if c != _PROLONGED_MARK else c for c in surface
+        )
+    return None
+
+
+def _expand_kana_variants(bundle: DictionaryBundle) -> None:
+    """Append kana-script variants of pure-kana emotion / slang surfaces.
+
+    Registers ワクワク⇔わくわく style variants so either writing matches the
+    lexicon. A variant colliding with an already-registered surface is skipped
+    (the curated entry wins). Internal seed entries only — external lexicons
+    (NRC) are not folded to avoid amplifying their false-positive rate.
+    """
+    existing: set[str] = {e.surface for e in bundle.emotion} | {
+        s.surface for s in bundle.slang
+    }
+    for e in list(bundle.emotion):
+        v = _kana_variant(e.surface)
+        if v and v not in existing:
+            existing.add(v)
+            bundle.emotion.append(replace(e, surface=v))
+    for s in list(bundle.slang):
+        v = _kana_variant(s.surface)
+        if v and v not in existing:
+            existing.add(v)
+            bundle.slang.append(replace(s, surface=v))
+
+
+# ---------------------------------------------------------------------------
 # Bundle loader
 # ---------------------------------------------------------------------------
 
@@ -424,6 +477,7 @@ def load_dictionary_bundle(dict_dir: Path | str) -> DictionaryBundle:
             setattr(bundle, attr, loader(path))
         # Missing optional files → empty list (default_factory).
 
+    _expand_kana_variants(bundle)
     return bundle
 
 

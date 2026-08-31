@@ -150,3 +150,28 @@ def test_intent_rules_have_priority():
     for r in bundle.intent_rules:
         assert isinstance(r.priority, int)
         assert r.priority >= 0
+
+
+# ---------------------------------------------------------------------------
+# v0.2.7: かな表記ゆれの自動吸収 (カタカナ⇔ひらがな variant)
+# ---------------------------------------------------------------------------
+
+
+def test_kana_variants_expanded_for_pure_kana_surfaces():
+    bundle = load_default_bundle()
+    emotion_surfaces = {e.surface for e in bundle.emotion}
+    # カタカナ収録語のひらがな variant が自動登録される
+    assert "ワクワク" in emotion_surfaces
+    assert "わくわく" in emotion_surfaces
+    assert "いらいら" in emotion_surfaces
+    # variant は元エントリと同じ感情を持つ
+    by_surface = bundle.emotion_by_surface()
+    assert by_surface["わくわく"].base_emotion == by_surface["ワクワク"].base_emotion
+
+
+def test_kana_variants_skip_short_surfaces():
+    # 2文字スラング (キタ 等) は folding しない — 来た→きた と衝突するため
+    bundle = load_default_bundle()
+    slang_surfaces = {s.surface for s in bundle.slang}
+    assert "キタ" in slang_surfaces
+    assert "きた" not in slang_surfaces

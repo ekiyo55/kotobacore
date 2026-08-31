@@ -202,3 +202,85 @@ def test_fine_analyze_keeps_semantic_layer_coarse():
     assert r.emotion.primary == "anxiety"
     assert "締め切りが近い" in r.rag.keywords
     assert len(r.semantic_tokens) == len(r.tokens)
+
+
+# ---------------------------------------------------------------------------
+# v0.2.7: オノマトペ対応 (かな表記ゆれ / 反復 1 トークン化 / 促音強調形)
+# ---------------------------------------------------------------------------
+
+
+def test_onomatopoeia_hiragana_variants_detected():
+    a = Analyzer()
+    assert a.analyze("わくわくする").emotion.primary == "joy"
+    assert a.analyze("いらいらする").emotion.primary == "irritation"
+    assert a.analyze("どきどきした").emotion.primary == "anticipation"
+
+
+def test_onomatopoeia_new_lexicon_entries():
+    a = Analyzer()
+    assert a.analyze("ウキウキで出かけた").emotion.primary == "joy"
+    assert a.analyze("ビクビクしながら開けた").emotion.primary == "anxiety"
+    assert a.analyze("メソメソ泣いてた").emotion.primary == "sadness"
+
+
+def test_reduplication_kept_as_single_token():
+    a = Analyzer()
+    assert "しとしと" in _surfaces(a, "雨がしとしと降る")
+    assert "もやもや" in _surfaces(a, "もやもやする")
+    # 辞書 surface (slang あざ) が反復を跨いで分断しない・感情も誤検出しない
+    r = a.analyze("雨がざあざあ降ってきた")
+    assert "ざあざあ" in [t.surface for t in r.tokens]
+    assert r.emotion.primary is None
+
+
+def test_reduplication_leaves_known_words_alone():
+    a = Analyzer()
+    s = _surfaces(a, "わかるわかる、それな")
+    assert s.count("わかる") == 2
+    assert _surfaces(a, "ますます良くなった")[:2] == ["ます", "ます"]
+
+
+def test_emphatic_sokuon_folds_to_base_form():
+    a = Analyzer()
+    assert a.analyze("ワックワクだよ").emotion.primary == "joy"
+    toks = a.tokenize("わっくわくした")
+    assert toks[0].surface == "わっくわく"
+    assert toks[0].dictionary_form == "わくわく"
+
+
+def test_animal_cries_are_single_tokens_without_emotion():
+    # 鳴き声は「感情なし・でも1語」— 長音ー入りは文字種ラン4つを跨ぐ
+    a = Analyzer()
+    for text, cry in [
+        ("犬がわんわん吠える", "わんわん"),
+        ("猫がにゃーにゃー鳴く", "にゃーにゃー"),
+        ("牛がもーもー鳴く", "もーもー"),
+        ("ひよこがぴよぴよ鳴いてる", "ぴよぴよ"),
+    ]:
+        r = a.analyze(text)
+        assert cry in [t.surface for t in r.tokens], text
+        assert r.emotion.primary is None, text
+
+
+def test_reduplication_reachable_after_long_hiragana_prefix():
+    # 反復開始位置が content_start 化され、直前のひらがな連続と癒着しない
+    a = Analyzer()
+    s = _surfaces(a, "ひよこがぴよぴよ鳴いてる")
+    assert s[:3] == ["ひよこ", "が", "ぴよぴよ"]
+
+
+def test_reduplication_phase_correction():
+    # からはらはら — 左走査では らはらは が先にマッチするが、辞書語 はらはら に譲る
+    a = Analyzer()
+    assert _surfaces(a, "朝からはらはらしっぱなしだ")[:3] == ["朝", "から", "はらはら"]
+    assert a.analyze("連絡が来なくてからいらいらが止まらない").emotion.primary == "irritation"
+
+
+def test_hira_adjective_does_not_absorb_dict_word():
+    # わくわく+してく が 形容詞 わくわくしてく に丸呑みされない
+    a = Analyzer()
+    s = _surfaces(a, "旅行のことを考えるだけでわくわくしてくる")
+    assert "わくわく" in s
+    assert a.analyze("うきうきしてくる").emotion.primary == "joy"
+    # 正当なひらがな形容詞活用は維持
+    assert "おかしく" in _surfaces(a, "様子がおかしくなっていた")

@@ -15,6 +15,7 @@ from __future__ import annotations
 from kotobacore.dictionary import DictionaryBundle, load_default_bundle
 from kotobacore.tokenizer.karuizawa_backend import KaruizawaBackend
 from kotobacore.tokenizer.token_normalizer import (
+    fold_emphatic_reduplication,
     heuristic_proper_noun_merge,
     merge_keep_as_unit,
     merge_okurigana_compounds,
@@ -80,6 +81,7 @@ class KaruizawaTokenizer:
         bundle = self._get_bundle()
         raw = self._backend.tokenize(text, mode=mode)
         tokens = merge_keep_as_unit(raw, text, bundle)
+        tokens = fold_emphatic_reduplication(tokens)
         tokens = split_hiragana_tokens(tokens, bundle)
         tokens = heuristic_proper_noun_merge(tokens, text)
         tokens = merge_okurigana_compounds(tokens)

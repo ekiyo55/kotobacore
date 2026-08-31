@@ -34,6 +34,7 @@ from kotobacore.semantic import chunk as _chunk
 from kotobacore.tokenizer import (
     KaruizawaBackend,
     TokenizerBackend,
+    fold_emphatic_reduplication,
     heuristic_proper_noun_merge,
     merge_keep_as_unit,
     merge_okurigana_compounds,
@@ -125,6 +126,7 @@ class Analyzer:
             return lattice_tokenize(normalized, bundle, granularity or self.granularity)
         raw = self._get_backend().tokenize(normalized, mode=self.mode)
         tokens = merge_keep_as_unit(raw, normalized, bundle)
+        tokens = fold_emphatic_reduplication(tokens)
         tokens = split_hiragana_tokens(tokens, bundle)
         tokens = heuristic_proper_noun_merge(tokens, normalized)
         tokens = merge_okurigana_compounds(tokens)
@@ -145,6 +147,7 @@ class Analyzer:
             else:
                 raw = self._get_backend().tokenize(normalized, mode=self.mode)
                 tokens = merge_keep_as_unit(raw, normalized, bundle)
+                tokens = fold_emphatic_reduplication(tokens)
                 tokens = split_hiragana_tokens(tokens, bundle)
                 tokens = heuristic_proper_noun_merge(tokens, normalized)
                 tokens = merge_okurigana_compounds(tokens)

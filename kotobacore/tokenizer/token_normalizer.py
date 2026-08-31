@@ -23,6 +23,8 @@ from the gaps between those anchors.
 
 from __future__ import annotations
 
+import re
+
 from kotobacore.dictionary import DictionaryBundle
 from kotobacore.matching import SurfaceMatcher
 from kotobacore.schema import Token
@@ -287,10 +289,29 @@ def _build_known_hiragana(bundle: DictionaryBundle) -> frozenset[str]:
     return result
 
 
+def _reduplication_length(surface: str, pos: int) -> int:
+    """Length of an XYXY / XYZXYZ reduplication starting at ``pos`` (0 if none).
+
+    Japanese onomatopoeia overwhelmingly takes the reduplicated form
+    (しとしと / もやもや / おもいおもい). Recognising the pattern keeps such
+    runs intact as one word even when absent from the lexicon. The 3-char
+    unit is tried first so おもいおもい does not split as お|もいもい.
+    Same-char pairs (ののの…) are excluded — those are fillers, not words.
+    """
+    n = len(surface)
+    if pos + 6 <= n and surface[pos:pos + 3] == surface[pos + 3:pos + 6] \
+            and len(set(surface[pos:pos + 3])) > 1:
+        return 6
+    if pos + 4 <= n and surface[pos:pos + 2] == surface[pos + 2:pos + 4] \
+            and surface[pos] != surface[pos + 1]:
+        return 4
+    return 0
+
+
 def _find_hiragana_anchors(
     surface: str, known_words: frozenset[str]
 ) -> list[tuple[int, int]]:
-    """Left-to-right longest-match scan for known-word spans."""
+    """Left-to-right longest-match scan for known-word / reduplication spans."""
     n = len(surface)
     claimed = bytearray(n)
     spans: list[tuple[int, int]] = []
@@ -301,6 +322,8 @@ def _find_hiragana_anchors(
             if surface[pos:pos + length] in known_words and not any(claimed[pos:pos + length]):
                 best = length
                 break
+        if not best:
+            best = _reduplication_length(surface, pos)
         if best:
             end = pos + best
             spans.append((pos, end))
@@ -401,6 +424,25 @@ def _segment_hiragana_surface(
     return [t for t in result if t[0]]
 
 
+# Sokuon-emphasised onomatopoeia: ワ[ッ]クワク → base form ワクワク.
+_EMPHATIC_REDUP_RE = re.compile(r"^([ぁ-ゖァ-ヶ])[っッ]([ぁ-ゖァ-ヶ])\1\2$")
+
+
+def fold_emphatic_reduplication(tokens: list[Token]) -> list[Token]:
+    """Set dictionary_form for sokuon-emphasised reduplications (in place).
+
+    ワックワク → ワクワク / いっらいら → いらいら. Only dictionary_form is
+    rewritten — the surface stays as typed — so the emotion detector's
+    dictionary_form pass matches the base form against the lexicon. Runs
+    BEFORE split_hiragana_tokens, which leaves rewritten tokens intact.
+    """
+    for tok in tokens:
+        m = _EMPHATIC_REDUP_RE.match(tok.surface)
+        if m:
+            tok.dictionary_form = (m.group(1) + m.group(2)) * 2
+    return tokens
+
+
 def split_hiragana_tokens(
     tokens: list[Token],
     bundle: DictionaryBundle,
@@ -424,6 +466,11 @@ def split_hiragana_tokens(
             result.append(tok)
             continue
         if tok.surface in known_words:
+            result.append(tok)
+            continue
+        if tok.dictionary_form and tok.dictionary_form != tok.surface:
+            # Already lemmatized upstream (e.g. fold_emphatic_reduplication) —
+            # the run is a recognised word; don't segment it.
             result.append(tok)
             continue
 

@@ -41,6 +41,8 @@ from kotobacore.tokenizer.token_normalizer import (
     _build_known_hiragana,
     _classify_okurigana,
     _is_all_hiragana,
+    _reduplication_length,
+    fold_emphatic_reduplication,
 )
 
 _MERGED_POS = "感動詞-SNS表現"
@@ -62,6 +64,7 @@ _COST_SUFFIX = (0.0, 6.0)      # honorific / plural suffix after a nominal (さ�
 _COST_PROPER = (6.0, 5.0)      # KANJI + small-kana hiragana proper noun (坊っちゃん)
 _COST_HIRA_VERB = (6.0, 3.0)   # pure-hiragana verb (あります / かかる / なった)
 _COST_FIXED = (3.0, 3.0)       # fixed KANJI+kana words (同じ / 大きな)
+_COST_REDUP = (5.0, 3.0)       # onomatopoeic reduplication (しとしと / もやもや)
 
 # v0.2.6 — over-merge control (LM-vocabulary feedback, 2026-08-28):
 # a verb / compound stem may start mid-KANJI-run (突然|云い出した) but never
@@ -199,6 +202,12 @@ _COPULA_TAILS: frozenset[str] = frozenset({
 _PRIORITY_PARTICLES: frozenset[str] = frozenset({
     "における", "において", "においては", "においても",
 })
+
+
+def _is_kana_or_choon(c: str) -> bool:
+    """Hiragana / katakana / prolonged-sound mark ー."""
+    o = ord(c)
+    return 0x3041 <= o <= 0x3096 or 0x30A1 <= o <= 0x30F6 or o == 0x30FC
 
 
 class _Node:
@@ -376,6 +385,12 @@ def _propose_nodes(text: str, bundle: DictionaryBundle) -> list[list[_Node]]:
     claimed = bytearray(n)
     for rank, s, e in all_matches:
         if rank < n_kau and not any(claimed[s:e]):
+            # Never claim a span that straddles an XYXY reduplication — the
+            # slang あざ must not steal the middle of ざあざあ (which would
+            # both shatter the onomatopoeia and fire a false emotion).
+            if s >= 1 and e < n and text[s - 1:e - 1] == text[s + 1:e + 1] \
+                    and text[s - 1] != text[s]:
+                continue
             pos, dform, cost_t = payloads[rank]
             by_start[s].append(_Node(s, e, pos, dform, _cost(cost_t, e - s)))
             for i in range(s, e):
@@ -423,6 +438,55 @@ def _propose_nodes(text: str, bundle: DictionaryBundle) -> list[list[_Node]]:
                 if text[p:p + ln] in known_hira:
                     content_start[p] = 1
                     break
+
+    # 11. Onomatopoeic reduplication (しとしと / もやもや) — a text-wide
+    # pre-pass, kana + ー only, because the pattern may straddle run
+    # boundaries: the prolonged-sound mark ー is a KATAKANA-category char, so
+    # にゃーにゃー / もーもー span four runs. Spans are also marked as content
+    # starts so the hiragana run fallback cannot swallow the text leading up
+    # to them (ひよこが|ぴよぴよ). The reduplicated unit must not itself be a
+    # known / grammar word so わかる|わかる and ます|ます keep their ordinary
+    # segmentation.
+    i2 = 0
+    while i2 < n:
+        if claimed[i2] or not _is_kana_or_choon(text[i2]):
+            i2 += 1
+            continue
+        rl = _reduplication_length(text, i2)
+        if rl and _free(i2, i2 + rl) \
+                and all(_is_kana_or_choon(c) for c in text[i2:i2 + rl]):
+            # Phase correction: in からはらはら the shifted pattern らはらは
+            # matches first, but the dictionary word はらはら starts one char
+            # later — yield to it (its own node + content start handle it).
+            if text[i2:i2 + rl] not in known_hira and any(
+                text[i2 + 1:i2 + 1 + ln] in known_hira for ln in (4, 6)
+            ):
+                i2 += 1
+                continue
+            unit = text[i2:i2 + rl // 2]
+            if unit not in known_hira and unit not in _GRAMMAR_WORDS:
+                by_start[i2].append(
+                    _Node(i2, i2 + rl, "副詞", text[i2:i2 + rl],
+                          _cost(_COST_REDUP, rl))
+                )
+                content_start[i2] = 1
+                i2 += rl
+                continue
+        # Sokuon-emphasised reduplication (わっくわく / ワックワク) —
+        # dictionary_form carries the base form (わくわく) for the emotion
+        # lexicon's dictionary_form pass.
+        if i2 + 5 <= n and text[i2 + 1] in "っッ" \
+                and text[i2] == text[i2 + 3] and text[i2 + 2] == text[i2 + 4] \
+                and text[i2] != text[i2 + 2] and _free(i2, i2 + 5) \
+                and all(_is_kana_or_choon(c) for c in text[i2:i2 + 5]):
+            by_start[i2].append(
+                _Node(i2, i2 + 5, "副詞", (text[i2] + text[i2 + 2]) * 2,
+                      _cost(_COST_REDUP, 5))
+            )
+            content_start[i2] = 1
+            i2 += 5
+            continue
+        i2 += 1
 
     for i in range(n):
         if claimed[i]:
@@ -544,7 +608,15 @@ def _propose_nodes(text: str, bundle: DictionaryBundle) -> list[list[_Node]]:
             # 5. Pure-hira adjective conjugation (おかしく → おかしい).
             # Bare-い endings are excluded — any hiragana run ending in い
             # would otherwise masquerade as an adjective (なっていたみたい).
+            # A dictionary word (≥4 chars) starting here must not be absorbed
+            # into a pseudo-adjective (わくわく+してく → 形容詞 わくわくしてく).
+            dict_word_here = any(
+                text[i:i + ln] in known_hira
+                for ln in range(4, min(10, cap - i) + 1)
+            )
             for ln in range(min(8, cap - i), 2, -1):
+                if dict_word_here:
+                    break
                 seg = text[i:i + ln]
                 if seg[0] in "がをへ" or _is_hira_verb(seg, known_hira):
                     continue
@@ -904,4 +976,6 @@ def lattice_tokenize(
                     unknown=(ppos == "記号"),
                 )
             )
-    return tokens
+    # Katakana emphatic reduplication (ワックワク) survives as a single
+    # category-run token — rewrite its dictionary_form to the base form.
+    return fold_emphatic_reduplication(tokens)

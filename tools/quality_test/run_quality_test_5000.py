@@ -1,13 +1,20 @@
-"""KotobaCore 5000例文 品質テスト（v0.1.10〜 標準評価）。
+"""KotobaCore 例文品質テスト（v0.1.10〜 標準評価）。
 
-10カテゴリ × 500例文 = 5000文をテンプレート生成し、Analyzer に通す。
+13カテゴリ × 500例文 = 6500文をテンプレート生成し、Analyzer に通す。
 
 計測:
   - 検出率   : 感情 / 意図 / チャンク / RAGキーワード が出力されたか
-  - 正確度   : カテゴリの ground-truth（期待感情 / 極性 / 意図）と一致したか
+  - 正確度   : カテゴリの ground-truth（期待感情 / 極性 / 意図）と一致したか。
+               expected_no_emotion カテゴリは「感情なし」が正解（誤検出の監視）
   - 処理時間 : analyze() 1文あたりの所要時間（平均 / 中央値 / p95 / p99 / 最大）
 
 文生成は seed 固定で再現性あり。結果は JSON と Markdown に出力する。
+
+⚠️ カテゴリ凍結ルール: 文生成は CATEGORIES の順に単一乱数列を消費するため、
+既存カテゴリのテンプレート・プールを1語でも変更したり途中に挿入したりすると
+以降の全例文が変わり、歴代バージョンとの数値比較が壊れる。**変更は末尾への
+カテゴリ追加のみ可**。歴代比較 (v0.1.10〜v0.2.6 の「5000例文」数値) は
+レガシー10カテゴリのサブセット集計 (summary_legacy10) で行う。
 
 Usage:
     python tools/quality_test/run_quality_test_5000.py --json out.json --md out.md
@@ -44,6 +51,8 @@ class Category:
     expected_polarity: str | None = None
     acceptable_emotions: set[str] | None = None
     expected_intents: set[str] | None = None
+    # True: 「感情なし」が正解 — 感情が出たら誤検出として正確度を減点
+    expected_no_emotion: bool = False
 
 
 CATEGORIES: list[Category] = [
@@ -343,7 +352,99 @@ CATEGORIES: list[Category] = [
             "weather": ["雨だった", "天気が良かった", "風が強かった", "暑かった"],
         },
     ),
+    # ─────────────────────────────────────── 11. オノマトペ・ポジ (v0.2.7 追加)
+    # ⚠️ 11〜13 は v0.2.7 で末尾追加。ここより上の10カテゴリ (レガシー) は凍結。
+    Category(
+        name="オノマトペ・ポジ",
+        expected_polarity="positive",
+        acceptable_emotions={"joy", "anticipation", "moved", "admiration"},
+        templates=[
+            "{event}て、{ono}する。",
+            "{eventn}のことを考えるだけで{ono}してくる。",
+            "{eventn}が近づいてきて{ono}する。",
+            "{ono}しながら{eventn}を待っている。",
+            "{eventn}が決まって{ono}が止まらない。",
+            "{event}てからずっと{ono}している。",
+        ],
+        pools={
+            # カタカナ / ひらがな表記ゆれ + 促音強調形 (ワックワク) を混在させる
+            "ono": ["ワクワク", "わくわく", "ウキウキ", "うきうき",
+                    "キュンキュン", "きゅんきゅん", "ウズウズ", "うずうず",
+                    "ワックワク"],
+            "event": ["新しいプロジェクトが始まっ", "旅行の日程が決まっ",
+                      "週末の予定が立っ", "新作の発表を見", "予約が取れ",
+                      "気になる企画を聞い", "発売日が発表され", "当選の連絡が来",
+                      "新しい趣味を見つけ", "久しぶりの再会が決まっ"],
+            "eventn": ["旅行", "ライブ", "発売日", "引っ越し", "デート",
+                       "文化祭", "発表会", "誕生日", "連休", "初出勤",
+                       "温泉旅行", "新学期"],
+        },
+    ),
+    # ─────────────────────────────────────── 12. オノマトペ・ネガ (v0.2.7 追加)
+    Category(
+        name="オノマトペ・ネガ",
+        expected_polarity="negative",
+        acceptable_emotions={"irritation", "anger", "sadness", "anxiety"},
+        templates=[
+            "{cause}て、{ono}する。",
+            "{cause}てから{ono}が止まらない。",
+            "朝から{ono}しっぱなしだ。",
+            "{cause}て、ずっと{ono}している。",
+            "{causeru}たびに{ono}する。",
+            "{ono}して{result}。",
+        ],
+        pools={
+            "causeru": ["渋滞にはまる", "小言を言われる", "連絡を待つ",
+                        "その話を聞く", "残業になる", "月末が来る",
+                        "電話が鳴る", "上司と話す"],
+            "ono": ["イライラ", "いらいら", "ムカムカ", "むかむか",
+                    "モヤモヤ", "もやもや", "ソワソワ", "そわそわ",
+                    "ハラハラ", "はらはら", "ビクビク", "びくびく",
+                    "メソメソ", "めそめそ", "クヨクヨ", "くよくよ",
+                    "ヒヤヒヤ", "ひやひや", "ピリピリ", "ぴりぴり",
+                    "ムシャクシャ", "むしゃくしゃ"],
+            "cause": ["渋滞にはまっ", "連絡が来なく", "結果待ちが続い",
+                      "小言を言われ", "仕事が進まなく", "昔の失敗を思い出し",
+                      "隣の工事がうるさく", "予定が二転三転し", "返事が遅れ",
+                      "物価が上がっ"],
+            "result": ["眠れない", "集中できない", "仕事が手につかない"],
+        },
+    ),
+    # ─────────────────────────────── 13. 鳴き声・環境音 (v0.2.7 追加・感情なしが正解)
+    Category(
+        name="鳴き声・環境音",
+        expected_no_emotion=True,
+        templates=[
+            "{animal}が{cry}鳴いている。",
+            "{animal}が{cry}と鳴いた。",
+            "外で{animal}が{cry}鳴いていた。",
+            "{time}から{animal}が{cry}鳴いている。",
+            "どこかから{cry}という鳴き声が聞こえる。",
+            "雨が{rain}降っている。",
+            "{time}から雨が{rain}降っている。",
+            "窓の外で風が{wind}吹いている。",
+            "{animal}の鳴き声で目が覚めた。",
+        ],
+        pools={
+            "animal": ["犬", "猫", "ひよこ", "カラス", "牛", "ヤギ",
+                       "カエル", "スズメ", "ニワトリ", "セミ"],
+            "time": ["今朝", "さっき", "夕方", "明け方", "昨夜"],
+            "cry": ["ワンワン", "わんわん", "ニャーニャー", "にゃーにゃー",
+                    "ピヨピヨ", "ぴよぴよ", "カーカー", "モーモー", "もーもー",
+                    "メエメエ", "ケロケロ", "けろけろ", "チュンチュン", "ミンミン"],
+            "rain": ["しとしと", "ざあざあ", "ぱらぱら", "ポツポツ",
+                     "しとしとと", "ざーざー"],
+            "wind": ["びゅうびゅう", "ヒューヒュー", "そよそよ", "ごうごう"],
+        },
+    ),
 ]
+
+# v0.1.10〜v0.2.6 の歴代「5000例文」数値と比較するためのレガシー10カテゴリ。
+_LEGACY10_NAMES: tuple[str, ...] = (
+    "喜び・ポジティブ", "怒り・不満", "悲しみ・憂鬱", "不安・恐れ",
+    "SNS・スラング", "ビジネス・業務", "技術・AI", "質問・疑問",
+    "要望・依頼", "日常会話",
+)
 
 
 # ---------------------------------------------------------------------------
@@ -465,7 +566,12 @@ def run(output_json: Path | None, output_md: Path | None) -> None:
                 cr.total_keywords += len(rag.keywords)
 
                 # 正確度
-                if spec.acceptable_emotions is not None:
+                if spec.expected_no_emotion:
+                    # 「感情なし」が正解のカテゴリ — 検出されたら誤検出
+                    cr.emotion_scorable += 1
+                    if not emo_det:
+                        cr.emotion_correct += 1
+                elif spec.acceptable_emotions is not None:
                     cr.emotion_scorable += 1
                     if emo and emo.primary in spec.acceptable_emotions:
                         cr.emotion_correct += 1
@@ -518,20 +624,25 @@ def run(output_json: Path | None, output_md: Path | None) -> None:
     }
 
     # 全体集計
-    g = {
-        "total": sum(c.total for c in results),
-        "emotion_detected": sum(c.emotion_detected for c in results),
-        "intent_detected": sum(c.intent_detected for c in results),
-        "chunk_generated": sum(c.chunk_generated for c in results),
-        "rag_generated": sum(c.rag_generated for c in results),
-        "emotion_correct": sum(c.emotion_correct for c in results),
-        "emotion_scorable": sum(c.emotion_scorable for c in results),
-        "polarity_correct": sum(c.polarity_correct for c in results),
-        "polarity_scorable": sum(c.polarity_scorable for c in results),
-        "intent_correct": sum(c.intent_correct for c in results),
-        "intent_scorable": sum(c.intent_scorable for c in results),
-        "errors": sum(c.errors for c in results),
-    }
+    def _aggregate(subset: list[CatResult]) -> dict:
+        return {
+            "total": sum(c.total for c in subset),
+            "emotion_detected": sum(c.emotion_detected for c in subset),
+            "intent_detected": sum(c.intent_detected for c in subset),
+            "chunk_generated": sum(c.chunk_generated for c in subset),
+            "rag_generated": sum(c.rag_generated for c in subset),
+            "emotion_correct": sum(c.emotion_correct for c in subset),
+            "emotion_scorable": sum(c.emotion_scorable for c in subset),
+            "polarity_correct": sum(c.polarity_correct for c in subset),
+            "polarity_scorable": sum(c.polarity_scorable for c in subset),
+            "intent_correct": sum(c.intent_correct for c in subset),
+            "intent_scorable": sum(c.intent_scorable for c in subset),
+            "errors": sum(c.errors for c in subset),
+        }
+
+    g = _aggregate(results)
+    # レガシー10カテゴリのサブセット集計 — v0.2.6 以前の「5000例文」数値と直接比較可
+    g10 = _aggregate([c for c in results if c.name in _LEGACY10_NAMES])
 
     data = {
         "meta": {
@@ -552,6 +663,18 @@ def run(output_json: Path | None, output_md: Path | None) -> None:
             "polarity_accuracy": _pct(g["polarity_correct"], g["polarity_scorable"]),
             "intent_accuracy": _pct(g["intent_correct"], g["intent_scorable"]),
             "errors": g["errors"],
+        },
+        # レガシー10カテゴリのみの集計 (v0.2.6 以前の 5000例文 数値と直接比較可)
+        "summary_legacy10": {
+            "total": g10["total"],
+            "emotion_detection_rate": _pct(g10["emotion_detected"], g10["total"]),
+            "intent_detection_rate": _pct(g10["intent_detected"], g10["total"]),
+            "chunk_generation_rate": _pct(g10["chunk_generated"], g10["total"]),
+            "rag_generation_rate": _pct(g10["rag_generated"], g10["total"]),
+            "emotion_accuracy": _pct(g10["emotion_correct"], g10["emotion_scorable"]),
+            "polarity_accuracy": _pct(g10["polarity_correct"], g10["polarity_scorable"]),
+            "intent_accuracy": _pct(g10["intent_correct"], g10["intent_scorable"]),
+            "errors": g10["errors"],
         },
         "timing": time_stats,
         "categories": [],
@@ -580,7 +703,7 @@ def run(output_json: Path | None, output_md: Path | None) -> None:
 
     # ── Markdown ──
     md: list[str] = [
-        "# KotobaCore 5000例文 品質テスト結果",
+        f"# KotobaCore {total_texts}例文 品質テスト結果",
         "",
         f"> 実施日: {datetime.now().strftime('%Y-%m-%d %H:%M')}",
         f"> KotobaCore: v{__version__} / 総例文数: {total_texts} / カテゴリ: {len(CATEGORIES)} / seed: {SEED}",
@@ -600,6 +723,16 @@ def run(output_json: Path | None, output_md: Path | None) -> None:
         f"| 極性正確度 | {data['summary']['polarity_accuracy']*100:.1f}% (分母 {g['polarity_scorable']}) |",
         f"| 意図正確度 | {data['summary']['intent_accuracy']*100:.1f}% (分母 {g['intent_scorable']}) |",
         f"| エラー件数 | {g['errors']} 件 |",
+        "",
+        "### レガシー10カテゴリ集計 (v0.2.6 以前の 5000例文 数値と比較用)",
+        "",
+        "| 指標 | 値 |",
+        "|---|---|",
+        f"| 総例文数 | {g10['total']} 件 |",
+        f"| 感情検出率 | {data['summary_legacy10']['emotion_detection_rate']*100:.1f}% |",
+        f"| 感情正確度 | {data['summary_legacy10']['emotion_accuracy']*100:.1f}% (分母 {g10['emotion_scorable']}) |",
+        f"| 極性正確度 | {data['summary_legacy10']['polarity_accuracy']*100:.1f}% (分母 {g10['polarity_scorable']}) |",
+        f"| 意図正確度 | {data['summary_legacy10']['intent_accuracy']*100:.1f}% (分母 {g10['intent_scorable']}) |",
         "",
         "## 2. 処理時間",
         "",
@@ -632,7 +765,13 @@ def run(output_json: Path | None, output_md: Path | None) -> None:
             f"| {f('intent_accuracy')} "
             f"| {c['mean_time_ms']:.2f} |"
         )
-    md += ["", "※ 正確度の '-' は当カテゴリで対象外（中立カテゴリ等）", ""]
+    md += [
+        "",
+        "※ 正確度の '-' は当カテゴリで対象外（中立カテゴリ等）",
+        "※ 鳴き声・環境音 カテゴリの感情正確度は「感情なし=正解」の率"
+        "（100% から下がった分が誤検出）",
+        "",
+    ]
 
     if output_md:
         output_md.write_text("\n".join(md), encoding="utf-8")
@@ -640,8 +779,9 @@ def run(output_json: Path | None, output_md: Path | None) -> None:
 
     # ── コンソール ──
     s = data["summary"]
+    s10 = data["summary_legacy10"]
     print("\n" + "=" * 66)
-    print(f"KotobaCore v{__version__}  5000例文品質テスト")
+    print(f"KotobaCore v{__version__}  {total_texts}例文品質テスト")
     print("=" * 66)
     print(f"  感情検出率   : {s['emotion_detection_rate']*100:5.1f}%")
     print(f"  意図検出率   : {s['intent_detection_rate']*100:5.1f}%")
@@ -652,6 +792,17 @@ def run(output_json: Path | None, output_md: Path | None) -> None:
     print(f"  意図正確度   : {s['intent_accuracy']*100:5.1f}%  (分母 {g['intent_scorable']})")
     print(f"  エラー件数   : {g['errors']}")
     print("-" * 66)
+    print("  [レガシー10カテゴリ集計 — v0.2.6 以前の 5000例文 と比較用]")
+    print(f"  感情検出率 {s10['emotion_detection_rate']*100:.1f}% / "
+          f"感情正確度 {s10['emotion_accuracy']*100:.1f}% / "
+          f"極性正確度 {s10['polarity_accuracy']*100:.1f}% / "
+          f"意図正確度 {s10['intent_accuracy']*100:.1f}%")
+    # 誤検出カナリア: 鳴き声・環境音の感情検出率 (0% が理想)
+    for c in results:
+        if c.name == "鳴き声・環境音":
+            print(f"  [誤検出カナリア] 鳴き声・環境音の感情検出率 "
+                  f"{_pct(c.emotion_detected, c.total)*100:.1f}% (0% が理想)")
+    print("-" * 66)
     print(f"  処理時間  平均 {time_stats['mean_ms']:.2f}ms / 中央 {time_stats['median_ms']:.2f}ms "
           f"/ p95 {time_stats['p95_ms']:.2f}ms / p99 {time_stats['p99_ms']:.2f}ms / 最大 {time_stats['max_ms']:.2f}ms")
     print(f"  合計 {time_stats['total_s']:.1f}秒 / {time_stats['count']}文")
@@ -659,7 +810,7 @@ def run(output_json: Path | None, output_md: Path | None) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="KotobaCore 5000例文品質テスト")
+    parser = argparse.ArgumentParser(description="KotobaCore 例文品質テスト (13カテゴリ×500)")
     parser.add_argument("--json", metavar="FILE", help="JSON出力先")
     parser.add_argument("--md", metavar="FILE", help="Markdown出力先")
     args = parser.parse_args()
