@@ -15,14 +15,12 @@ Run on a server (head-less, bound to localhost for reverse-proxy):
 
 from __future__ import annotations
 
-import json
 from typing import Any
 
 import streamlit as st
 
 from kotobacore import Analyzer
 from kotobacore._version import __version__
-
 
 # ---------------------------------------------------------------------------
 # Cached analyzer (one per session)
@@ -37,6 +35,7 @@ def get_analyzer(
     enable_intent: bool,
     enable_rag: bool,
     use_external_dictionaries: bool,
+    granularity: str,
 ) -> Analyzer:
     return Analyzer(
         mode=mode,
@@ -45,6 +44,7 @@ def get_analyzer(
         enable_intent=enable_intent,
         enable_rag=enable_rag,
         use_external_dictionaries=use_external_dictionaries,
+        granularity=granularity,
     )
 
 
@@ -53,24 +53,35 @@ def get_analyzer(
 # ---------------------------------------------------------------------------
 
 
-FIXED_CORPUS = [
-    "クラウドAPIの課金高すぎてしぬw",
-    "このアニメ尊すぎて泣いた",
-    "もう無理。請求まわりを確認して",
-    "今日は新しいプロジェクトがスタート！ワクワクする！",
-    "チームメンバーとの初ミーティング。みんな頼もしい！",
-    "お昼はいつもの定食屋で。安定の美味しさ。",
-    "思ったより難しい課題が...どうしよう。",
-    "また仕様変更？さっき決めたばかりなのに...",
-    "締め切りが近いのにバグが出た。もう無理かも...",
-    "先輩が助けてくれた！なんとか解決できそう！",
-    "社内FAQをRAG化したい",
-    "ChatGPTの回答精度を改善したい",
-    "東京都に行った",
-    # Plutchik 全8軸カバー例
-    "新機能の発表まじかよ、びっくりした。でも課金高すぎてありえない、ムカつく。バグも怖いし不安。前のUIの方が良かったな、残念。ただ次のアップデートは楽しみにしてる。開発チームは信頼してるし最高！",
-    "このアニメ号泣した、感動。でも怖いシーンでびっくりした。許せない展開に怒り感じたし、主人公が死んで悲しい。ドン引きする描写もあったけど、尊い関係性に癒やされた。続編めちゃ楽しみ！",
-    "プロジェクト大成功でやったー！でも途中の仕様変更がありえなくてキレそうだった。締め切り怖すぎてパニックだったし、チームの一人が辞めて悲しかった。あの上司の判断にドン引き。さすがリーダーが最後は救ってくれた。次のフェーズも期待してる。",
+FIXED_CORPUS: list[tuple[str, list[str]]] = [
+    ("基本", [
+        "クラウドAPIの課金高すぎてしぬw",
+        "このアニメ尊すぎて泣いた",
+        "もう無理。請求まわりを確認して",
+        "今日は新しいプロジェクトがスタート！ワクワクする！",
+        "チームメンバーとの初ミーティング。みんな頼もしい！",
+        "お昼はいつもの定食屋で。安定の美味しさ。",
+        "思ったより難しい課題が...どうしよう。",
+        "また仕様変更？さっき決めたばかりなのに...",
+        "締め切りが近いのにバグが出た。もう無理かも...",
+        "先輩が助けてくれた！なんとか解決できそう！",
+        "社内FAQをRAG化したい",
+        "ChatGPTの回答精度を改善したい",
+        "東京都に行った",
+    ]),
+    # v0.2.7: かな表記ゆれ / 反復1トークン化 / 促音強調形 / 鳴き声=感情なし
+    ("オノマトペ (v0.2.7)", [
+        "わくわくするけど、ちょっとどきどきする",
+        "渋滞にはまってイライラ。もやもやが止まらない",
+        "明日の発表会、ワックワクが止まらない！",
+        "猫がにゃーにゃー鳴いててキュンキュンした",
+        "雨がしとしと降る中、犬がわんわん吠えている",
+    ]),
+    ("Plutchik 全8軸", [
+        "新機能の発表まじかよ、びっくりした。でも課金高すぎてありえない、ムカつく。バグも怖いし不安。前のUIの方が良かったな、残念。ただ次のアップデートは楽しみにしてる。開発チームは信頼してるし最高！",
+        "このアニメ号泣した、感動。でも怖いシーンでびっくりした。許せない展開に怒り感じたし、主人公が死んで悲しい。ドン引きする描写もあったけど、尊い関係性に癒やされた。続編めちゃ楽しみ！",
+        "プロジェクト大成功でやったー！でも途中の仕様変更がありえなくてキレそうだった。締め切り怖すぎてパニックだったし、チームの一人が辞めて悲しかった。あの上司の判断にドン引き。さすがリーダーが最後は救ってくれた。次のフェーズも期待してる。",
+    ]),
 ]
 
 
@@ -131,6 +142,19 @@ A モードでも entity / slang は壊れません。普通名詞の刻み方�
 """
         )
 
+    granularity = st.radio(
+        "トークン粒度 (granularity)",
+        ["coarse", "fine"],
+        index=0,
+        horizontal=True,
+        help=(
+            "coarse (既定): 意味単位を保つ長め分割 (思い出した / 締め切り)。\n\n"
+            "fine: LM 語彙向けに 語幹 / 送り仮名 / 活用語尾 へ分解 (思|い|出|した)。"
+            "Tokens タブだけが細かくなり、chunks / emotion / intent / RAG は常に "
+            "coarse で計算されます。"
+        ),
+    )
+
     st.divider()
     st.subheader("機能トグル")
     enable_semantic_chunk = st.checkbox(
@@ -167,12 +191,13 @@ A モードでも entity / slang は壊れません。普通名詞の刻み方�
         ),
     )
     use_external = st.checkbox(
-        "外部辞書 (NRC + SNS分析例文) を使用",
+        "外部辞書 (NRC) を使用",
         value=True,
         help=(
-            "サーバーの dic/ 配下に置いた NRC Emotion-Intensity Lexicon (9,829 語) と "
-            "SNS分析用の例文 CSV (約 1,765 例文 / 250 語) を取り込みます。NRC は内部 seed より "
-            "lex_weight を下げて補助的に使用します。"
+            "サーバーの dic/ 配下に置いた NRC Emotion-Intensity Lexicon (9,829 語) を"
+            "取り込みます。NRC は内部 seed より lex_weight を下げて補助的に使用します。\n\n"
+            "SNS 感情例文集 (546 語 / 約 2,746 例文) は v0.1.12 からパッケージ同梱で、"
+            "この設定に関わらず常に有効です。"
         ),
     )
 
@@ -192,12 +217,16 @@ A モードでも entity / slang は壊れません。普通名詞の刻み方�
 
     st.divider()
     st.markdown("**固定コーパス** — クリックで入力欄へ転送:")
-    for sentence in FIXED_CORPUS:
-        if st.button(sentence, key=f"sample-{sentence[:10]}", use_container_width=True):
-            # Update the text_area's session_state key directly (NOT a separate key)
-            # so the change takes effect on the next rerun.
-            st.session_state["text_input_box"] = sentence
-            st.rerun()
+    _btn_idx = 0
+    for section, sentences in FIXED_CORPUS:
+        st.caption(section)
+        for sentence in sentences:
+            _btn_idx += 1
+            if st.button(sentence, key=f"sample-{_btn_idx}", use_container_width=True):
+                # Update the text_area's session_state key directly (NOT a
+                # separate key) so the change takes effect on the next rerun.
+                st.session_state["text_input_box"] = sentence
+                st.rerun()
 
 
 # ---------------------------------------------------------------------------
@@ -348,6 +377,7 @@ if analyze_clicked and text.strip():
         enable_intent=enable_intent,
         enable_rag=enable_rag,
         use_external_dictionaries=use_external,
+        granularity=granularity,
     )
 
     with st.spinner("Analyzing..."):
