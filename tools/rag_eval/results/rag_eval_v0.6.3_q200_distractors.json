@@ -1,0 +1,5176 @@
+{
+  "version": "0.6.3",
+  "docs": 24,
+  "chunks": 447,
+  "questions": 200,
+  "gold_missing": [],
+  "overall": {
+    "bm25_raw": {
+      "recall@1": 68.5,
+      "recall@3": 82.0,
+      "recall@5": 90.0,
+      "mrr@10": 0.766,
+      "n": 200
+    },
+    "bm25_raw+rerank": {
+      "recall@1": 76.0,
+      "recall@3": 87.5,
+      "recall@5": 94.0,
+      "mrr@10": 0.831,
+      "n": 200
+    },
+    "bm25_ir": {
+      "recall@1": 69.5,
+      "recall@3": 86.5,
+      "recall@5": 92.5,
+      "mrr@10": 0.787,
+      "n": 200
+    },
+    "bm25_ir+filter": {
+      "recall@1": 70.5,
+      "recall@3": 87.5,
+      "recall@5": 93.5,
+      "mrr@10": 0.799,
+      "n": 200
+    },
+    "bm25_ir+filter+rerank": {
+      "recall@1": 77.0,
+      "recall@3": 89.0,
+      "recall@5": 94.5,
+      "mrr@10": 0.84,
+      "n": 200
+    },
+    "tfidf_raw": {
+      "recall@1": 69.0,
+      "recall@3": 80.5,
+      "recall@5": 89.0,
+      "mrr@10": 0.767,
+      "n": 200
+    },
+    "tfidf_raw+rerank": {
+      "recall@1": 74.5,
+      "recall@3": 87.0,
+      "recall@5": 93.5,
+      "mrr@10": 0.822,
+      "n": 200
+    }
+  },
+  "by_type": {
+    "compare": {
+      "bm25_raw": {
+        "recall@1": 86.7,
+        "recall@3": 93.3,
+        "recall@5": 93.3,
+        "mrr@10": 0.889,
+        "n": 15
+      },
+      "bm25_ir": {
+        "recall@1": 86.7,
+        "recall@3": 93.3,
+        "recall@5": 93.3,
+        "mrr@10": 0.9,
+        "n": 15
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 80.0,
+        "recall@3": 86.7,
+        "recall@5": 93.3,
+        "mrr@10": 0.85,
+        "n": 15
+      },
+      "tfidf_raw": {
+        "recall@1": 86.7,
+        "recall@3": 93.3,
+        "recall@5": 93.3,
+        "mrr@10": 0.9,
+        "n": 15
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 86.7,
+        "recall@3": 86.7,
+        "recall@5": 93.3,
+        "mrr@10": 0.883,
+        "n": 15
+      }
+    },
+    "date": {
+      "bm25_raw": {
+        "recall@1": 76.7,
+        "recall@3": 80.0,
+        "recall@5": 93.3,
+        "mrr@10": 0.809,
+        "n": 30
+      },
+      "bm25_ir": {
+        "recall@1": 73.3,
+        "recall@3": 80.0,
+        "recall@5": 93.3,
+        "mrr@10": 0.793,
+        "n": 30
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 70.0,
+        "recall@3": 93.3,
+        "recall@5": 100.0,
+        "mrr@10": 0.819,
+        "n": 30
+      },
+      "tfidf_raw": {
+        "recall@1": 73.3,
+        "recall@3": 80.0,
+        "recall@5": 93.3,
+        "mrr@10": 0.793,
+        "n": 30
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 73.3,
+        "recall@3": 90.0,
+        "recall@5": 96.7,
+        "mrr@10": 0.826,
+        "n": 30
+      }
+    },
+    "definition": {
+      "bm25_raw": {
+        "recall@1": 65.0,
+        "recall@3": 85.0,
+        "recall@5": 95.0,
+        "mrr@10": 0.767,
+        "n": 20
+      },
+      "bm25_ir": {
+        "recall@1": 65.0,
+        "recall@3": 90.0,
+        "recall@5": 95.0,
+        "mrr@10": 0.779,
+        "n": 20
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 80.0,
+        "recall@3": 95.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.879,
+        "n": 20
+      },
+      "tfidf_raw": {
+        "recall@1": 70.0,
+        "recall@3": 80.0,
+        "recall@5": 95.0,
+        "mrr@10": 0.785,
+        "n": 20
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 80.0,
+        "recall@3": 90.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.875,
+        "n": 20
+      }
+    },
+    "howto": {
+      "bm25_raw": {
+        "recall@1": 68.0,
+        "recall@3": 84.0,
+        "recall@5": 92.0,
+        "mrr@10": 0.772,
+        "n": 25
+      },
+      "bm25_ir": {
+        "recall@1": 68.0,
+        "recall@3": 88.0,
+        "recall@5": 92.0,
+        "mrr@10": 0.782,
+        "n": 25
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 80.0,
+        "recall@3": 92.0,
+        "recall@5": 96.0,
+        "mrr@10": 0.872,
+        "n": 25
+      },
+      "tfidf_raw": {
+        "recall@1": 68.0,
+        "recall@3": 88.0,
+        "recall@5": 92.0,
+        "mrr@10": 0.773,
+        "n": 25
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 72.0,
+        "recall@3": 88.0,
+        "recall@5": 88.0,
+        "mrr@10": 0.809,
+        "n": 25
+      }
+    },
+    "list": {
+      "bm25_raw": {
+        "recall@1": 80.0,
+        "recall@3": 80.0,
+        "recall@5": 80.0,
+        "mrr@10": 0.827,
+        "n": 10
+      },
+      "bm25_ir": {
+        "recall@1": 90.0,
+        "recall@3": 90.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.925,
+        "n": 10
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 90.0,
+        "recall@3": 90.0,
+        "recall@5": 90.0,
+        "mrr@10": 0.912,
+        "n": 10
+      },
+      "tfidf_raw": {
+        "recall@1": 80.0,
+        "recall@3": 80.0,
+        "recall@5": 90.0,
+        "mrr@10": 0.834,
+        "n": 10
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 80.0,
+        "recall@3": 90.0,
+        "recall@5": 90.0,
+        "mrr@10": 0.863,
+        "n": 10
+      }
+    },
+    "location": {
+      "bm25_raw": {
+        "recall@1": 46.7,
+        "recall@3": 73.3,
+        "recall@5": 93.3,
+        "mrr@10": 0.602,
+        "n": 15
+      },
+      "bm25_ir": {
+        "recall@1": 46.7,
+        "recall@3": 86.7,
+        "recall@5": 93.3,
+        "mrr@10": 0.646,
+        "n": 15
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 73.3,
+        "recall@3": 86.7,
+        "recall@5": 93.3,
+        "mrr@10": 0.824,
+        "n": 15
+      },
+      "tfidf_raw": {
+        "recall@1": 40.0,
+        "recall@3": 60.0,
+        "recall@5": 86.7,
+        "mrr@10": 0.551,
+        "n": 15
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 66.7,
+        "recall@3": 86.7,
+        "recall@5": 93.3,
+        "mrr@10": 0.776,
+        "n": 15
+      }
+    },
+    "person": {
+      "bm25_raw": {
+        "recall@1": 65.0,
+        "recall@3": 75.0,
+        "recall@5": 85.0,
+        "mrr@10": 0.721,
+        "n": 20
+      },
+      "bm25_ir": {
+        "recall@1": 70.0,
+        "recall@3": 85.0,
+        "recall@5": 90.0,
+        "mrr@10": 0.78,
+        "n": 20
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 70.0,
+        "recall@3": 85.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.797,
+        "n": 20
+      },
+      "tfidf_raw": {
+        "recall@1": 65.0,
+        "recall@3": 70.0,
+        "recall@5": 80.0,
+        "mrr@10": 0.715,
+        "n": 20
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 60.0,
+        "recall@3": 85.0,
+        "recall@5": 95.0,
+        "mrr@10": 0.747,
+        "n": 20
+      }
+    },
+    "reason": {
+      "bm25_raw": {
+        "recall@1": 65.0,
+        "recall@3": 80.0,
+        "recall@5": 85.0,
+        "mrr@10": 0.744,
+        "n": 20
+      },
+      "bm25_ir": {
+        "recall@1": 60.0,
+        "recall@3": 85.0,
+        "recall@5": 95.0,
+        "mrr@10": 0.745,
+        "n": 20
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 85.0,
+        "recall@3": 90.0,
+        "recall@5": 90.0,
+        "mrr@10": 0.883,
+        "n": 20
+      },
+      "tfidf_raw": {
+        "recall@1": 70.0,
+        "recall@3": 80.0,
+        "recall@5": 85.0,
+        "mrr@10": 0.777,
+        "n": 20
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 80.0,
+        "recall@3": 90.0,
+        "recall@5": 95.0,
+        "mrr@10": 0.86,
+        "n": 20
+      }
+    },
+    "value": {
+      "bm25_raw": {
+        "recall@1": 62.9,
+        "recall@3": 80.0,
+        "recall@5": 85.7,
+        "mrr@10": 0.729,
+        "n": 35
+      },
+      "bm25_ir": {
+        "recall@1": 65.7,
+        "recall@3": 82.9,
+        "recall@5": 85.7,
+        "mrr@10": 0.751,
+        "n": 35
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 71.4,
+        "recall@3": 80.0,
+        "recall@5": 85.7,
+        "mrr@10": 0.769,
+        "n": 35
+      },
+      "tfidf_raw": {
+        "recall@1": 65.7,
+        "recall@3": 80.0,
+        "recall@5": 82.9,
+        "mrr@10": 0.738,
+        "n": 35
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 71.4,
+        "recall@3": 77.1,
+        "recall@5": 88.6,
+        "mrr@10": 0.766,
+        "n": 35
+      }
+    },
+    "yesno": {
+      "bm25_raw": {
+        "recall@1": 80.0,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.883,
+        "n": 10
+      },
+      "bm25_ir": {
+        "recall@1": 90.0,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.933,
+        "n": 10
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 90.0,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.933,
+        "n": 10
+      },
+      "tfidf_raw": {
+        "recall@1": 80.0,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.883,
+        "n": 10
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 90.0,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.933,
+        "n": 10
+      }
+    }
+  },
+  "by_lexical": {
+    "abbrev": {
+      "bm25_raw": {
+        "recall@1": 70.0,
+        "recall@3": 85.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.782,
+        "n": 20
+      },
+      "bm25_ir": {
+        "recall@1": 65.0,
+        "recall@3": 85.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.777,
+        "n": 20
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 65.0,
+        "recall@3": 80.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.756,
+        "n": 20
+      },
+      "tfidf_raw": {
+        "recall@1": 70.0,
+        "recall@3": 75.0,
+        "recall@5": 90.0,
+        "mrr@10": 0.778,
+        "n": 20
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 65.0,
+        "recall@3": 80.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.756,
+        "n": 20
+      }
+    },
+    "paraphrase": {
+      "bm25_raw": {
+        "recall@1": 69.2,
+        "recall@3": 76.9,
+        "recall@5": 90.4,
+        "mrr@10": 0.764,
+        "n": 52
+      },
+      "bm25_ir": {
+        "recall@1": 75.0,
+        "recall@3": 86.5,
+        "recall@5": 92.3,
+        "mrr@10": 0.814,
+        "n": 52
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 80.8,
+        "recall@3": 90.4,
+        "recall@5": 94.2,
+        "mrr@10": 0.862,
+        "n": 52
+      },
+      "tfidf_raw": {
+        "recall@1": 71.2,
+        "recall@3": 78.8,
+        "recall@5": 90.4,
+        "mrr@10": 0.776,
+        "n": 52
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 76.9,
+        "recall@3": 88.5,
+        "recall@5": 96.2,
+        "mrr@10": 0.842,
+        "n": 52
+      }
+    },
+    "relative_time": {
+      "bm25_raw": {
+        "recall@1": 73.7,
+        "recall@3": 78.9,
+        "recall@5": 89.5,
+        "mrr@10": 0.789,
+        "n": 19
+      },
+      "bm25_ir": {
+        "recall@1": 73.7,
+        "recall@3": 84.2,
+        "recall@5": 89.5,
+        "mrr@10": 0.794,
+        "n": 19
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 73.7,
+        "recall@3": 94.7,
+        "recall@5": 100.0,
+        "mrr@10": 0.835,
+        "n": 19
+      },
+      "tfidf_raw": {
+        "recall@1": 73.7,
+        "recall@3": 78.9,
+        "recall@5": 89.5,
+        "mrr@10": 0.787,
+        "n": 19
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 68.4,
+        "recall@3": 89.5,
+        "recall@5": 100.0,
+        "mrr@10": 0.804,
+        "n": 19
+      }
+    },
+    "same": {
+      "bm25_raw": {
+        "recall@1": 75.7,
+        "recall@3": 92.9,
+        "recall@5": 97.1,
+        "mrr@10": 0.841,
+        "n": 70
+      },
+      "bm25_ir": {
+        "recall@1": 77.1,
+        "recall@3": 95.7,
+        "recall@5": 98.6,
+        "mrr@10": 0.861,
+        "n": 70
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 82.9,
+        "recall@3": 95.7,
+        "recall@5": 95.7,
+        "mrr@10": 0.897,
+        "n": 70
+      },
+      "tfidf_raw": {
+        "recall@1": 78.6,
+        "recall@3": 91.4,
+        "recall@5": 97.1,
+        "mrr@10": 0.855,
+        "n": 70
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 82.9,
+        "recall@3": 95.7,
+        "recall@5": 97.1,
+        "mrr@10": 0.893,
+        "n": 70
+      }
+    },
+    "synonym": {
+      "bm25_raw": {
+        "recall@1": 51.3,
+        "recall@3": 69.2,
+        "recall@5": 71.8,
+        "mrr@10": 0.615,
+        "n": 39
+      },
+      "bm25_ir": {
+        "recall@1": 48.7,
+        "recall@3": 71.8,
+        "recall@5": 79.5,
+        "mrr@10": 0.622,
+        "n": 39
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 69.2,
+        "recall@3": 76.9,
+        "recall@5": 87.2,
+        "mrr@10": 0.754,
+        "n": 39
+      },
+      "tfidf_raw": {
+        "recall@1": 46.2,
+        "recall@3": 66.7,
+        "recall@5": 71.8,
+        "mrr@10": 0.583,
+        "n": 39
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 64.1,
+        "recall@3": 71.8,
+        "recall@5": 76.9,
+        "mrr@10": 0.709,
+        "n": 39
+      }
+    }
+  },
+  "per_question": [
+    {
+      "qid": "q001",
+      "type": "howto",
+      "lexical": "paraphrase",
+      "intent": "how_to",
+      "terms": [
+        "ICカード",
+        "乗車履歴",
+        "経費",
+        "費用",
+        "コスト",
+        "出費"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        3
+      ],
+      "top1": "d01: 交通費については、ICカードの利用履歴を読み込む機能があります。「ICカード連携」メニューから交通系ICカードをカードリーダーにかざすと、直近3か月分の履歴が自"
+    },
+    {
+      "qid": "q002",
+      "type": "person",
+      "lexical": "synonym",
+      "intent": "how_to",
+      "terms": [
+        "ケイヒ",
+        "操作",
+        "質問",
+        "問い合わせ",
+        "質疑",
+        "クエスチョン"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 6,
+        "bm25_ir": 4,
+        "bm25_ir+filter+rerank": 1
+      },
+      "gold_chunks": [
+        6
+      ],
+      "top1": "d01: ## 概要 / 本マニュアルは、株式会社ミライ電機が2025年10月1日に導入した経費精算システム「ケイヒくん」の操作手順をまとめたものです。対象は全社員および契約"
+    },
+    {
+      "qid": "q003",
+      "type": "date",
+      "lexical": "abbrev",
+      "intent": "search_value",
+      "terms": [
+        "経費システム",
+        "切り時刻",
+        "申請締",
+        "費用",
+        "コスト"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        5
+      ],
+      "top1": "d01: ## 締め切りと支払い / 毎月の申請締め切りは翌月5日の17時です。締め切りまでに承認が完了した経費は、翌月25日に給与と同じ口座へ振り込まれます。締め切りを過ぎ"
+    },
+    {
+      "qid": "q004",
+      "type": "howto",
+      "lexical": "same",
+      "intent": "how_to",
+      "terms": [
+        "残業申請",
+        "手順",
+        "ステップ",
+        "手続き",
+        "プロシージャ",
+        "procedure"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        9
+      ],
+      "top1": "d02: ## 残業申請の手順 / 残業をする場合は、事前申請が原則です。メニューの「残業申請」を開き、予定終了時刻と理由を入力して上長に送信します。当日18時までに申請がな"
+    },
+    {
+      "qid": "q005",
+      "type": "date",
+      "lexical": "relative_time",
+      "intent": "how_to",
+      "terms": [
+        "タイムキーパー手順書",
+        "今年度",
+        "改訂日"
+      ],
+      "filtered": true,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        7
+      ],
+      "top1": "d02: ## はじめに / 「タイムキーパー」は株式会社ミライ電機が全社で利用している勤怠管理システムです。出退勤の打刻、残業申請、休暇申請の3つの機能を備えています。本手"
+    },
+    {
+      "qid": "q006",
+      "type": "howto",
+      "lexical": "synonym",
+      "intent": "how_to",
+      "terms": [
+        "タイムキーパーアプリ",
+        "直し方",
+        "バグ",
+        "不具合",
+        "障害"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 7,
+        "bm25_ir": 6,
+        "bm25_ir+filter+rerank": 4
+      },
+      "gold_chunks": [
+        12
+      ],
+      "top1": "noise22: 誰かこのバグの直し方知ってる人いない？"
+    },
+    {
+      "qid": "q007",
+      "type": "definition",
+      "lexical": "same",
+      "intent": "definition",
+      "terms": [
+        "タイムキーパー",
+        "システム"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 1,
+        "bm25_ir": 1,
+        "bm25_ir+filter+rerank": 1
+      },
+      "gold_chunks": [
+        7
+      ],
+      "top1": "d14: ## 残日数について / Q. 自分の残日数はどこで確認できますか。A. 勤怠管理システム「タイムキーパー」のトップ画面に、当年度の残日数と繰越日数が表示されていま"
+    },
+    {
+      "qid": "q008",
+      "type": "howto",
+      "lexical": "same",
+      "intent": "how_to",
+      "terms": [
+        "交換手順",
+        "トナー"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        16
+      ],
+      "top1": "d03: ## トナーの交換 / トナーは黒、シアン、マゼンタ、イエローの4色があります。操作パネルに「トナー残量が少なくなりました」と表示されたら、前面カバーを開けて該当色"
+    },
+    {
+      "qid": "q009",
+      "type": "compare",
+      "lexical": "paraphrase",
+      "intent": "how_to",
+      "terms": [
+        "保守契約",
+        "保証"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        18
+      ],
+      "top1": "d03: ## 保守と保証 / 保証期間は購入日から1年間です。保守契約を結ぶと、保証期間が3年間に延長され、年2回の定期点検が受けられます。修理の依頼はホシノ精工サポートセ"
+    },
+    {
+      "qid": "q010",
+      "type": "definition",
+      "lexical": "abbrev",
+      "intent": "definition",
+      "terms": [
+        "X",
+        "200",
+        "製品",
+        "商品",
+        "プロダクト",
+        "グッズ"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 2,
+        "bm25_ir": 1,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        13
+      ],
+      "top1": "d03: ## 製品の概要 / PrintMaster X200は、ホシノ精工株式会社が2025年6月に発売した業務用のA3対応カラー複合機です。印刷、コピー、スキャン、FA"
+    },
+    {
+      "qid": "q011",
+      "type": "howto",
+      "lexical": "same",
+      "intent": "how_to",
+      "terms": [
+        "接続手順",
+        "VPN",
+        "仮想プライベートネットワーク",
+        "仮想専用線",
+        "virtual private network"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 1,
+        "bm25_ir": 1,
+        "bm25_ir+filter+rerank": 1
+      },
+      "gold_chunks": [
+        21
+      ],
+      "top1": "d16: ## 接続について / Q. VPNの接続が頻繁に切れます。A. 自宅のWi-Fiルーターの再起動を試してください。それでも改善しない場合は、有線LANでの接続をお"
+    },
+    {
+      "qid": "q012",
+      "type": "reason",
+      "lexical": "paraphrase",
+      "intent": "reason",
+      "terms": [
+        "認証エラー",
+        "VPN",
+        "認証",
+        "仮想プライベートネットワーク",
+        "仮想専用線",
+        "オーセンティケーション",
+        "本人確認",
+        "virtual private network",
+        "error",
+        "異常"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        23
+      ],
+      "top1": "d04: 「認証に失敗しました」と表示される場合は、パスワードの有効期限切れが原因であることが多いです。パスワードは90日ごとに変更が必要で、期限切れの場合は社内ポータル"
+    },
+    {
+      "qid": "q013",
+      "type": "yesno",
+      "lexical": "same",
+      "intent": "yes_no",
+      "terms": [
+        "VPN接続",
+        "パソコン",
+        "私物",
+        "PC",
+        "コンピューター",
+        "パーソナルコンピュータ",
+        "コネクション",
+        "連結"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        19
+      ],
+      "top1": "d04: ## 目的 / 本手順書は、株式会社ミライ電機の社員が社外から社内ネットワークに接続するためのVPNの設定方法を説明します。対象となる端末は、情報システム部が貸与し"
+    },
+    {
+      "qid": "q014",
+      "type": "definition",
+      "lexical": "same",
+      "intent": "definition",
+      "terms": [
+        "対象",
+        "精算",
+        "経費",
+        "費用",
+        "コスト",
+        "スコープ",
+        "scope",
+        "経費精算",
+        "立替精算",
+        "出費",
+        "経費申請",
+        "対象範囲"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        26
+      ],
+      "top1": "d05: ## 対象となる経費 / 精算の対象となる経費とは、業務遂行のために必要であり、かつ会社が事前または事後に承認した支出をいいます。交通費、宿泊費、会議費、接待交際費"
+    },
+    {
+      "qid": "q015",
+      "type": "value",
+      "lexical": "synonym",
+      "intent": "lookup",
+      "terms": [
+        "接待交際費",
+        "限度額"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        29
+      ],
+      "top1": "d05: 接待交際費は、1人あたり8,000円を上限とし、事前に営業本部長の承認が必要です。参加者の氏名と所属を申請書に記載してください。社内の飲食は接待交際費として認め"
+    },
+    {
+      "qid": "q016",
+      "type": "list",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "区分",
+        "経費",
+        "費用",
+        "コスト",
+        "種別",
+        "種類",
+        "出費",
+        "タイプ",
+        "type"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 7,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        26
+      ],
+      "top1": "d05: ## 対象となる経費 / 精算の対象となる経費とは、業務遂行のために必要であり、かつ会社が事前または事後に承認した支出をいいます。交通費、宿泊費、会議費、接待交際費"
+    },
+    {
+      "qid": "q017",
+      "type": "compare",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "新幹線",
+        "飛行機",
+        "出張",
+        "席"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        27
+      ],
+      "top1": "d05: 出張時の交通費は、新幹線は普通車指定席、飛行機はエコノミークラスを原則とします。片道の移動距離が100kmを超える場合に限り、新幹線や飛行機の利用が認められます"
+    },
+    {
+      "qid": "q018",
+      "type": "date",
+      "lexical": "abbrev",
+      "intent": "lookup",
+      "terms": [
+        "ミライ電機",
+        "付与日",
+        "有給",
+        "有給休暇",
+        "年休",
+        "年次有給休暇"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 3,
+        "bm25_ir": 3,
+        "bm25_ir+filter+rerank": 2
+      },
+      "gold_chunks": [
+        33
+      ],
+      "top1": "d06: ## 目的と適用範囲 / この規程は、株式会社ミライ電機における年次有給休暇の付与と取得について定めるものです。正社員、契約社員、パート社員のすべてに適用されます。"
+    },
+    {
+      "qid": "q019",
+      "type": "howto",
+      "lexical": "synonym",
+      "intent": "how_to",
+      "terms": [
+        "有給",
+        "方",
+        "有給休暇",
+        "年休",
+        "年次有給休暇"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 1,
+        "bm25_ir": 1,
+        "bm25_ir+filter+rerank": 1
+      },
+      "gold_chunks": [
+        35
+      ],
+      "top1": "d06: 退職を予定する社員は、退職日までに残りの有給休暇を取得することができます。ただし引き継ぎに支障がないよう、上長と日程を調整してください。退職日以降に有給休暇を取"
+    },
+    {
+      "qid": "q020",
+      "type": "yesno",
+      "lexical": "same",
+      "intent": "list",
+      "terms": [
+        "有給",
+        "消滅",
+        "有給休暇",
+        "年休",
+        "年次有給休暇"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        34
+      ],
+      "top1": "d06: 付与された有給休暇の有効期限は2年間です。当年度に使い切れなかった日数は翌年度に繰り越されますが、翌年度末までに使わなかった分は消滅します。消滅した日数の買い取"
+    },
+    {
+      "qid": "q021",
+      "type": "date",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "ドライバー職",
+        "北斗物流",
+        "有給申請"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 1
+      },
+      "gold_chunks": [
+        40
+      ],
+      "top1": "d07: ## はじめに / 本ガイドラインは、北斗物流株式会社の従業員が有給休暇を円滑に取得できるよう、運用のルールをまとめたものです。2025年10月1日に制定され、全営"
+    },
+    {
+      "qid": "q022",
+      "type": "value",
+      "lexical": "relative_time",
+      "intent": "search_value",
+      "terms": [
+        "有給取得率目標",
+        "北斗物流",
+        "今年度"
+      ],
+      "filtered": true,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        42
+      ],
+      "top1": "d07: 北斗物流では、2026年度の有給休暇取得率の目標を70%と定めています。2025年度の実績は58%でした。取得率が50%を下回る営業所については、本社人事課が個"
+    },
+    {
+      "qid": "q023",
+      "type": "person",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "北斗物流",
+        "有給",
+        "相談",
+        "有給休暇",
+        "年休",
+        "年次有給休暇"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 2
+      },
+      "gold_chunks": [
+        43
+      ],
+      "top1": "d07: 北斗物流では、2026年度の有給休暇取得率の目標を70%と定めています。2025年度の実績は58%でした。取得率が50%を下回る営業所については、本社人事課が個"
+    },
+    {
+      "qid": "q024",
+      "type": "reason",
+      "lexical": "paraphrase",
+      "intent": "reason",
+      "terms": [
+        "12月",
+        "北斗物流",
+        "有給",
+        "有給休暇",
+        "年休",
+        "年次有給休暇"
+      ],
+      "filtered": true,
+      "rank": {
+        "bm25_raw": 7,
+        "bm25_ir": 4,
+        "bm25_ir+filter+rerank": 1
+      },
+      "gold_chunks": [
+        41
+      ],
+      "top1": "d07: 北斗物流では、2026年度の有給休暇取得率の目標を70%と定めています。2025年度の実績は58%でした。取得率が50%を下回る営業所については、本社人事課が個"
+    },
+    {
+      "qid": "q025",
+      "type": "definition",
+      "lexical": "same",
+      "intent": "definition",
+      "terms": [
+        "情報分類",
+        "極秘"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        45
+      ],
+      "top1": "d08: ## 情報の分類 / 情報資産は「極秘」「秘密」「社内限り」「公開」の4段階に分類します。極秘とは、漏えいすると会社に重大な損害を与える情報をいい、顧客の個人情報や"
+    },
+    {
+      "qid": "q026",
+      "type": "howto",
+      "lexical": "paraphrase",
+      "intent": "procedure",
+      "terms": [
+        "ウイルス",
+        "対応",
+        "対処",
+        "措置",
+        "マルウェア",
+        "malware",
+        "不正プログラム",
+        "悪意あるソフトウェア"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        48
+      ],
+      "top1": "d08: 情報漏えいやウイルス感染の疑いがある場合は、直ちにネットワークから端末を切り離し、情報システム部へ報告してください。報告の遅れは被害を拡大させるため、確証がなく"
+    },
+    {
+      "qid": "q027",
+      "type": "list",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "4段階",
+        "情報資産",
+        "分類",
+        "クラス分け",
+        "カテゴライズ",
+        "classify",
+        "類別",
+        "フェーズ",
+        "phase"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        45
+      ],
+      "top1": "d08: ## 情報の分類 / 情報資産は「極秘」「秘密」「社内限り」「公開」の4段階に分類します。極秘とは、漏えいすると会社に重大な損害を与える情報をいい、顧客の個人情報や"
+    },
+    {
+      "qid": "q028",
+      "type": "value",
+      "lexical": "abbrev",
+      "intent": "search_value",
+      "terms": [
+        "500",
+        "MX",
+        "価格",
+        "値段",
+        "プライス",
+        "金額"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 4,
+        "bm25_ir": 4,
+        "bm25_ir+filter+rerank": 3
+      },
+      "gold_chunks": [
+        51
+      ],
+      "top1": "d10: 株式会社ミライ電機は2026年6月15日、空気清浄機「エアクリア」シリーズの廉価モデル「エアクリア MX-300」を発売しました。希望小売価格は税込29,800"
+    },
+    {
+      "qid": "q029",
+      "type": "date",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "エアクリア",
+        "500",
+        "発売日",
+        "MX"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 4,
+        "bm25_ir": 4,
+        "bm25_ir+filter+rerank": 1
+      },
+      "gold_chunks": [
+        51
+      ],
+      "top1": "d10: 株式会社ミライ電機は2026年6月15日、空気清浄機「エアクリア」シリーズの廉価モデル「エアクリア MX-300」を発売しました。希望小売価格は税込29,800"
+    },
+    {
+      "qid": "q030",
+      "type": "person",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "500",
+        "MX",
+        "担当",
+        "部長",
+        "開発",
+        "ディベロップメント",
+        "構築",
+        "担当者",
+        "窓口"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 1,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        53
+      ],
+      "top1": "d09: ## 開発の背景 / 開発を担当した商品企画部の佐藤部長は、「在宅勤務の広がりで、自宅の空気環境への関心が高まっている」と説明しています。開発期間は約2年で、開発費"
+    },
+    {
+      "qid": "q031",
+      "type": "location",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "ミライ電機",
+        "本社",
+        "ヘッドオフィス",
+        "head office",
+        "HQ",
+        "本部"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 3,
+        "bm25_ir": 1,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        51
+      ],
+      "top1": "d09: 株式会社ミライ電機（本社・東京都品川区、代表取締役社長・鈴木一郎）は2026年2月10日、家庭用空気清浄機の新製品「エアクリア MX-500」を発表しました。発"
+    },
+    {
+      "qid": "q032",
+      "type": "date",
+      "lexical": "relative_time",
+      "intent": "yes_no",
+      "terms": [
+        "アプリ連携",
+        "500",
+        "MX",
+        "今年",
+        "秋",
+        "インテグレーション",
+        "integration"
+      ],
+      "filtered": true,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        56
+      ],
+      "top1": "d09: 同社は今後、MX-500をベースにした業務用モデルを2027年度に投入する計画です。また、スマートフォンアプリと連携した遠隔操作機能は、2026年秋のアップデー"
+    },
+    {
+      "qid": "q033",
+      "type": "compare",
+      "lexical": "same",
+      "intent": "compare",
+      "terms": [
+        "300",
+        "500",
+        "MX"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        58
+      ],
+      "top1": "d10: ## MX-500との違い / MX-300とMX-500の最大の違いは適用床面積とフィルターの構成です。MX-300の適用床面積は最大20畳で、フィルターは「シン"
+    },
+    {
+      "qid": "q034",
+      "type": "reason",
+      "lexical": "same",
+      "intent": "reason",
+      "terms": [
+        "300",
+        "MX",
+        "価格",
+        "値段",
+        "プライス",
+        "金額"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        59
+      ],
+      "top1": "d10: ## 価格を抑えた理由 / 価格を抑えられた理由は、部品の共通化と製造拠点の集約にあります。MX-500と部品の約6割を共通化し、製造を長野工場に一本化したことで、"
+    },
+    {
+      "qid": "q035",
+      "type": "value",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "交換フィルター",
+        "300",
+        "MX",
+        "値段",
+        "価格",
+        "プライス",
+        "絞り込み",
+        "フィルタリング",
+        "金額"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 1,
+        "bm25_ir": 1,
+        "bm25_ir+filter+rerank": 2
+      },
+      "gold_chunks": [
+        61
+      ],
+      "top1": "d10: ## MX-500との違い / MX-300とMX-500の最大の違いは適用床面積とフィルターの構成です。MX-300の適用床面積は最大20畳で、フィルターは「シン"
+    },
+    {
+      "qid": "q036",
+      "type": "list",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "300",
+        "本体色",
+        "MX"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 6,
+        "bm25_ir": 3,
+        "bm25_ir+filter+rerank": 7
+      },
+      "gold_chunks": [
+        61
+      ],
+      "top1": "d10: ## MX-500との違い / MX-300とMX-500の最大の違いは適用床面積とフィルターの構成です。MX-300の適用床面積は最大20畳で、フィルターは「シン"
+    },
+    {
+      "qid": "q037",
+      "type": "yesno",
+      "lexical": "paraphrase",
+      "intent": "yes_no",
+      "terms": [
+        "フィルター",
+        "300",
+        "500",
+        "MX",
+        "絞り込み",
+        "フィルタリング"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 2,
+        "bm25_ir": 2,
+        "bm25_ir+filter+rerank": 2
+      },
+      "gold_chunks": [
+        61
+      ],
+      "top1": "d10: ## MX-500との違い / MX-300とMX-500の最大の違いは適用床面積とフィルターの構成です。MX-300の適用床面積は最大20畳で、フィルターは「シン"
+    },
+    {
+      "qid": "q038",
+      "type": "location",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "北斗物流",
+        "大阪支社",
+        "移転先"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        63
+      ],
+      "top1": "d11: 北斗物流株式会社（本社・札幌市）は、大阪支社を2026年1月13日に新大阪駅前の「新大阪グランビル」8階へ移転しました。旧支社は大阪市中央区にあり、築40年を超"
+    },
+    {
+      "qid": "q039",
+      "type": "reason",
+      "lexical": "paraphrase",
+      "intent": "reason",
+      "terms": [
+        "北斗物流",
+        "大阪支社",
+        "移"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 3,
+        "bm25_ir": 4,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        64
+      ],
+      "top1": "d11: ## 移転の理由 / 移転の理由は、老朽化への対応に加えて、新幹線を使った出張の利便性を高めるためです。北斗物流は関西圏の顧客が増えており、東京本社との往来も頻繁に"
+    },
+    {
+      "qid": "q040",
+      "type": "value",
+      "lexical": "abbrev",
+      "intent": "search_value",
+      "terms": [
+        "内装工事費",
+        "移転"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        65
+      ],
+      "top1": "d11: 移転にかかった費用は約1億2,000万円で、そのうち内装工事が約7,000万円を占めます。年間の賃料は旧支社より約20%増えますが、業務効率の改善で3年以内に回"
+    },
+    {
+      "qid": "q041",
+      "type": "location",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "テクノフェア2026",
+        "会場"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 2,
+        "bm25_ir": 2,
+        "bm25_ir+filter+rerank": 1
+      },
+      "gold_chunks": [
+        69
+      ],
+      "top1": "d12: ## 来年の開催 / 次回の「テクノフェア2027」は、2027年5月19日から21日まで同じ会場で開催される予定です。主催者は出展社数500社を目標に掲げています"
+    },
+    {
+      "qid": "q042",
+      "type": "person",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "テクノフェア2026",
+        "基調講演",
+        "講演者"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 1
+      },
+      "gold_chunks": [
+        71
+      ],
+      "top1": "d12: 会期中に発表された「テクノフェア大賞」は、ミライ電機のエアクリア MX-500が受賞しました。受賞理由は、省エネ性能と静音性の両立が高く評価されたためです。優秀"
+    },
+    {
+      "qid": "q043",
+      "type": "date",
+      "lexical": "relative_time",
+      "intent": "lookup",
+      "terms": [
+        "テクノフェア",
+        "開催日",
+        "来年"
+      ],
+      "filtered": true,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        73
+      ],
+      "top1": "d12: ## 来年の開催 / 次回の「テクノフェア2027」は、2027年5月19日から21日まで同じ会場で開催される予定です。主催者は出展社数500社を目標に掲げています"
+    },
+    {
+      "qid": "q044",
+      "type": "definition",
+      "lexical": "same",
+      "intent": "definition",
+      "terms": [
+        "テクノフェア2026",
+        "テクノフェア"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 2,
+        "bm25_ir": 2,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        69
+      ],
+      "top1": "d12: 家電と電子機器の総合展示会「テクノフェア2026」が、2026年5月20日から22日までの3日間、千葉市の幕張コンベンションセンターで開催されました。主催は日本"
+    },
+    {
+      "qid": "q045",
+      "type": "yesno",
+      "lexical": "synonym",
+      "intent": "yes_no",
+      "terms": [
+        "領収書",
+        "精算",
+        "紛失",
+        "レシート",
+        "受領書",
+        "経費精算",
+        "立替精算",
+        "経費申請"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        74
+      ],
+      "top1": "d13: ## 領収書について / Q. 領収書をなくしてしまいました。精算できますか。A. 原則として領収書がない経費は精算できません。ただし電車やバスなど領収書が発行され"
+    },
+    {
+      "qid": "q046",
+      "type": "howto",
+      "lexical": "synonym",
+      "intent": "yes_no",
+      "terms": [
+        "アップロード後",
+        "領収書画像",
+        "削除",
+        "消去",
+        "デリート",
+        "除去",
+        "アップ",
+        "upload"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        80
+      ],
+      "top1": "d13: ## その他 / Q. 私物のスマートフォンで領収書を撮影しても問題ありませんか。A. 問題ありません。ただし撮影した画像は、システムへのアップロード後に端末から消"
+    },
+    {
+      "qid": "q047",
+      "type": "howto",
+      "lexical": "paraphrase",
+      "intent": "how_to",
+      "terms": [
+        "有給",
+        "朝",
+        "急",
+        "有給休暇",
+        "年休",
+        "年次有給休暇"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        83
+      ],
+      "top1": "d14: ## 取得について / Q. 当日の朝に体調不良で休む場合、有給休暇にできますか。A. 始業時刻までに上長へ電話またはチャットで連絡すれば、有給休暇として扱います。"
+    },
+    {
+      "qid": "q048",
+      "type": "definition",
+      "lexical": "same",
+      "intent": "definition",
+      "terms": [
+        "時季変更権",
+        "有給",
+        "有給休暇",
+        "年休",
+        "年次有給休暇"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        84
+      ],
+      "top1": "d14: Q. 有給休暇の申請を上長に断られました。A. 会社が時季変更権を行使できるのは、業務に著しい支障がある場合に限られます。理由の説明がない場合は人事部の木村主任"
+    },
+    {
+      "qid": "q049",
+      "type": "definition",
+      "lexical": "same",
+      "intent": "definition",
+      "terms": [
+        "エラーコード",
+        "52",
+        "E"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        91
+      ],
+      "top1": "d15: ## エラーについて / Q. 「エラーコード E-52」が表示されます。A. E-52は定着ユニットの温度異常を示します。電源を切って10分待ってから再起動してく"
+    },
+    {
+      "qid": "q050",
+      "type": "list",
+      "lexical": "same",
+      "intent": "specification",
+      "terms": [
+        "ファイル形式",
+        "スキャン",
+        "保存",
+        "セーブ",
+        "フォーマット",
+        "format"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        89
+      ],
+      "top1": "d15: ## スキャンについて / Q. スキャンしたデータはどこに保存されますか。A. 初期設定では本体内のボックスに保存されます。「スキャン設定」からメール送信または共"
+    },
+    {
+      "qid": "q051",
+      "type": "compare",
+      "lexical": "paraphrase",
+      "intent": "compare",
+      "terms": [
+        "互換トナー",
+        "純正トナー",
+        "純正",
+        "互換性",
+        "コンパチビリティ"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        92
+      ],
+      "top1": "d15: Q. トナーの純正品と互換品の違いは何ですか。A. 互換品は純正品より安価ですが、印刷品質の保証対象外となり、互換品の使用による故障は保証期間内でも有償修理にな"
+    },
+    {
+      "qid": "q052",
+      "type": "value",
+      "lexical": "synonym",
+      "intent": "lookup",
+      "terms": [
+        "初期セーブ先",
+        "スキャンデータ",
+        "保存"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        89
+      ],
+      "top1": "d15: ## スキャンについて / Q. スキャンしたデータはどこに保存されますか。A. 初期設定では本体内のボックスに保存されます。「スキャン設定」からメール送信または共"
+    },
+    {
+      "qid": "q053",
+      "type": "value",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "在宅勤務",
+        "週",
+        "テレワーク",
+        "リモートワーク",
+        "リモート勤務",
+        "在宅ワーク"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        95
+      ],
+      "top1": "d16: ## 在宅勤務について / Q. 在宅勤務は週に何日までできますか。A. 在宅勤務は週3日までです。ただし部長が認めた場合は週4日以上も可能です。在宅勤務の日は前週"
+    },
+    {
+      "qid": "q054",
+      "type": "value",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "テレワーク",
+        "手当",
+        "在宅勤務",
+        "リモートワーク",
+        "リモート勤務",
+        "在宅ワーク"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 4,
+        "bm25_ir": 2,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        96
+      ],
+      "top1": "d16: Q. 在宅勤務中の通信費は会社が負担しますか。A. 在宅勤務手当として月額4,000円を支給しています。手当には通信費と光熱費が含まれ、別途の実費精算はできませ"
+    },
+    {
+      "qid": "q055",
+      "type": "value",
+      "lexical": "relative_time",
+      "intent": "search_value",
+      "terms": [
+        "海外売上高",
+        "昨年度"
+      ],
+      "filtered": true,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        101
+      ],
+      "top1": "d17: 地域別では国内売上が390億円、海外売上が62億円でした。海外売上は前年度比25%増と大きく伸び、特に東南アジア向けの空気清浄機が牽引しました。海外売上比率は1"
+    },
+    {
+      "qid": "q056",
+      "type": "reason",
+      "lexical": "same",
+      "intent": "reason",
+      "terms": [
+        "原価率",
+        "改善",
+        "改良",
+        "ブラッシュアップ"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        102
+      ],
+      "top1": "d17: ## 費用と利益率 / 売上原価は290億円で、原価率は64.2%と前年度から1.3ポイント改善しました。改善の理由は、長野工場の生産ラインの自動化により、製造コス"
+    },
+    {
+      "qid": "q057",
+      "type": "person",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "売上報告書"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 3,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        104
+      ],
+      "top1": "d17: ## 2026年度の見通し / 2026年度の売上高は480億円、営業利益は42億円を計画しています。エアクリア MX-500とMX-300の通年寄与に加え、業務用"
+    },
+    {
+      "qid": "q058",
+      "type": "compare",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "満足度",
+        "部門",
+        "最",
+        "部署",
+        "セクション"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        106
+      ],
+      "top1": "d18: ## 総合満足度 / 総合満足度は5点満点で平均3.6点となり、前回調査の3.4点から0.2ポイント上昇しました。「会社を友人に勧めたい」と答えた社員の割合は58%"
+    },
+    {
+      "qid": "q059",
+      "type": "date",
+      "lexical": "relative_time",
+      "intent": "search_value",
+      "terms": [
+        "満足度調査",
+        "来年"
+      ],
+      "filtered": true,
+      "rank": {
+        "bm25_raw": null,
+        "bm25_ir": null,
+        "bm25_ir+filter+rerank": 4
+      },
+      "gold_chunks": [
+        110
+      ],
+      "top1": "noise299: よし、決めた。来年こそ海外行く。"
+    },
+    {
+      "qid": "q060",
+      "type": "reason",
+      "lexical": "same",
+      "intent": "reason",
+      "terms": [
+        "500購入",
+        "決め手",
+        "MX",
+        "最"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        112
+      ],
+      "top1": "d19: ## 購入者の属性 / 購入者の年齢層は40代が32%で最も多く、次いで30代が28%でした。世帯構成では、子どものいる家庭が全体の55%を占めています。購入の決め"
+    },
+    {
+      "qid": "q061",
+      "type": "compare",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "ライバル製品",
+        "500",
+        "MX",
+        "商品",
+        "プロダクト"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        113
+      ],
+      "top1": "d19: 競合他社の同価格帯の製品と比較すると、MX-500は静音性と省エネ性能で優位に立っています。一方、本体の重量が9.5kgと競合製品より約2kg重く、「移動しにく"
+    },
+    {
+      "qid": "q062",
+      "type": "value",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "交換フィルター",
+        "500",
+        "MX",
+        "料金",
+        "絞り込み",
+        "フィルタリング"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 2,
+        "bm25_ir": 2,
+        "bm25_ir+filter+rerank": 6
+      },
+      "gold_chunks": [
+        115
+      ],
+      "top1": "d10: ## カラーとオプション / 本体色はホワイト、グレー、ネイビーの3色です。交換用フィルターの価格は1枚3,500円で、交換の目安は1年ごとです。MX-500用のフ"
+    },
+    {
+      "qid": "q063",
+      "type": "value",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "500",
+        "MX"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 5,
+        "bm25_ir": 7,
+        "bm25_ir+filter+rerank": 5
+      },
+      "gold_chunks": [
+        113
+      ],
+      "top1": "d10: ## MX-500との違い / MX-300とMX-500の最大の違いは適用床面積とフィルターの構成です。MX-300の適用床面積は最大20畳で、フィルターは「シン"
+    },
+    {
+      "qid": "q064",
+      "type": "value",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "大阪支社移転",
+        "出張時間"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        118
+      ],
+      "top1": "d20: ## 移動時間の削減 / 移転により、大阪支社から東京本社への出張の所要時間は平均で片道40分短縮されました。旧支社は最寄り駅から新大阪駅まで地下鉄で約25分かかっ"
+    },
+    {
+      "qid": "q065",
+      "type": "person",
+      "lexical": "abbrev",
+      "intent": "search_value",
+      "terms": [
+        "大阪移転レポート",
+        "北斗",
+        "報告書",
+        "報告"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 2,
+        "bm25_ir": 2,
+        "bm25_ir+filter+rerank": 4
+      },
+      "gold_chunks": [
+        122
+      ],
+      "top1": "d20: ## 検証の目的 / 本レポートは、北斗物流株式会社の大阪支社が2026年1月13日に新大阪へ移転してから6か月間の効果を検証するものです。検証は経営企画部が担当し"
+    },
+    {
+      "qid": "q066",
+      "type": "location",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "経営ミーティング",
+        "4月",
+        "会議",
+        "打ち合わせ"
+      ],
+      "filtered": true,
+      "rank": {
+        "bm25_raw": 2,
+        "bm25_ir": 2,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        123
+      ],
+      "top1": "d21: ## 開催概要 / 日時：2026年4月8日（水）10時から12時。場所：本社5階 大会議室。出席者：鈴木社長、中村営業本部長、伊藤経理部長、佐藤商品企画部長、山田"
+    },
+    {
+      "qid": "q067",
+      "type": "reason",
+      "lexical": "same",
+      "intent": "reason",
+      "terms": [
+        "300",
+        "MX",
+        "延期",
+        "発売"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 1,
+        "bm25_ir": 1,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        125
+      ],
+      "top1": "d21: 佐藤商品企画部長より、エアクリア MX-300の発売日を2026年6月15日とする案が提示され、承認された。当初は5月発売を予定していたが、長野工場の生産ライン"
+    },
+    {
+      "qid": "q068",
+      "type": "value",
+      "lexical": "relative_time",
+      "intent": "lookup",
+      "terms": [
+        "新卒採用",
+        "今年度"
+      ],
+      "filtered": true,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        127
+      ],
+      "top1": "d21: 山田人事部長より、2026年度の新卒採用人数を前年の45名から60名に増やす計画が提案された。増員分は主に生産管理部と海外営業部に配属する。鈴木社長より、海外営"
+    },
+    {
+      "qid": "q069",
+      "type": "date",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "経営ミーティング",
+        "次回",
+        "会議",
+        "打ち合わせ"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        128
+      ],
+      "top1": "d21: ## 決定事項と次回 / 決定事項：MX-300の発売日を6月15日とする。新卒採用60名の計画を承認する。次回の経営会議は2026年5月13日（水）10時から本社"
+    },
+    {
+      "qid": "q070",
+      "type": "value",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "フィルター定期購入プラン",
+        "料金",
+        "計画",
+        "プランニング"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        132
+      ],
+      "top1": "d22: 斎藤主任より、交換用フィルターの定期購入プランの案が説明された。年1回の自動配送で、価格は通常の6,800円から15%引きの5,780円とする。2026年11月"
+    },
+    {
+      "qid": "q071",
+      "type": "person",
+      "lexical": "synonym",
+      "intent": "lookup",
+      "terms": [
+        "製品開発ミーティング",
+        "欠席者",
+        "会議",
+        "打ち合わせ"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 1,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        129
+      ],
+      "top1": "d22: ## 開催概要 / 日時：2026年7月15日（水）14時から15時30分。場所：開発棟2階 会議室B。出席者：佐藤商品企画部長、加藤開発部長、開発部の松本課長、商"
+    },
+    {
+      "qid": "q072",
+      "type": "date",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "iOS版通知バグ",
+        "修正期限",
+        "不具合",
+        "障害"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        130
+      ],
+      "top1": "d22: 松本課長より、スマートフォンアプリ連携機能の開発状況が報告された。現在の進捗は80%で、2026年10月のアップデート配信に向けて順調である。ただし、iOS版で"
+    },
+    {
+      "qid": "q073",
+      "type": "definition",
+      "lexical": "paraphrase",
+      "intent": "definition",
+      "terms": [
+        "定期購入プラン",
+        "フィルター",
+        "絞り込み",
+        "フィルタリング",
+        "計画",
+        "プランニング"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        132
+      ],
+      "top1": "d22: 斎藤主任より、交換用フィルターの定期購入プランの案が説明された。年1回の自動配送で、価格は通常の6,800円から15%引きの5,780円とする。2026年11月"
+    },
+    {
+      "qid": "q074",
+      "type": "date",
+      "lexical": "abbrev",
+      "intent": "search_value",
+      "terms": [
+        "健康診断",
+        "日程",
+        "スケジュール",
+        "予定",
+        "schedule"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        139
+      ],
+      "top1": "d23: 岡田工場長より、定期健康診断を2026年9月8日から9月12日までの5日間で実施することが報告された。受診率100%を目標とし、未受診者には総務課が個別に受診を"
+    },
+    {
+      "qid": "q075",
+      "type": "reason",
+      "lexical": "same",
+      "intent": "reason",
+      "terms": [
+        "5月",
+        "労働災害",
+        "原因",
+        "災害",
+        "要因",
+        "起因"
+      ],
+      "filtered": true,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        136
+      ],
+      "top1": "d23: ## 議題1 労働災害の報告 / 清水係長より、5月の労働災害が1件あったことが報告された。組立ラインで作業員が台車と接触し、足に軽傷を負ったもので、休業は2日間で"
+    },
+    {
+      "qid": "q076",
+      "type": "howto",
+      "lexical": "paraphrase",
+      "intent": "condition",
+      "terms": [
+        "休憩ルール",
+        "30度",
+        "工場",
+        "度"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        138
+      ],
+      "top1": "d23: ## 議題2 熱中症対策 / 三浦医師より、夏季の熱中症対策について説明があった。工場内の気温が30度を超える場合は、1時間ごとに10分間の休憩を取ることを義務づけ"
+    },
+    {
+      "qid": "q077",
+      "type": "location",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "安全衛生委員会",
+        "開催場所"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        135
+      ],
+      "top1": "d23: ## 開催概要 / 日時：2026年6月3日（水）13時から14時。場所：長野工場 管理棟 第1会議室。出席者：岡田工場長、産業医の三浦医師、衛生管理者の清水係長、"
+    },
+    {
+      "qid": "q078",
+      "type": "person",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "営業",
+        "教育",
+        "セールス",
+        "販売活動"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": null,
+        "bm25_ir": 9,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        143
+      ],
+      "top1": "d24: 小林支社長より、営業担当者を25名に増員する計画について、8月1日付で3名が着任し現在18名になったことが報告された。残り7名は10月と1月に採用予定である。新"
+    },
+    {
+      "qid": "q079",
+      "type": "date",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "追跡システム改善要望書",
+        "提出締め切り",
+        "期限",
+        "デッドライン"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        145
+      ],
+      "top1": "d24: 営業担当より、複数の顧客から荷物の追跡情報をリアルタイムで確認したいという要望が出ていることが報告された。小林支社長は、本社のシステム部門へ追跡システムの改善を"
+    },
+    {
+      "qid": "q080",
+      "type": "location",
+      "lexical": "abbrev",
+      "intent": "search_value",
+      "terms": [
+        "営業会議",
+        "会議室",
+        "開催"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 4,
+        "bm25_ir": 3,
+        "bm25_ir+filter+rerank": 3
+      },
+      "gold_chunks": [
+        141
+      ],
+      "top1": "d24: ## 決定事項と次回 / 決定事項：11月中に繁忙期の配車計画を確定する。追跡システムの改善要望書を8月20日までに本社へ提出する。次回の営業会議は2026年9月2"
+    },
+    {
+      "qid": "q081",
+      "type": "value",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "初回ログインパスワード",
+        "ケイヒ"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        1
+      ],
+      "top1": "d01: システムへのログインは社内ポータルの「経費精算」アイコンから行います。初回ログイン時のパスワードは社員番号の下4桁と生年月日の4桁を組み合わせた8桁です。ログイ"
+    },
+    {
+      "qid": "q082",
+      "type": "yesno",
+      "lexical": "same",
+      "intent": "yes_no",
+      "terms": [
+        "パート社員",
+        "ケイヒ",
+        "対象",
+        "スコープ",
+        "scope",
+        "従業員",
+        "職員",
+        "対象範囲"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        0
+      ],
+      "top1": "d01: ## 概要 / 本マニュアルは、株式会社ミライ電機が2025年10月1日に導入した経費精算システム「ケイヒくん」の操作手順をまとめたものです。対象は全社員および契約"
+    },
+    {
+      "qid": "q083",
+      "type": "howto",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "承認ルート",
+        "10万円",
+        "経費",
+        "承認",
+        "費用",
+        "コスト",
+        "出費",
+        "許可",
+        "認可",
+        "決裁"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        4
+      ],
+      "top1": "d01: ## 承認の流れ / 申請された経費は、直属の上長が承認した後、経理部の担当者が内容を確認します。1件あたり10万円を超える申請は、部長承認に加えて経理部長の承認が"
+    },
+    {
+      "qid": "q084",
+      "type": "date",
+      "lexical": "abbrev",
+      "intent": "lookup",
+      "terms": [
+        "旧経費システム",
+        "利用停止日"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 1,
+        "bm25_ir+filter+rerank": 1
+      },
+      "gold_chunks": [
+        0
+      ],
+      "top1": "noise91: システム障害により、本日午後の受付を停止しております。"
+    },
+    {
+      "qid": "q085",
+      "type": "value",
+      "lexical": "synonym",
+      "intent": "lookup",
+      "terms": [
+        "電話サポート",
+        "ケイヒ",
+        "時間帯",
+        "テレフォン",
+        "フォン"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": null,
+        "bm25_ir": null,
+        "bm25_ir+filter+rerank": null
+      },
+      "gold_chunks": [
+        6
+      ],
+      "top1": "d01: ## 概要 / 本マニュアルは、株式会社ミライ電機が2025年10月1日に導入した経費精算システム「ケイヒくん」の操作手順をまとめたものです。対象は全社員および契約"
+    },
+    {
+      "qid": "q086",
+      "type": "location",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "出退勤",
+        "打刻",
+        "勤怠",
+        "勤務記録",
+        "勤怠管理"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 3,
+        "bm25_ir": 1,
+        "bm25_ir+filter+rerank": 1
+      },
+      "gold_chunks": [
+        8
+      ],
+      "top1": "d02: ## はじめに / 「タイムキーパー」は株式会社ミライ電機が全社で利用している勤怠管理システムです。出退勤の打刻、残業申請、休暇申請の3つの機能を備えています。本手"
+    },
+    {
+      "qid": "q087",
+      "type": "howto",
+      "lexical": "same",
+      "intent": "how_to",
+      "terms": [
+        "在宅勤務",
+        "打刻方法",
+        "テレワーク",
+        "リモートワーク",
+        "リモート勤務",
+        "在宅ワーク"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 2,
+        "bm25_ir": 2,
+        "bm25_ir+filter+rerank": 1
+      },
+      "gold_chunks": [
+        8
+      ],
+      "top1": "d16: ## 在宅勤務について / Q. 在宅勤務は週に何日までできますか。A. 在宅勤務は週3日までです。ただし部長が認めた場合は週4日以上も可能です。在宅勤務の日は前週"
+    },
+    {
+      "qid": "q088",
+      "type": "howto",
+      "lexical": "paraphrase",
+      "intent": "how_to",
+      "terms": [],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 2,
+        "bm25_ir": 2,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        8
+      ],
+      "top1": "d02: 出勤時と退勤時は、各フロアの入口に設置されたタブレット端末に社員証をかざして打刻します。在宅勤務の場合はスマートフォンアプリ「タイムキーパー Mobile」から"
+    },
+    {
+      "qid": "q089",
+      "type": "date",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "キャンセル",
+        "休暇申請",
+        "可能",
+        "本人",
+        "解約",
+        "cancel",
+        "契約解除"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        10
+      ],
+      "top1": "d02: ## 休暇申請 / 有給休暇や特別休暇の申請も本システムから行います。「休暇申請」メニューで休暇の種類と日付を選び、「申請」ボタンを押してください。申請後の取り消し"
+    },
+    {
+      "qid": "q090",
+      "type": "list",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "タイムキーパー",
+        "機能"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        7
+      ],
+      "top1": "d02: ## はじめに / 「タイムキーパー」は株式会社ミライ電機が全社で利用している勤怠管理システムです。出退勤の打刻、残業申請、休暇申請の3つの機能を備えています。本手"
+    },
+    {
+      "qid": "q091",
+      "type": "compare",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "X",
+        "PrintMaster",
+        "モノクロ",
+        "印刷速度",
+        "200",
+        "カラー"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        13
+      ],
+      "top1": "d03: ## 製品の概要 / PrintMaster X200は、ホシノ精工株式会社が2025年6月に発売した業務用のA3対応カラー複合機です。印刷、コピー、スキャン、FA"
+    },
+    {
+      "qid": "q092",
+      "type": "value",
+      "lexical": "abbrev",
+      "intent": "lookup",
+      "terms": [
+        "X",
+        "スペース",
+        "200",
+        "必要",
+        "設置",
+        "空白",
+        "space",
+        "ブランク",
+        "blank",
+        "ホワイトスペース"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        14
+      ],
+      "top1": "d03: 本機の設置には幅80cm、奥行き70cm以上のスペースが必要です。壁からは放熱のため10cm以上離してください。電源は専用の100Vコンセントを使用し、延長コー"
+    },
+    {
+      "qid": "q093",
+      "type": "reason",
+      "lexical": "same",
+      "intent": "reason",
+      "terms": [
+        "10cm以上離",
+        "複合機",
+        "壁"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        14
+      ],
+      "top1": "d03: 本機の設置には幅80cm、奥行き70cm以上のスペースが必要です。壁からは放熱のため10cm以上離してください。電源は専用の100Vコンセントを使用し、延長コー"
+    },
+    {
+      "qid": "q094",
+      "type": "list",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "X",
+        "PrintMaster",
+        "200",
+        "機能"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        13
+      ],
+      "top1": "d03: ## 製品の概要 / PrintMaster X200は、ホシノ精工株式会社が2025年6月に発売した業務用のA3対応カラー複合機です。印刷、コピー、スキャン、FA"
+    },
+    {
+      "qid": "q095",
+      "type": "definition",
+      "lexical": "same",
+      "intent": "definition",
+      "terms": [
+        "X",
+        "200",
+        "TN"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        16
+      ],
+      "top1": "d03: ## トナーの交換 / トナーは黒、シアン、マゼンタ、イエローの4色があります。操作パネルに「トナー残量が少なくなりました」と表示されたら、前面カバーを開けて該当色"
+    },
+    {
+      "qid": "q096",
+      "type": "location",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "ダウンロード場所",
+        "SecureLink"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        20
+      ],
+      "top1": "d04: 接続には、VPNクライアント「SecureLink」と、スマートフォンの認証アプリが必要です。SecureLinkは社内ポータルの「ソフトウェア配布」ページから"
+    },
+    {
+      "qid": "q097",
+      "type": "value",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "認証コード",
+        "VPN",
+        "認証",
+        "仮想プライベートネットワーク",
+        "仮想専用線",
+        "オーセンティケーション",
+        "本人確認",
+        "virtual private network",
+        "code",
+        "ソースコード"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 1,
+        "bm25_ir": 1,
+        "bm25_ir+filter+rerank": 2
+      },
+      "gold_chunks": [
+        21
+      ],
+      "top1": "d04: 接続には、VPNクライアント「SecureLink」と、スマートフォンの認証アプリが必要です。SecureLinkは社内ポータルの「ソフトウェア配布」ページから"
+    },
+    {
+      "qid": "q098",
+      "type": "person",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "VPN",
+        "担当者",
+        "緊急時",
+        "連絡",
+        "担当",
+        "窓口",
+        "仮想プライベートネットワーク",
+        "仮想専用線",
+        "コンタクト",
+        "contact",
+        "virtual private network"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        24
+      ],
+      "top1": "d04: ## 問い合わせ先 / 接続できない場合は、情報システム部ヘルプデスクへ連絡してください。受付時間は平日9時から18時までで、内線は2200、メールはヘルプデスク専"
+    },
+    {
+      "qid": "q099",
+      "type": "howto",
+      "lexical": "synonym",
+      "intent": "condition",
+      "terms": [
+        "業務システム",
+        "フリーWi",
+        "ルール",
+        "Fi",
+        "無料",
+        "無償",
+        "仕事",
+        "ワーク"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        22
+      ],
+      "top1": "d04: ## 利用時の注意 / VPN接続中は、社内と同じセキュリティルールが適用されます。公衆Wi-Fiを使う場合は、必ずVPNを接続してから業務システムにアクセスしてく"
+    },
+    {
+      "qid": "q100",
+      "type": "definition",
+      "lexical": "same",
+      "intent": "definition",
+      "terms": [
+        "SecureLink"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        20
+      ],
+      "top1": "d04: 接続には、VPNクライアント「SecureLink」と、スマートフォンの認証アプリが必要です。SecureLinkは社内ポータルの「ソフトウェア配布」ページから"
+    },
+    {
+      "qid": "q101",
+      "type": "compare",
+      "lexical": "paraphrase",
+      "intent": "compare",
+      "terms": [
+        "東京",
+        "宿泊費",
+        "上限",
+        "地方",
+        "最大値",
+        "リミット",
+        "limit",
+        "マックス"
+      ],
+      "filtered": true,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 1
+      },
+      "gold_chunks": [
+        28
+      ],
+      "top1": "d09: 株式会社ミライ電機（本社・東京都品川区、代表取締役社長・鈴木一郎）は2026年2月10日、家庭用空気清浄機の新製品「エアクリア MX-500」を発表しました。発"
+    },
+    {
+      "qid": "q102",
+      "type": "value",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "片道何キロ",
+        "新幹線"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        27
+      ],
+      "top1": "d05: 出張時の交通費は、新幹線は普通車指定席、飛行機はエコノミークラスを原則とします。片道の移動距離が100kmを超える場合に限り、新幹線や飛行機の利用が認められます"
+    },
+    {
+      "qid": "q103",
+      "type": "howto",
+      "lexical": "paraphrase",
+      "intent": "procedure",
+      "terms": [
+        "経費精算規程",
+        "改定手続"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 3,
+        "bm25_ir": 5,
+        "bm25_ir+filter+rerank": 8
+      },
+      "gold_chunks": [
+        31
+      ],
+      "top1": "d21: ## 議題3 経費精算規程の改定 / 伊藤経理部長より、経費精算規程を4月1日付で改定したことが報告された。主な変更点は宿泊費上限の引き上げと精算期限の明確化である"
+    },
+    {
+      "qid": "q104",
+      "type": "yesno",
+      "lexical": "synonym",
+      "intent": "yes_no",
+      "terms": [
+        "接待交際費",
+        "飲み会",
+        "社内"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        29
+      ],
+      "top1": "d05: 接待交際費は、1人あたり8,000円を上限とし、事前に営業本部長の承認が必要です。参加者の氏名と所属を申請書に記載してください。社内の飲食は接待交際費として認め"
+    },
+    {
+      "qid": "q105",
+      "type": "date",
+      "lexical": "relative_time",
+      "intent": "search_value",
+      "terms": [
+        "経費精算規程",
+        "今年度改定",
+        "改定日"
+      ],
+      "filtered": true,
+      "rank": {
+        "bm25_raw": 2,
+        "bm25_ir": 2,
+        "bm25_ir+filter+rerank": 2
+      },
+      "gold_chunks": [
+        25
+      ],
+      "top1": "d21: ## 議題3 経費精算規程の改定 / 伊藤経理部長より、経費精算規程を4月1日付で改定したことが報告された。主な変更点は宿泊費上限の引き上げと精算期限の明確化である"
+    },
+    {
+      "qid": "q106",
+      "type": "person",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "経費規程",
+        "判断",
+        "場合",
+        "疑義",
+        "解釈",
+        "判定",
+        "判別",
+        "ジャッジ"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        25
+      ],
+      "top1": "d05: ## 目的 / この規程は、株式会社ミライ電機の社員が業務のために支出した経費の精算に関する基準を定めるものです。2026年4月1日に改定され、旧規程は同日をもって"
+    },
+    {
+      "qid": "q107",
+      "type": "compare",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "午前半休",
+        "午後半休",
+        "時間帯"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        35
+      ],
+      "top1": "d06: ## 取得の手続き / 有給休暇を取得する場合は、原則として取得日の3営業日前までに勤怠管理システムから申請します。半日単位の取得も可能で、午前半休は9時から13時"
+    },
+    {
+      "qid": "q108",
+      "type": "value",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "時間単位",
+        "年何日",
+        "有給",
+        "有給休暇",
+        "年休",
+        "年次有給休暇"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        35
+      ],
+      "top1": "d06: ## 取得の手続き / 有給休暇を取得する場合は、原則として取得日の3営業日前までに勤怠管理システムから申請します。半日単位の取得も可能で、午前半休は9時から13時"
+    },
+    {
+      "qid": "q109",
+      "type": "definition",
+      "lexical": "same",
+      "intent": "definition",
+      "terms": [
+        "計画的付与",
+        "有給",
+        "有給休暇",
+        "年休",
+        "年次有給休暇"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 1,
+        "bm25_ir": 1,
+        "bm25_ir+filter+rerank": 1
+      },
+      "gold_chunks": [
+        36
+      ],
+      "top1": "d06: 退職を予定する社員は、退職日までに残りの有給休暇を取得することができます。ただし引き継ぎに支障がないよう、上長と日程を調整してください。退職日以降に有給休暇を取"
+    },
+    {
+      "qid": "q110",
+      "type": "person",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "有給取得率",
+        "部署",
+        "部門",
+        "セクション"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        36
+      ],
+      "top1": "d06: ## 計画的付与と時季変更 / 会社は年間5日分について、労使協定に基づき計画的に取得日を指定することがあります。また、業務に著しい支障がある場合、会社は取得日の変"
+    },
+    {
+      "qid": "q111",
+      "type": "date",
+      "lexical": "relative_time",
+      "intent": "search_value",
+      "terms": [
+        "有給休暇取得規程",
+        "今年度",
+        "施行日",
+        "施行",
+        "実施",
+        "実践",
+        "遂行"
+      ],
+      "filtered": true,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 1
+      },
+      "gold_chunks": [
+        32
+      ],
+      "top1": "d07: 北斗物流では、2026年度の有給休暇取得率の目標を70%と定めています。2025年度の実績は58%でした。取得率が50%を下回る営業所については、本社人事課が個"
+    },
+    {
+      "qid": "q112",
+      "type": "yesno",
+      "lexical": "same",
+      "intent": "yes_no",
+      "terms": [
+        "有給付与日",
+        "全社一斉",
+        "北斗物流"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        39
+      ],
+      "top1": "d07: 北斗物流では、入社日から6か月経過した日に10日を付与し、以後は入社日を基準とした個別の付与日を採用しています。全社一斉の付与日はありません。付与日数は法定どお"
+    },
+    {
+      "qid": "q113",
+      "type": "value",
+      "lexical": "relative_time",
+      "intent": "lookup",
+      "terms": [
+        "有給取得率",
+        "北斗物流",
+        "昨年度"
+      ],
+      "filtered": true,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        42
+      ],
+      "top1": "d07: 北斗物流では、2026年度の有給休暇取得率の目標を70%と定めています。2025年度の実績は58%でした。取得率が50%を下回る営業所については、本社人事課が個"
+    },
+    {
+      "qid": "q114",
+      "type": "date",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "申請期限",
+        "繁忙期",
+        "有給",
+        "有給休暇",
+        "年休",
+        "年次有給休暇"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        41
+      ],
+      "top1": "d07: ## 繁忙期の取り扱い / 12月と3月は繁忙期のため、有給休暇の取得は営業所ごとに1日あたり2名までに制限されます。繁忙期に取得を希望する場合は、前月の15日まで"
+    },
+    {
+      "qid": "q115",
+      "type": "compare",
+      "lexical": "same",
+      "intent": "compare",
+      "terms": [
+        "ドライバー職",
+        "半日休暇",
+        "事務職"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        40
+      ],
+      "top1": "d07: ## 申請ルール / 有給休暇の申請は、取得希望日の1週間前までに営業所長へ申請書を提出してください。ドライバー職は配車計画の都合上、2週間前までの申請をお願いして"
+    },
+    {
+      "qid": "q116",
+      "type": "person",
+      "lexical": "abbrev",
+      "intent": "search_value",
+      "terms": [
+        "有給申請書",
+        "北斗"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        40
+      ],
+      "top1": "d07: ## 申請ルール / 有給休暇の申請は、取得希望日の1週間前までに営業所長へ申請書を提出してください。ドライバー職は配車計画の都合上、2週間前までの申請をお願いして"
+    },
+    {
+      "qid": "q117",
+      "type": "definition",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "有給ガイドライン",
+        "北斗物流",
+        "文書",
+        "資料",
+        "ドキュメント",
+        "指針",
+        "guideline",
+        "書類"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        38
+      ],
+      "top1": "d07: ## はじめに / 本ガイドラインは、北斗物流株式会社の従業員が有給休暇を円滑に取得できるよう、運用のルールをまとめたものです。2025年10月1日に制定され、全営"
+    },
+    {
+      "qid": "q118",
+      "type": "value",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "パスワード",
+        "何文字以上",
+        "文字",
+        "暗証番号",
+        "パスコード",
+        "合言葉"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        46
+      ],
+      "top1": "d08: パスワードは12文字以上で、英大文字、英小文字、数字、記号のうち3種類以上を組み合わせてください。同じパスワードを複数のシステムで使い回すことは禁止です。パスワ"
+    },
+    {
+      "qid": "q119",
+      "type": "howto",
+      "lexical": "same",
+      "intent": "condition",
+      "terms": [
+        "USBメモリー",
+        "使用ルール",
+        "外部記憶媒体",
+        "使う",
+        "利用"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        47
+      ],
+      "top1": "d08: ## 持ち出しの制限 / 極秘および秘密に分類された情報を社外に持ち出す場合は、部長の事前承認が必要です。USBメモリなどの外部記憶媒体は、情報システム部が登録した"
+    },
+    {
+      "qid": "q120",
+      "type": "value",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "情報セキュリティ研修",
+        "年何回",
+        "トレーニング",
+        "講習"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 1,
+        "bm25_ir": 1,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        49
+      ],
+      "top1": "d08: ## 教育と監査 / 全社員は年1回、情報セキュリティ研修を受講する義務があります。受講率は各部門の評価項目に含まれます。内部監査室は年に1回、本ポリシーの遵守状況"
+    },
+    {
+      "qid": "q121",
+      "type": "reason",
+      "lexical": "paraphrase",
+      "intent": "reason",
+      "terms": [
+        "報告",
+        "必要",
+        "確証",
+        "報告書",
+        "レポート"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        48
+      ],
+      "top1": "d08: 情報漏えいやウイルス感染の疑いがある場合は、直ちにネットワークから端末を切り離し、情報システム部へ報告してください。報告の遅れは被害を拡大させるため、確証がなく"
+    },
+    {
+      "qid": "q122",
+      "type": "date",
+      "lexical": "relative_time",
+      "intent": "search_value",
+      "terms": [
+        "情報セキュリティポリシー",
+        "今年改定",
+        "改定日"
+      ],
+      "filtered": true,
+      "rank": {
+        "bm25_raw": 3,
+        "bm25_ir": 3,
+        "bm25_ir+filter+rerank": 1
+      },
+      "gold_chunks": [
+        44
+      ],
+      "top1": "noise166: セキュリティパッチは2026年8月15日に配布されました。"
+    },
+    {
+      "qid": "q123",
+      "type": "person",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "ポリシー遵守状況",
+        "監査",
+        "オーディット",
+        "audit",
+        "方針",
+        "policy"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        49
+      ],
+      "top1": "d08: ## 教育と監査 / 全社員は年1回、情報セキュリティ研修を受講する義務があります。受講率は各部門の評価項目に含まれます。内部監査室は年に1回、本ポリシーの遵守状況"
+    },
+    {
+      "qid": "q124",
+      "type": "value",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "花粉除去率",
+        "500",
+        "MX",
+        "上"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 1,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        52
+      ],
+      "top1": "d09: ## 製品の特長 / MX-500の最大の特長は、独自開発の「デュアルイオンフィルター」です。従来機と比べて花粉の除去率が12%向上し、適用床面積は最大40畳に広が"
+    },
+    {
+      "qid": "q125",
+      "type": "value",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "消費電力",
+        "500",
+        "MX"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": null,
+        "bm25_ir": 5,
+        "bm25_ir+filter+rerank": null
+      },
+      "gold_chunks": [
+        55
+      ],
+      "top1": "d10: ## MX-500との違い / MX-300とMX-500の最大の違いは適用床面積とフィルターの構成です。MX-300の適用床面積は最大20畳で、フィルターは「シン"
+    },
+    {
+      "qid": "q126",
+      "type": "reason",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "500",
+        "MX",
+        "背景",
+        "開発",
+        "ディベロップメント",
+        "構築",
+        "バックグラウンド",
+        "background",
+        "経緯"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 2,
+        "bm25_ir": 1,
+        "bm25_ir+filter+rerank": 5
+      },
+      "gold_chunks": [
+        53
+      ],
+      "top1": "d10: ## MX-500との違い / MX-300とMX-500の最大の違いは適用床面積とフィルターの構成です。MX-300の適用床面積は最大20畳で、フィルターは「シン"
+    },
+    {
+      "qid": "q127",
+      "type": "date",
+      "lexical": "relative_time",
+      "intent": "yes_no",
+      "terms": [
+        "業務用モデル",
+        "500",
+        "来年度",
+        "MX",
+        "model",
+        "AIモデル"
+      ],
+      "filtered": true,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        56
+      ],
+      "top1": "d09: 同社は今後、MX-500をベースにした業務用モデルを2027年度に投入する計画です。また、スマートフォンアプリと連携した遠隔操作機能は、2026年秋のアップデー"
+    },
+    {
+      "qid": "q128",
+      "type": "definition",
+      "lexical": "same",
+      "intent": "definition",
+      "terms": [
+        "デュアルイオンフィルター"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        52
+      ],
+      "top1": "d09: ## 製品の特長 / MX-500の最大の特長は、独自開発の「デュアルイオンフィルター」です。従来機と比べて花粉の除去率が12%向上し、適用床面積は最大40畳に広が"
+    },
+    {
+      "qid": "q129",
+      "type": "date",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "フィルター無料キャンペーン",
+        "購入期限",
+        "絞り込み",
+        "フィルタリング"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 3,
+        "bm25_ir": 3,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        54
+      ],
+      "top1": "d09: 販売は全国の家電量販店と同社の直販サイトで行います。初年度の販売目標は10万台で、売上高にして約50億円を見込んでいます。発売記念として、2026年4月30日ま"
+    },
+    {
+      "qid": "q130",
+      "type": "value",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "適用床面積",
+        "300",
+        "MX"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        58
+      ],
+      "top1": "d10: ## MX-500との違い / MX-300とMX-500の最大の違いは適用床面積とフィルターの構成です。MX-300の適用床面積は最大20畳で、フィルターは「シン"
+    },
+    {
+      "qid": "q131",
+      "type": "location",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "300",
+        "MX",
+        "工場"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": null,
+        "bm25_ir": 9,
+        "bm25_ir+filter+rerank": 8
+      },
+      "gold_chunks": [
+        59
+      ],
+      "top1": "d10: ## MX-500との違い / MX-300とMX-500の最大の違いは適用床面積とフィルターの構成です。MX-300の適用床面積は最大20畳で、フィルターは「シン"
+    },
+    {
+      "qid": "q132",
+      "type": "value",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "発売1",
+        "300",
+        "MX",
+        "台数",
+        "月"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 6,
+        "bm25_ir": 6,
+        "bm25_ir+filter+rerank": 6
+      },
+      "gold_chunks": [
+        60
+      ],
+      "top1": "d21: 佐藤商品企画部長より、エアクリア MX-300の発売日を2026年6月15日とする案が提示され、承認された。当初は5月発売を予定していたが、長野工場の生産ライン"
+    },
+    {
+      "qid": "q133",
+      "type": "person",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "コメント",
+        "300",
+        "本部長",
+        "MX",
+        "価格",
+        "値段",
+        "プライス",
+        "意見",
+        "見解",
+        "金額",
+        "オピニオン"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 4,
+        "bm25_ir": 2,
+        "bm25_ir+filter+rerank": 4
+      },
+      "gold_chunks": [
+        59
+      ],
+      "top1": "d22: ## 議題4 MX-100の企画 / 2027年春の発売を目指す小型モデル「MX-100」について、佐藤部長より企画の方向性が示された。ターゲットは一人暮らしの学生"
+    },
+    {
+      "qid": "q134",
+      "type": "definition",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "300",
+        "用途向",
+        "MX"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 3,
+        "bm25_ir": 3,
+        "bm25_ir+filter+rerank": 3
+      },
+      "gold_chunks": [
+        57
+      ],
+      "top1": "d10: 同社は2026年内にMX-300の販売目標を15万台としています。また、2027年春にはさらに小型の「MX-100」を投入する計画を明らかにしました。MX-10"
+    },
+    {
+      "qid": "q135",
+      "type": "value",
+      "lexical": "abbrev",
+      "intent": "search_value",
+      "terms": [
+        "製造コスト削減率",
+        "廉価モデル",
+        "model",
+        "AIモデル",
+        "費用",
+        "経費"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 2
+      },
+      "gold_chunks": [
+        59
+      ],
+      "top1": "d10: 株式会社ミライ電機は2026年6月15日、空気清浄機「エアクリア」シリーズの廉価モデル「エアクリア MX-300」を発売しました。希望小売価格は税込29,800"
+    },
+    {
+      "qid": "q136",
+      "type": "value",
+      "lexical": "synonym",
+      "intent": "lookup",
+      "terms": [
+        "新オフィス",
+        "新大阪",
+        "広"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 6,
+        "bm25_ir": 5,
+        "bm25_ir+filter+rerank": 4
+      },
+      "gold_chunks": [
+        63
+      ],
+      "top1": "noise92: 御社の新オフィス、とても素敵ですね。"
+    },
+    {
+      "qid": "q137",
+      "type": "location",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "旧大阪支社",
+        "所在地",
+        "場所",
+        "ロケーション",
+        "プレイス"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 2,
+        "bm25_ir": 2,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        63
+      ],
+      "top1": "d11: 北斗物流株式会社（本社・札幌市）は、大阪支社を2026年1月13日に新大阪駅前の「新大阪グランビル」8階へ移転しました。旧支社は大阪市中央区にあり、築40年を超"
+    },
+    {
+      "qid": "q138",
+      "type": "yesno",
+      "lexical": "paraphrase",
+      "intent": "yes_no",
+      "terms": [
+        "大阪支社",
+        "電話番号",
+        "移転"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        67
+      ],
+      "top1": "d11: 大阪支社の電話番号は移転後も変更ありません。郵送物は2026年1月13日以降、新住所へ送付するようお願いしています。旧住所宛ての郵便物は2026年7月末まで転送"
+    },
+    {
+      "qid": "q139",
+      "type": "date",
+      "lexical": "relative_time",
+      "intent": "yes_no",
+      "terms": [
+        "神戸営業所",
+        "来年",
+        "開設"
+      ],
+      "filtered": true,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        68
+      ],
+      "top1": "d11: ## 今後の計画 / 北斗物流は今後、大阪支社を関西圏の営業拠点として強化し、2026年度中に営業担当者を現在の15名から25名に増員する計画です。また、2027年"
+    },
+    {
+      "qid": "q140",
+      "type": "reason",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "新大阪",
+        "決め手",
+        "移転"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        64
+      ],
+      "top1": "d11: ## 移転の理由 / 移転の理由は、老朽化への対応に加えて、新幹線を使った出張の利便性を高めるためです。北斗物流は関西圏の顧客が増えており、東京本社との往来も頻繁に"
+    },
+    {
+      "qid": "q141",
+      "type": "date",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "転送期限",
+        "郵便物",
+        "住所"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        67
+      ],
+      "top1": "d11: 大阪支社の電話番号は移転後も変更ありません。郵送物は2026年1月13日以降、新住所へ送付するようお願いしています。旧住所宛ての郵便物は2026年7月末まで転送"
+    },
+    {
+      "qid": "q142",
+      "type": "value",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "テクノフェア2026",
+        "出展社数"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 2,
+        "bm25_ir": 2,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        69
+      ],
+      "top1": "d12: 家電と電子機器の総合展示会「テクノフェア2026」が、2026年5月20日から22日までの3日間、千葉市の幕張コンベンションセンターで開催されました。主催は日本"
+    },
+    {
+      "qid": "q143",
+      "type": "reason",
+      "lexical": "paraphrase",
+      "intent": "reason",
+      "terms": [
+        "テクノフェア大賞",
+        "500",
+        "MX"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        72
+      ],
+      "top1": "d12: 会期中に発表された「テクノフェア大賞」は、ミライ電機のエアクリア MX-500が受賞しました。受賞理由は、省エネ性能と静音性の両立が高く評価されたためです。優秀"
+    },
+    {
+      "qid": "q144",
+      "type": "date",
+      "lexical": "abbrev",
+      "intent": "search_value",
+      "terms": [
+        "X",
+        "300",
+        "発売"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        70
+      ],
+      "top1": "d12: ## 注目の出展 / 株式会社ミライ電機のブースでは、空気清浄機「エアクリア MX-500」の実演が行われ、来場者の関心を集めました。ホシノ精工株式会社は、次世代の"
+    },
+    {
+      "qid": "q145",
+      "type": "value",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "2030年",
+        "削減目標",
+        "消費電力",
+        "家電",
+        "年"
+      ],
+      "filtered": true,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        71
+      ],
+      "top1": "d12: ## 基調講演 / 初日の基調講演では、日本家電技術協会の渡辺会長が「2030年に向けた家電の省エネ目標」と題して講演しました。渡辺会長は、家電の消費電力を2030"
+    },
+    {
+      "qid": "q146",
+      "type": "date",
+      "lexical": "relative_time",
+      "intent": "yes_no",
+      "terms": [
+        "テクノフェア",
+        "出展申込",
+        "来年",
+        "来月"
+      ],
+      "filtered": true,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        73
+      ],
+      "top1": "d12: ## 来年の開催 / 次回の「テクノフェア2027」は、2027年5月19日から21日まで同じ会場で開催される予定です。主催者は出展社数500社を目標に掲げています"
+    },
+    {
+      "qid": "q147",
+      "type": "yesno",
+      "lexical": "same",
+      "intent": "yes_no",
+      "terms": [
+        "領収書",
+        "上様",
+        "レシート",
+        "受領書"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        75
+      ],
+      "top1": "d13: Q. 領収書の宛名は会社名でなければいけませんか。A. 宛名は「株式会社ミライ電機」としてください。宛名が空欄や「上様」の領収書は、5,000円未満に限り受け付"
+    },
+    {
+      "qid": "q148",
+      "type": "date",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "25日",
+        "振込日",
+        "振込",
+        "休",
+        "日"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        77
+      ],
+      "top1": "d13: Q. 立替金はいつ振り込まれますか。A. 締め切りまでに承認された分は、当月25日に給与口座へ振り込まれます。25日が休日の場合は前営業日の振り込みとなります。"
+    },
+    {
+      "qid": "q149",
+      "type": "howto",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "交通費",
+        "場合",
+        "自宅",
+        "計算",
+        "直接出張先",
+        "家",
+        "住まい",
+        "住居"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        78
+      ],
+      "top1": "d13: ## 交通費について / Q. 自宅から直接出張先へ向かう場合、交通費はどう計算しますか。A. 自宅から出張先までの実費を申請してください。ただし通勤定期券の区間と"
+    },
+    {
+      "qid": "q150",
+      "type": "howto",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "レンタカー料金",
+        "出張先",
+        "条件",
+        "精算",
+        "経費精算",
+        "立替精算",
+        "経費申請"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        79
+      ],
+      "top1": "d13: Q. 出張先でのレンタカー代は精算できますか。A. 公共交通機関での移動が困難な場合に限り、事前に上長の承認を得れば精算できます。ガソリン代と高速道路料金も合わ"
+    },
+    {
+      "qid": "q151",
+      "type": "reason",
+      "lexical": "paraphrase",
+      "intent": "reason",
+      "terms": [
+        "領収書画像",
+        "クラウド",
+        "cloud",
+        "クラウド環境"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        80
+      ],
+      "top1": "d13: ## その他 / Q. 私物のスマートフォンで領収書を撮影しても問題ありませんか。A. 問題ありません。ただし撮影した画像は、システムへのアップロード後に端末から消"
+    },
+    {
+      "qid": "q152",
+      "type": "value",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "週3日勤務",
+        "有給日数",
+        "パート"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        82
+      ],
+      "top1": "d14: Q. パート社員にも有給休暇はありますか。A. あり、週の所定労働日数に応じて比例付与されます。週3日勤務の場合、入社6か月後に5日が付与されます。勤務日数が変"
+    },
+    {
+      "qid": "q153",
+      "type": "value",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "入社半年以内",
+        "休暇日数",
+        "無給"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        81
+      ],
+      "top1": "d14: ## 付与について / Q. 入社してすぐに有給休暇は使えますか。A. 入社から6か月後に10日が付与されるまで、有給休暇は使えません。ただし、この期間中は最大3日"
+    },
+    {
+      "qid": "q154",
+      "type": "person",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "有給申請",
+        "相談先"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        84
+      ],
+      "top1": "d14: Q. 有給休暇の申請を上長に断られました。A. 会社が時季変更権を行使できるのは、業務に著しい支障がある場合に限られます。理由の説明がない場合は人事部の木村主任"
+    },
+    {
+      "qid": "q155",
+      "type": "location",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "残日数",
+        "有給",
+        "表示",
+        "有給休暇",
+        "年休",
+        "年次有給休暇"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        85
+      ],
+      "top1": "d14: ## 残日数について / Q. 自分の残日数はどこで確認できますか。A. 勤怠管理システム「タイムキーパー」のトップ画面に、当年度の残日数と繰越日数が表示されていま"
+    },
+    {
+      "qid": "q156",
+      "type": "yesno",
+      "lexical": "synonym",
+      "intent": "yes_no",
+      "terms": [
+        "有給",
+        "前",
+        "有給休暇",
+        "年休",
+        "年次有給休暇"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 1,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        86
+      ],
+      "top1": "d14: Q. 2年前に付与された分が消えてしまいました。A. 有給休暇の有効期限は付与から2年間で、期限を過ぎた分は消滅します。消滅前に人事部から通知を出していますので"
+    },
+    {
+      "qid": "q157",
+      "type": "howto",
+      "lexical": "same",
+      "intent": "procedure",
+      "terms": [
+        "印刷",
+        "対処",
+        "対応",
+        "措置",
+        "プリント",
+        "print",
+        "プリントアウト"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        87
+      ],
+      "top1": "d15: ## 印刷について / Q. 印刷がかすれます。A. トナーの残量を確認してください。残量が十分な場合は、操作パネルの「メンテナンス」から「ヘッドクリーニング」を実"
+    },
+    {
+      "qid": "q158",
+      "type": "howto",
+      "lexical": "paraphrase",
+      "intent": "how_to",
+      "terms": [
+        "直し方",
+        "52",
+        "E"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 3,
+        "bm25_ir": 2,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        91
+      ],
+      "top1": "d15: ## エラーについて / Q. 「エラーコード E-52」が表示されます。A. E-52は定着ユニットの温度異常を示します。電源を切って10分待ってから再起動してく"
+    },
+    {
+      "qid": "q159",
+      "type": "compare",
+      "lexical": "paraphrase",
+      "intent": "compare",
+      "terms": [
+        "300dpi",
+        "600dpi",
+        "ファイルサイズ"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        90
+      ],
+      "top1": "d15: Q. スキャンの解像度を上げるには。A. 操作パネルの「画質」で200dpi、300dpi、600dpiから選べます。初期値は300dpiです。600dpiにす"
+    },
+    {
+      "qid": "q160",
+      "type": "list",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "両面印刷",
+        "用紙"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        88
+      ],
+      "top1": "d15: Q. 両面印刷ができません。A. 両面印刷はA4とA3の普通紙のみ対応しています。厚紙やラベル紙は両面印刷に対応していません。厚紙に印刷する場合は手差しトレイか"
+    },
+    {
+      "qid": "q161",
+      "type": "value",
+      "lexical": "abbrev",
+      "intent": "lookup",
+      "terms": [
+        "X",
+        "スキャン解像度",
+        "200",
+        "初期値",
+        "既定",
+        "デフォルト",
+        "default",
+        "標準値"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        90
+      ],
+      "top1": "d15: Q. スキャンの解像度を上げるには。A. 操作パネルの「画質」で200dpi、300dpi、600dpiから選べます。初期値は300dpiです。600dpiにす"
+    },
+    {
+      "qid": "q162",
+      "type": "howto",
+      "lexical": "same",
+      "intent": "condition",
+      "terms": [
+        "VPN",
+        "接続",
+        "頻繁",
+        "コネクション",
+        "連結",
+        "仮想プライベートネットワーク",
+        "仮想専用線",
+        "virtual private network"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        93
+      ],
+      "top1": "d16: ## 接続について / Q. VPNの接続が頻繁に切れます。A. 自宅のWi-Fiルーターの再起動を試してください。それでも改善しない場合は、有線LANでの接続をお"
+    },
+    {
+      "qid": "q163",
+      "type": "howto",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "海外出張前",
+        "VPN",
+        "仮想プライベートネットワーク",
+        "仮想専用線",
+        "virtual private network"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        94
+      ],
+      "top1": "d16: Q. 海外出張先からVPNに接続できますか。A. 接続できます。ただし一部の国では通信規制によって接続できない場合があります。出張前に情報システム部へ渡航先を届"
+    },
+    {
+      "qid": "q164",
+      "type": "value",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "貸与モニター",
+        "サイズ",
+        "画面",
+        "スクリーン"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        97
+      ],
+      "top1": "d16: ## 機器について / Q. 自宅で使うモニターを会社から借りられますか。A. 借りられます。情報システム部に申請すると、24インチのモニターを1台貸与します。貸与"
+    },
+    {
+      "qid": "q165",
+      "type": "date",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "テレワーク",
+        "申請期限",
+        "在宅勤務",
+        "リモートワーク",
+        "リモート勤務",
+        "在宅ワーク"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": null,
+        "bm25_ir": null,
+        "bm25_ir+filter+rerank": 4
+      },
+      "gold_chunks": [
+        95
+      ],
+      "top1": "noise127: 正直、このフレームワークは学習コストの割にメリットが薄い。"
+    },
+    {
+      "qid": "q166",
+      "type": "list",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "在宅勤務手当",
+        "費用",
+        "コスト",
+        "経費",
+        "出費"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        96
+      ],
+      "top1": "d16: Q. 在宅勤務中の通信費は会社が負担しますか。A. 在宅勤務手当として月額4,000円を支給しています。手当には通信費と光熱費が含まれ、別途の実費精算はできませ"
+    },
+    {
+      "qid": "q167",
+      "type": "date",
+      "lexical": "abbrev",
+      "intent": "search_value",
+      "terms": [
+        "代替機",
+        "PC",
+        "パソコン",
+        "コンピューター",
+        "パーソナルコンピュータ"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        98
+      ],
+      "top1": "d16: Q. 貸与パソコンが故障しました。A. ヘルプデスク（内線2200）へ連絡してください。代替機を翌営業日までに宅配便で送付します。故障したパソコンは代替機に同梱"
+    },
+    {
+      "qid": "q168",
+      "type": "definition",
+      "lexical": "relative_time",
+      "intent": "search_value",
+      "terms": [
+        "売上報告書",
+        "対象期間",
+        "昨年度"
+      ],
+      "filtered": true,
+      "rank": {
+        "bm25_raw": 5,
+        "bm25_ir": 5,
+        "bm25_ir+filter+rerank": 2
+      },
+      "gold_chunks": [
+        99
+      ],
+      "top1": "noise61: 2025年度の売上は前年比12％増の45億円となりました。"
+    },
+    {
+      "qid": "q169",
+      "type": "reason",
+      "lexical": "synonym",
+      "intent": "lookup",
+      "terms": [
+        "販売費"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 5,
+        "bm25_ir": 1,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        102
+      ],
+      "top1": "d17: ## 費用と利益率 / 売上原価は290億円で、原価率は64.2%と前年度から1.3ポイント改善しました。改善の理由は、長野工場の生産ラインの自動化により、製造コス"
+    },
+    {
+      "qid": "q170",
+      "type": "compare",
+      "lexical": "abbrev",
+      "intent": "search_value",
+      "terms": [
+        "海外売上比率",
+        "中計",
+        "実績",
+        "目標",
+        "成果",
+        "アウトカム",
+        "ゴール",
+        "ターゲット"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        101
+      ],
+      "top1": "d17: 地域別では国内売上が390億円、海外売上が62億円でした。海外売上は前年度比25%増と大きく伸び、特に東南アジア向けの空気清浄機が牽引しました。海外売上比率は1"
+    },
+    {
+      "qid": "q171",
+      "type": "person",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "満足度アンケート",
+        "担当",
+        "集計",
+        "アグリゲーション",
+        "aggregation",
+        "担当者",
+        "窓口",
+        "とりまとめ"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": null,
+        "bm25_ir": 7,
+        "bm25_ir+filter+rerank": 4
+      },
+      "gold_chunks": [
+        105
+      ],
+      "top1": "d20: ## 検証の目的 / 本レポートは、北斗物流株式会社の大阪支社が2026年1月13日に新大阪へ移転してから6か月間の効果を検証するものです。検証は経営企画部が担当し"
+    },
+    {
+      "qid": "q172",
+      "type": "definition",
+      "lexical": "relative_time",
+      "intent": "definition",
+      "terms": [
+        "従業員満足度調査",
+        "今年",
+        "調査",
+        "リサーチ",
+        "research",
+        "インベスティゲーション"
+      ],
+      "filtered": true,
+      "rank": {
+        "bm25_raw": 3,
+        "bm25_ir": 2,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        105
+      ],
+      "top1": "d18: ## 調査の概要 / 本調査は、株式会社ミライ電機の全社員を対象に、2026年2月1日から2月14日までオンラインで実施しました。対象者1,850名のうち1,520"
+    },
+    {
+      "qid": "q173",
+      "type": "reason",
+      "lexical": "synonym",
+      "intent": "reason",
+      "terms": [
+        "生産管理部",
+        "原因",
+        "不満",
+        "主",
+        "要因",
+        "起因"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        108
+      ],
+      "top1": "d18: ## 低評価の項目 / 満足度が低かった項目は「評価制度の公平性」「昇進の機会」「経営層とのコミュニケーション」でした。評価制度の公平性は2.8点で、自由記述では「"
+    },
+    {
+      "qid": "q174",
+      "type": "definition",
+      "lexical": "same",
+      "intent": "definition",
+      "terms": [
+        "500市場調査報告書",
+        "MX",
+        "市場調査報告書"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        111
+      ],
+      "top1": "d19: ## 調査の目的 / 本報告書は、空気清浄機「エアクリア MX-500」の発売後3か月間の市場での評価をまとめたものです。調査期間は2026年3月20日から6月20"
+    },
+    {
+      "qid": "q175",
+      "type": "reason",
+      "lexical": "synonym",
+      "intent": "lookup",
+      "terms": [
+        "クレーム",
+        "500",
+        "MX"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": null,
+        "bm25_ir": null,
+        "bm25_ir+filter+rerank": null
+      },
+      "gold_chunks": [
+        115
+      ],
+      "top1": "d10: ## MX-500との違い / MX-300とMX-500の最大の違いは適用床面積とフィルターの構成です。MX-300の適用床面積は最大20畳で、フィルターは「シン"
+    },
+    {
+      "qid": "q176",
+      "type": "reason",
+      "lexical": "synonym",
+      "intent": "reason",
+      "terms": [
+        "定期購入プラン",
+        "提案",
+        "プロポーザル",
+        "提言",
+        "計画",
+        "プランニング"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 1,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        116
+      ],
+      "top1": "d19: ## 提言 / 商品企画部は、フィルターの交換費用に対する不満に対応するため、定期購入プランの導入を提言します。また、軽量化は次期モデルの最優先課題とすべきです。本"
+    },
+    {
+      "qid": "q177",
+      "type": "compare",
+      "lexical": "abbrev",
+      "intent": "search_value",
+      "terms": [
+        "販売比率",
+        "500",
+        "量販店",
+        "MX",
+        "直販"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 2,
+        "bm25_ir": 1,
+        "bm25_ir+filter+rerank": 3
+      },
+      "gold_chunks": [
+        114
+      ],
+      "top1": "d10: ## MX-500との違い / MX-300とMX-500の最大の違いは適用床面積とフィルターの構成です。MX-300の適用床面積は最大20畳で、フィルターは「シン"
+    },
+    {
+      "qid": "q178",
+      "type": "person",
+      "lexical": "abbrev",
+      "intent": "search_value",
+      "terms": [
+        "効果検証",
+        "大阪移転",
+        "北斗",
+        "担当",
+        "部署",
+        "検証",
+        "部門",
+        "セクション",
+        "担当者",
+        "窓口",
+        "試験",
+        "テスト"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        117
+      ],
+      "top1": "d20: ## 検証の目的 / 本レポートは、北斗物流株式会社の大阪支社が2026年1月13日に新大阪へ移転してから6か月間の効果を検証するものです。検証は経営企画部が担当し"
+    },
+    {
+      "qid": "q179",
+      "type": "definition",
+      "lexical": "same",
+      "intent": "definition",
+      "terms": [
+        "大阪支社移転効果検証レポート",
+        "検証",
+        "試験",
+        "テスト",
+        "報告書",
+        "報告"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        117
+      ],
+      "top1": "d20: ## 検証の目的 / 本レポートは、北斗物流株式会社の大阪支社が2026年1月13日に新大阪へ移転してから6か月間の効果を検証するものです。検証は経営企画部が担当し"
+    },
+    {
+      "qid": "q180",
+      "type": "reason",
+      "lexical": "synonym",
+      "intent": "lookup",
+      "terms": [
+        "新規受注",
+        "移転後",
+        "要因",
+        "原因",
+        "起因"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 1,
+        "bm25_ir": 1,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        120
+      ],
+      "top1": "d20: ## 営業成果 / 移転後6か月間の関西圏での新規契約件数は38件で、前年同期の27件から41%増加しました。新大阪という立地により、顧客が来社しやすくなったことが"
+    },
+    {
+      "qid": "q181",
+      "type": "compare",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "大阪支社",
+        "移転前後",
+        "家賃"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": null,
+        "bm25_ir": null,
+        "bm25_ir+filter+rerank": null
+      },
+      "gold_chunks": [
+        121
+      ],
+      "top1": "d11: 北斗物流株式会社（本社・札幌市）は、大阪支社を2026年1月13日に新大阪駅前の「新大阪グランビル」8階へ移転しました。旧支社は大阪市中央区にあり、築40年を超"
+    },
+    {
+      "qid": "q182",
+      "type": "location",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "増員分",
+        "新卒",
+        "配属"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        127
+      ],
+      "top1": "d21: 山田人事部長より、2026年度の新卒採用人数を前年の45名から60名に増やす計画が提案された。増員分は主に生産管理部と海外営業部に配属する。鈴木社長より、海外営"
+    },
+    {
+      "qid": "q183",
+      "type": "person",
+      "lexical": "synonym",
+      "intent": "lookup",
+      "terms": [
+        "経営ミーティング",
+        "4月",
+        "議事録",
+        "会議録",
+        "議事メモ",
+        "ミーティングノート",
+        "会議",
+        "打ち合わせ"
+      ],
+      "filtered": true,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        123
+      ],
+      "top1": "d21: ## 開催概要 / 日時：2026年4月8日（水）10時から12時。場所：本社5階 大会議室。出席者：鈴木社長、中村営業本部長、伊藤経理部長、佐藤商品企画部長、山田"
+    },
+    {
+      "qid": "q184",
+      "type": "reason",
+      "lexical": "synonym",
+      "intent": "reason",
+      "terms": [
+        "海外営業部",
+        "人員増",
+        "優先",
+        "優先度",
+        "プライオリティ",
+        "priority",
+        "優先順位"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        127
+      ],
+      "top1": "d21: 山田人事部長より、2026年度の新卒採用人数を前年の45名から60名に増やす計画が提案された。増員分は主に生産管理部と海外営業部に配属する。鈴木社長より、海外営"
+    },
+    {
+      "qid": "q185",
+      "type": "list",
+      "lexical": "abbrev",
+      "intent": "lookup",
+      "terms": [
+        "経費規程改定",
+        "変更点",
+        "主"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        126
+      ],
+      "top1": "d21: ## 議題3 経費精算規程の改定 / 伊藤経理部長より、経費精算規程を4月1日付で改定したことが報告された。主な変更点は宿泊費上限の引き上げと精算期限の明確化である"
+    },
+    {
+      "qid": "q186",
+      "type": "location",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "製品開発ミーティング",
+        "7月",
+        "会議",
+        "打ち合わせ"
+      ],
+      "filtered": true,
+      "rank": {
+        "bm25_raw": 2,
+        "bm25_ir": 2,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        129
+      ],
+      "top1": "d22: ## 開催概要 / 日時：2026年7月15日（水）14時から15時30分。場所：開発棟2階 会議室B。出席者：佐藤商品企画部長、加藤開発部長、開発部の松本課長、商"
+    },
+    {
+      "qid": "q187",
+      "type": "definition",
+      "lexical": "same",
+      "intent": "definition",
+      "terms": [
+        "100",
+        "モデル",
+        "MX",
+        "model",
+        "AIモデル",
+        "学習モデル",
+        "機械学習モデル"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        133
+      ],
+      "top1": "d22: ## 議題4 MX-100の企画 / 2027年春の発売を目指す小型モデル「MX-100」について、佐藤部長より企画の方向性が示された。ターゲットは一人暮らしの学生"
+    },
+    {
+      "qid": "q188",
+      "type": "howto",
+      "lexical": "synonym",
+      "intent": "how_to",
+      "terms": [
+        "次期モデル",
+        "方",
+        "model",
+        "AIモデル"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        131
+      ],
+      "top1": "d22: ## 議題2 次期モデルの軽量化 / 市場調査で本体重量への不満が多かったことを受け、次期モデルの目標重量を7.5kg以下とすることで合意した。加藤開発部長より、フ"
+    },
+    {
+      "qid": "q189",
+      "type": "date",
+      "lexical": "relative_time",
+      "intent": "yes_no",
+      "terms": [
+        "アップデート配信",
+        "アプリ連携",
+        "来月",
+        "インテグレーション",
+        "integration",
+        "更新"
+      ],
+      "filtered": true,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        130
+      ],
+      "top1": "d22: 松本課長より、スマートフォンアプリ連携機能の開発状況が報告された。現在の進捗は80%で、2026年10月のアップデート配信に向けて順調である。ただし、iOS版で"
+    },
+    {
+      "qid": "q190",
+      "type": "location",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "安全衛生委員会",
+        "議事録",
+        "掲示",
+        "会議録",
+        "議事メモ",
+        "ミーティングノート"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        140
+      ],
+      "top1": "d23: ## 決定事項と次回 / 決定事項：通路の物品仮置きを禁止する。熱中症対策を7月1日から実施する。次回の委員会は2026年7月1日（水）13時から同会議室で開催する"
+    },
+    {
+      "qid": "q191",
+      "type": "location",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "経口補水液",
+        "置く場所"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        138
+      ],
+      "top1": "d23: ## 議題2 熱中症対策 / 三浦医師より、夏季の熱中症対策について説明があった。工場内の気温が30度を超える場合は、1時間ごとに10分間の休憩を取ることを義務づけ"
+    },
+    {
+      "qid": "q192",
+      "type": "person",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "長野工場",
+        "産業医"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        135
+      ],
+      "top1": "d23: ## 開催概要 / 日時：2026年6月3日（水）13時から14時。場所：長野工場 管理棟 第1会議室。出席者：岡田工場長、産業医の三浦医師、衛生管理者の清水係長、"
+    },
+    {
+      "qid": "q193",
+      "type": "howto",
+      "lexical": "abbrev",
+      "intent": "procedure",
+      "terms": [
+        "未受診者",
+        "健診",
+        "対応",
+        "対処",
+        "措置"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        139
+      ],
+      "top1": "d23: 岡田工場長より、定期健康診断を2026年9月8日から9月12日までの5日間で実施することが報告された。受診率100%を目標とし、未受診者には総務課が個別に受診を"
+    },
+    {
+      "qid": "q194",
+      "type": "howto",
+      "lexical": "synonym",
+      "intent": "procedure",
+      "terms": [
+        "再発",
+        "労災",
+        "対策",
+        "対処策",
+        "防止策",
+        "対抗策"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": null,
+        "bm25_ir": 3,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        137
+      ],
+      "top1": "d23: 再発防止策として、通路への物品の仮置きを禁止し、床に黄色のラインを引いて通路を明示することを決定した。ライン引きの作業は6月20日までに総務課が実施する。また、"
+    },
+    {
+      "qid": "q195",
+      "type": "date",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "黄色ライン",
+        "作業",
+        "期限",
+        "引く",
+        "床",
+        "タスク",
+        "オペレーション",
+        "締め切り",
+        "デッドライン"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        137
+      ],
+      "top1": "d23: 再発防止策として、通路への物品の仮置きを禁止し、床に黄色のラインを引いて通路を明示することを決定した。ライン引きの作業は6月20日までに総務課が実施する。また、"
+    },
+    {
+      "qid": "q196",
+      "type": "person",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "大阪支社営業会議",
+        "議事録作成者"
+      ],
+      "filtered": false,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        141
+      ],
+      "top1": "d24: ## 開催概要 / 日時：2026年8月5日（水）9時から10時30分。場所：大阪支社 会議室A。出席者：小林支社長、営業課の長谷川課長、営業担当12名。議事録作成"
+    },
+    {
+      "qid": "q197",
+      "type": "definition",
+      "lexical": "synonym",
+      "intent": "lookup",
+      "terms": [
+        "7月",
+        "大口受注",
+        "内容"
+      ],
+      "filtered": true,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        142
+      ],
+      "top1": "d24: ## 議題1 7月の営業実績 / 長谷川課長より、7月の新規契約が8件、売上高が1億8,000万円であったことが報告された。月間目標の1億5,000万円を20%上回"
+    },
+    {
+      "qid": "q198",
+      "type": "compare",
+      "lexical": "paraphrase",
+      "intent": "compare",
+      "terms": [
+        "7月",
+        "月間目標",
+        "売上高",
+        "比較",
+        "売上",
+        "売上金額",
+        "対比",
+        "compare",
+        "コンペア"
+      ],
+      "filtered": true,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        142
+      ],
+      "top1": "d24: ## 議題1 7月の営業実績 / 長谷川課長より、7月の新規契約が8件、売上高が1億8,000万円であったことが報告された。月間目標の1億5,000万円を20%上回"
+    },
+    {
+      "qid": "q199",
+      "type": "date",
+      "lexical": "relative_time",
+      "intent": "yes_no",
+      "terms": [
+        "営業7名",
+        "来年1月",
+        "採用",
+        "来月",
+        "残",
+        "雇用",
+        "リクルート",
+        "セールス",
+        "販売活動",
+        "雇い入れ"
+      ],
+      "filtered": true,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        143
+      ],
+      "top1": "d24: 小林支社長より、営業担当者を25名に増員する計画について、8月1日付で3名が着任し現在18名になったことが報告された。残り7名は10月と1月に採用予定である。新"
+    },
+    {
+      "qid": "q200",
+      "type": "list",
+      "lexical": "relative_time",
+      "intent": "lookup",
+      "terms": [
+        "大阪支社営業会議",
+        "出席者",
+        "先月"
+      ],
+      "filtered": true,
+      "rank": {
+        "bm25_raw": 0,
+        "bm25_ir": 0,
+        "bm25_ir+filter+rerank": 0
+      },
+      "gold_chunks": [
+        141
+      ],
+      "top1": "d24: ## 開催概要 / 日時：2026年8月5日（水）9時から10時30分。場所：大阪支社 会議室A。出席者：小林支社長、営業課の長谷川課長、営業担当12名。議事録作成"
+    }
+  ]
+}

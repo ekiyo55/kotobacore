@@ -1,0 +1,77 @@
+{
+  "kotobacore": "0.6.4",
+  "tokenizer_version": "2.4",
+  "gold_items": 100,
+  "texts": 300,
+  "tools": {
+    "KotobaCore coarse (Karuizawa 2.4)": {
+      "description": "意味単位 (行った 1 語)。辞書同梱 CSV、依存ゼロ",
+      "status": "ok",
+      "boundary_precision": 0.8815,
+      "boundary_recall": 0.906,
+      "boundary_f1": 0.8936,
+      "ms_per_sentence": 0.269,
+      "tokens_per_s": 40409,
+      "tokens_per_sentence": 10.85
+    },
+    "KotobaCore fine": {
+      "description": "語幹 / 送り仮名 / 活用語尾 (LM 語彙用)",
+      "status": "ok",
+      "boundary_precision": 0.7515,
+      "boundary_recall": 0.9338,
+      "boundary_f1": 0.8328,
+      "ms_per_sentence": 0.256,
+      "tokens_per_s": 52872,
+      "tokens_per_sentence": 13.53
+    },
+    "janome (IPADIC)": {
+      "description": "純 Python 形態素解析器、IPADIC 内蔵",
+      "status": "ok",
+      "boundary_precision": 0.763,
+      "boundary_recall": 0.9971,
+      "boundary_f1": 0.8645,
+      "ms_per_sentence": 0.708,
+      "tokens_per_s": 19547,
+      "tokens_per_sentence": 13.85
+    },
+    "SudachiPy A": {
+      "description": "SudachiDict core, 分割単位 A",
+      "status": "ok",
+      "boundary_precision": 0.763,
+      "boundary_recall": 1.0,
+      "boundary_f1": 0.8656,
+      "ms_per_sentence": 0.034,
+      "tokens_per_s": 409032,
+      "tokens_per_sentence": 14.0
+    },
+    "SudachiPy B": {
+      "description": "SudachiDict core, 分割単位 B",
+      "status": "ok",
+      "boundary_precision": 0.7755,
+      "boundary_recall": 1.0,
+      "boundary_f1": 0.8735,
+      "ms_per_sentence": 0.044,
+      "tokens_per_s": 313048,
+      "tokens_per_sentence": 13.78
+    },
+    "SudachiPy C": {
+      "description": "SudachiDict core, 分割単位 C",
+      "status": "ok",
+      "boundary_precision": 0.7772,
+      "boundary_recall": 1.0,
+      "boundary_f1": 0.8746,
+      "ms_per_sentence": 0.044,
+      "tokens_per_s": 311638,
+      "tokens_per_sentence": 13.72
+    }
+  },
+  "footprint": {
+    "KotobaCore dict (resources/dict)": "0.3 MB",
+    "janome package": "211.3 MB",
+    "sudachidict_core": "217.5 MB",
+    "sudachipy": "3.4 MB"
+  },
+  "not_run": {
+    "sentiment/emotion baselines (oseti, asari…)": "MeCab の Windows DLL がロードできず未実施 (mecab-python3 ImportError)"
+  }
+}

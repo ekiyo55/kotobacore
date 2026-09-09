@@ -1,0 +1,758 @@
+{
+  "version": "0.5.3",
+  "model": "intfloat/multilingual-e5-base",
+  "docs": 24,
+  "chunks": 447,
+  "questions": 200,
+  "gold_missing": [],
+  "timing_s": {
+    "chunking": 2.8,
+    "index_embedding": 0.0,
+    "query_embedding": 0.05
+  },
+  "overall": {
+    "bm25": {
+      "recall@1": 68.5,
+      "recall@3": 82.0,
+      "recall@5": 90.0,
+      "mrr@10": 0.766,
+      "n": 200
+    },
+    "kotobacore_lex": {
+      "recall@1": 78.0,
+      "recall@3": 89.0,
+      "recall@5": 94.5,
+      "mrr@10": 0.846,
+      "n": 200
+    },
+    "emb": {
+      "recall@1": 72.5,
+      "recall@3": 86.0,
+      "recall@5": 91.0,
+      "mrr@10": 0.805,
+      "n": 200
+    },
+    "emb+rerank": {
+      "recall@1": 78.5,
+      "recall@3": 89.5,
+      "recall@5": 92.0,
+      "mrr@10": 0.844,
+      "n": 200
+    },
+    "rrf(bm25,emb)": {
+      "recall@1": 73.0,
+      "recall@3": 89.5,
+      "recall@5": 95.0,
+      "mrr@10": 0.817,
+      "n": 200
+    },
+    "hybrid(α=0.3)": {
+      "recall@1": 78.0,
+      "recall@3": 88.5,
+      "recall@5": 93.5,
+      "mrr@10": 0.845,
+      "n": 200
+    },
+    "hybrid+filter+rerank": {
+      "recall@1": 80.5,
+      "recall@3": 91.5,
+      "recall@5": 95.0,
+      "mrr@10": 0.868,
+      "n": 200
+    },
+    "full(rrf(lex_ir,emb)+filter+rerank)": {
+      "recall@1": 79.5,
+      "recall@3": 91.0,
+      "recall@5": 95.0,
+      "mrr@10": 0.862,
+      "n": 200
+    }
+  },
+  "alpha_grid": {
+    "hybrid(α=0.3)": {
+      "recall@1": 78.0,
+      "recall@3": 88.5,
+      "recall@5": 93.5,
+      "mrr@10": 0.845,
+      "n": 200
+    },
+    "hybrid(α=0.5)": {
+      "recall@1": 76.0,
+      "recall@3": 90.0,
+      "recall@5": 93.5,
+      "mrr@10": 0.837,
+      "n": 200
+    },
+    "hybrid(α=0.7)": {
+      "recall@1": 71.0,
+      "recall@3": 87.0,
+      "recall@5": 94.0,
+      "mrr@10": 0.8,
+      "n": 200
+    }
+  },
+  "by_lexical": {
+    "abbrev": {
+      "bm25": {
+        "recall@1": 70.0,
+        "recall@3": 85.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.782,
+        "n": 20
+      },
+      "kotobacore_lex": {
+        "recall@1": 65.0,
+        "recall@3": 80.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.756,
+        "n": 20
+      },
+      "emb": {
+        "recall@1": 60.0,
+        "recall@3": 80.0,
+        "recall@5": 80.0,
+        "mrr@10": 0.721,
+        "n": 20
+      },
+      "emb+rerank": {
+        "recall@1": 70.0,
+        "recall@3": 80.0,
+        "recall@5": 80.0,
+        "mrr@10": 0.76,
+        "n": 20
+      },
+      "hybrid+filter+rerank": {
+        "recall@1": 80.0,
+        "recall@3": 85.0,
+        "recall@5": 95.0,
+        "mrr@10": 0.846,
+        "n": 20
+      },
+      "full(rrf(lex_ir,emb)+filter+rerank)": {
+        "recall@1": 75.0,
+        "recall@3": 85.0,
+        "recall@5": 95.0,
+        "mrr@10": 0.823,
+        "n": 20
+      }
+    },
+    "paraphrase": {
+      "bm25": {
+        "recall@1": 69.2,
+        "recall@3": 76.9,
+        "recall@5": 90.4,
+        "mrr@10": 0.764,
+        "n": 52
+      },
+      "kotobacore_lex": {
+        "recall@1": 82.7,
+        "recall@3": 90.4,
+        "recall@5": 94.2,
+        "mrr@10": 0.875,
+        "n": 52
+      },
+      "emb": {
+        "recall@1": 73.1,
+        "recall@3": 86.5,
+        "recall@5": 94.2,
+        "mrr@10": 0.818,
+        "n": 52
+      },
+      "emb+rerank": {
+        "recall@1": 78.8,
+        "recall@3": 92.3,
+        "recall@5": 94.2,
+        "mrr@10": 0.858,
+        "n": 52
+      },
+      "hybrid+filter+rerank": {
+        "recall@1": 78.8,
+        "recall@3": 94.2,
+        "recall@5": 96.2,
+        "mrr@10": 0.873,
+        "n": 52
+      },
+      "full(rrf(lex_ir,emb)+filter+rerank)": {
+        "recall@1": 80.8,
+        "recall@3": 92.3,
+        "recall@5": 96.2,
+        "mrr@10": 0.877,
+        "n": 52
+      }
+    },
+    "relative_time": {
+      "bm25": {
+        "recall@1": 73.7,
+        "recall@3": 78.9,
+        "recall@5": 89.5,
+        "mrr@10": 0.789,
+        "n": 19
+      },
+      "kotobacore_lex": {
+        "recall@1": 73.7,
+        "recall@3": 94.7,
+        "recall@5": 100.0,
+        "mrr@10": 0.835,
+        "n": 19
+      },
+      "emb": {
+        "recall@1": 78.9,
+        "recall@3": 84.2,
+        "recall@5": 89.5,
+        "mrr@10": 0.838,
+        "n": 19
+      },
+      "emb+rerank": {
+        "recall@1": 84.2,
+        "recall@3": 94.7,
+        "recall@5": 94.7,
+        "mrr@10": 0.886,
+        "n": 19
+      },
+      "hybrid+filter+rerank": {
+        "recall@1": 84.2,
+        "recall@3": 94.7,
+        "recall@5": 94.7,
+        "mrr@10": 0.904,
+        "n": 19
+      },
+      "full(rrf(lex_ir,emb)+filter+rerank)": {
+        "recall@1": 84.2,
+        "recall@3": 94.7,
+        "recall@5": 94.7,
+        "mrr@10": 0.895,
+        "n": 19
+      }
+    },
+    "same": {
+      "bm25": {
+        "recall@1": 75.7,
+        "recall@3": 92.9,
+        "recall@5": 97.1,
+        "mrr@10": 0.841,
+        "n": 70
+      },
+      "kotobacore_lex": {
+        "recall@1": 84.3,
+        "recall@3": 95.7,
+        "recall@5": 95.7,
+        "mrr@10": 0.904,
+        "n": 70
+      },
+      "emb": {
+        "recall@1": 75.7,
+        "recall@3": 91.4,
+        "recall@5": 94.3,
+        "mrr@10": 0.835,
+        "n": 70
+      },
+      "emb+rerank": {
+        "recall@1": 82.9,
+        "recall@3": 91.4,
+        "recall@5": 94.3,
+        "mrr@10": 0.873,
+        "n": 70
+      },
+      "hybrid+filter+rerank": {
+        "recall@1": 85.7,
+        "recall@3": 95.7,
+        "recall@5": 95.7,
+        "mrr@10": 0.905,
+        "n": 70
+      },
+      "full(rrf(lex_ir,emb)+filter+rerank)": {
+        "recall@1": 82.9,
+        "recall@3": 92.9,
+        "recall@5": 95.7,
+        "mrr@10": 0.887,
+        "n": 70
+      }
+    },
+    "synonym": {
+      "bm25": {
+        "recall@1": 51.3,
+        "recall@3": 69.2,
+        "recall@5": 71.8,
+        "mrr@10": 0.615,
+        "n": 39
+      },
+      "kotobacore_lex": {
+        "recall@1": 69.2,
+        "recall@3": 76.9,
+        "recall@5": 87.2,
+        "mrr@10": 0.754,
+        "n": 39
+      },
+      "emb": {
+        "recall@1": 69.2,
+        "recall@3": 79.5,
+        "recall@5": 87.2,
+        "mrr@10": 0.762,
+        "n": 39
+      },
+      "emb+rerank": {
+        "recall@1": 71.8,
+        "recall@3": 84.6,
+        "recall@5": 89.7,
+        "mrr@10": 0.796,
+        "n": 39
+      },
+      "hybrid+filter+rerank": {
+        "recall@1": 71.8,
+        "recall@3": 82.1,
+        "recall@5": 92.3,
+        "mrr@10": 0.787,
+        "n": 39
+      },
+      "full(rrf(lex_ir,emb)+filter+rerank)": {
+        "recall@1": 71.8,
+        "recall@3": 87.2,
+        "recall@5": 92.3,
+        "mrr@10": 0.8,
+        "n": 39
+      }
+    }
+  },
+  "by_type": {
+    "compare": {
+      "bm25": {
+        "recall@1": 86.7,
+        "recall@3": 93.3,
+        "recall@5": 93.3,
+        "mrr@10": 0.889,
+        "n": 15
+      },
+      "kotobacore_lex": {
+        "recall@1": 80.0,
+        "recall@3": 86.7,
+        "recall@5": 93.3,
+        "mrr@10": 0.85,
+        "n": 15
+      },
+      "emb": {
+        "recall@1": 80.0,
+        "recall@3": 93.3,
+        "recall@5": 100.0,
+        "mrr@10": 0.883,
+        "n": 15
+      },
+      "emb+rerank": {
+        "recall@1": 86.7,
+        "recall@3": 86.7,
+        "recall@5": 93.3,
+        "mrr@10": 0.891,
+        "n": 15
+      },
+      "hybrid+filter+rerank": {
+        "recall@1": 86.7,
+        "recall@3": 93.3,
+        "recall@5": 93.3,
+        "mrr@10": 0.911,
+        "n": 15
+      },
+      "full(rrf(lex_ir,emb)+filter+rerank)": {
+        "recall@1": 86.7,
+        "recall@3": 93.3,
+        "recall@5": 93.3,
+        "mrr@10": 0.91,
+        "n": 15
+      }
+    },
+    "date": {
+      "bm25": {
+        "recall@1": 76.7,
+        "recall@3": 80.0,
+        "recall@5": 93.3,
+        "mrr@10": 0.809,
+        "n": 30
+      },
+      "kotobacore_lex": {
+        "recall@1": 73.3,
+        "recall@3": 93.3,
+        "recall@5": 100.0,
+        "mrr@10": 0.836,
+        "n": 30
+      },
+      "emb": {
+        "recall@1": 66.7,
+        "recall@3": 86.7,
+        "recall@5": 90.0,
+        "mrr@10": 0.772,
+        "n": 30
+      },
+      "emb+rerank": {
+        "recall@1": 80.0,
+        "recall@3": 90.0,
+        "recall@5": 93.3,
+        "mrr@10": 0.854,
+        "n": 30
+      },
+      "hybrid+filter+rerank": {
+        "recall@1": 80.0,
+        "recall@3": 96.7,
+        "recall@5": 96.7,
+        "mrr@10": 0.878,
+        "n": 30
+      },
+      "full(rrf(lex_ir,emb)+filter+rerank)": {
+        "recall@1": 76.7,
+        "recall@3": 93.3,
+        "recall@5": 96.7,
+        "mrr@10": 0.856,
+        "n": 30
+      }
+    },
+    "definition": {
+      "bm25": {
+        "recall@1": 65.0,
+        "recall@3": 85.0,
+        "recall@5": 95.0,
+        "mrr@10": 0.767,
+        "n": 20
+      },
+      "kotobacore_lex": {
+        "recall@1": 80.0,
+        "recall@3": 95.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.879,
+        "n": 20
+      },
+      "emb": {
+        "recall@1": 70.0,
+        "recall@3": 85.0,
+        "recall@5": 90.0,
+        "mrr@10": 0.785,
+        "n": 20
+      },
+      "emb+rerank": {
+        "recall@1": 80.0,
+        "recall@3": 90.0,
+        "recall@5": 90.0,
+        "mrr@10": 0.85,
+        "n": 20
+      },
+      "hybrid+filter+rerank": {
+        "recall@1": 85.0,
+        "recall@3": 90.0,
+        "recall@5": 90.0,
+        "mrr@10": 0.89,
+        "n": 20
+      },
+      "full(rrf(lex_ir,emb)+filter+rerank)": {
+        "recall@1": 85.0,
+        "recall@3": 90.0,
+        "recall@5": 90.0,
+        "mrr@10": 0.892,
+        "n": 20
+      }
+    },
+    "howto": {
+      "bm25": {
+        "recall@1": 68.0,
+        "recall@3": 84.0,
+        "recall@5": 92.0,
+        "mrr@10": 0.772,
+        "n": 25
+      },
+      "kotobacore_lex": {
+        "recall@1": 80.0,
+        "recall@3": 92.0,
+        "recall@5": 96.0,
+        "mrr@10": 0.872,
+        "n": 25
+      },
+      "emb": {
+        "recall@1": 88.0,
+        "recall@3": 96.0,
+        "recall@5": 96.0,
+        "mrr@10": 0.92,
+        "n": 25
+      },
+      "emb+rerank": {
+        "recall@1": 88.0,
+        "recall@3": 96.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.923,
+        "n": 25
+      },
+      "hybrid+filter+rerank": {
+        "recall@1": 88.0,
+        "recall@3": 96.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.921,
+        "n": 25
+      },
+      "full(rrf(lex_ir,emb)+filter+rerank)": {
+        "recall@1": 88.0,
+        "recall@3": 92.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.916,
+        "n": 25
+      }
+    },
+    "list": {
+      "bm25": {
+        "recall@1": 80.0,
+        "recall@3": 80.0,
+        "recall@5": 80.0,
+        "mrr@10": 0.827,
+        "n": 10
+      },
+      "kotobacore_lex": {
+        "recall@1": 90.0,
+        "recall@3": 90.0,
+        "recall@5": 90.0,
+        "mrr@10": 0.912,
+        "n": 10
+      },
+      "emb": {
+        "recall@1": 90.0,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.95,
+        "n": 10
+      },
+      "emb+rerank": {
+        "recall@1": 90.0,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.933,
+        "n": 10
+      },
+      "hybrid+filter+rerank": {
+        "recall@1": 90.0,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.933,
+        "n": 10
+      },
+      "full(rrf(lex_ir,emb)+filter+rerank)": {
+        "recall@1": 90.0,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.933,
+        "n": 10
+      }
+    },
+    "location": {
+      "bm25": {
+        "recall@1": 46.7,
+        "recall@3": 73.3,
+        "recall@5": 93.3,
+        "mrr@10": 0.602,
+        "n": 15
+      },
+      "kotobacore_lex": {
+        "recall@1": 73.3,
+        "recall@3": 86.7,
+        "recall@5": 93.3,
+        "mrr@10": 0.824,
+        "n": 15
+      },
+      "emb": {
+        "recall@1": 80.0,
+        "recall@3": 86.7,
+        "recall@5": 100.0,
+        "mrr@10": 0.863,
+        "n": 15
+      },
+      "emb+rerank": {
+        "recall@1": 86.7,
+        "recall@3": 93.3,
+        "recall@5": 93.3,
+        "mrr@10": 0.91,
+        "n": 15
+      },
+      "hybrid+filter+rerank": {
+        "recall@1": 93.3,
+        "recall@3": 93.3,
+        "recall@5": 93.3,
+        "mrr@10": 0.944,
+        "n": 15
+      },
+      "full(rrf(lex_ir,emb)+filter+rerank)": {
+        "recall@1": 80.0,
+        "recall@3": 93.3,
+        "recall@5": 93.3,
+        "mrr@10": 0.876,
+        "n": 15
+      }
+    },
+    "person": {
+      "bm25": {
+        "recall@1": 65.0,
+        "recall@3": 75.0,
+        "recall@5": 85.0,
+        "mrr@10": 0.721,
+        "n": 20
+      },
+      "kotobacore_lex": {
+        "recall@1": 75.0,
+        "recall@3": 85.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.83,
+        "n": 20
+      },
+      "emb": {
+        "recall@1": 40.0,
+        "recall@3": 55.0,
+        "recall@5": 70.0,
+        "mrr@10": 0.516,
+        "n": 20
+      },
+      "emb+rerank": {
+        "recall@1": 40.0,
+        "recall@3": 70.0,
+        "recall@5": 80.0,
+        "mrr@10": 0.559,
+        "n": 20
+      },
+      "hybrid+filter+rerank": {
+        "recall@1": 50.0,
+        "recall@3": 80.0,
+        "recall@5": 95.0,
+        "mrr@10": 0.686,
+        "n": 20
+      },
+      "full(rrf(lex_ir,emb)+filter+rerank)": {
+        "recall@1": 60.0,
+        "recall@3": 80.0,
+        "recall@5": 95.0,
+        "mrr@10": 0.729,
+        "n": 20
+      }
+    },
+    "reason": {
+      "bm25": {
+        "recall@1": 65.0,
+        "recall@3": 80.0,
+        "recall@5": 85.0,
+        "mrr@10": 0.744,
+        "n": 20
+      },
+      "kotobacore_lex": {
+        "recall@1": 85.0,
+        "recall@3": 90.0,
+        "recall@5": 90.0,
+        "mrr@10": 0.883,
+        "n": 20
+      },
+      "emb": {
+        "recall@1": 70.0,
+        "recall@3": 80.0,
+        "recall@5": 85.0,
+        "mrr@10": 0.762,
+        "n": 20
+      },
+      "emb+rerank": {
+        "recall@1": 80.0,
+        "recall@3": 85.0,
+        "recall@5": 85.0,
+        "mrr@10": 0.825,
+        "n": 20
+      },
+      "hybrid+filter+rerank": {
+        "recall@1": 80.0,
+        "recall@3": 85.0,
+        "recall@5": 85.0,
+        "mrr@10": 0.833,
+        "n": 20
+      },
+      "full(rrf(lex_ir,emb)+filter+rerank)": {
+        "recall@1": 80.0,
+        "recall@3": 85.0,
+        "recall@5": 85.0,
+        "mrr@10": 0.836,
+        "n": 20
+      }
+    },
+    "value": {
+      "bm25": {
+        "recall@1": 62.9,
+        "recall@3": 80.0,
+        "recall@5": 85.7,
+        "mrr@10": 0.729,
+        "n": 35
+      },
+      "kotobacore_lex": {
+        "recall@1": 71.4,
+        "recall@3": 80.0,
+        "recall@5": 85.7,
+        "mrr@10": 0.769,
+        "n": 35
+      },
+      "emb": {
+        "recall@1": 77.1,
+        "recall@3": 88.6,
+        "recall@5": 91.4,
+        "mrr@10": 0.84,
+        "n": 35
+      },
+      "emb+rerank": {
+        "recall@1": 80.0,
+        "recall@3": 91.4,
+        "recall@5": 91.4,
+        "mrr@10": 0.86,
+        "n": 35
+      },
+      "hybrid+filter+rerank": {
+        "recall@1": 77.1,
+        "recall@3": 88.6,
+        "recall@5": 97.1,
+        "mrr@10": 0.836,
+        "n": 35
+      },
+      "full(rrf(lex_ir,emb)+filter+rerank)": {
+        "recall@1": 74.3,
+        "recall@3": 91.4,
+        "recall@5": 97.1,
+        "mrr@10": 0.827,
+        "n": 35
+      }
+    },
+    "yesno": {
+      "bm25": {
+        "recall@1": 80.0,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.883,
+        "n": 10
+      },
+      "kotobacore_lex": {
+        "recall@1": 90.0,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.933,
+        "n": 10
+      },
+      "emb": {
+        "recall@1": 70.0,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.85,
+        "n": 10
+      },
+      "emb+rerank": {
+        "recall@1": 80.0,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.9,
+        "n": 10
+      },
+      "hybrid+filter+rerank": {
+        "recall@1": 90.0,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.95,
+        "n": 10
+      },
+      "full(rrf(lex_ir,emb)+filter+rerank)": {
+        "recall@1": 90.0,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.95,
+        "n": 10
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 """Tests for normalizer per 07_テスト仕様 §5."""
 
-from kotobacore.normalizer import normalize
+from kotobacore.core.text import normalize
 
 
 def test_norm_001_zenkaku_alphanumeric_to_ascii():

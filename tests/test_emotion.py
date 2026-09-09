@@ -1,10 +1,10 @@
 """Tests for emotion detector per 07_テスト仕様 §10-12."""
 
 from kotobacore.dictionary import load_default_bundle, load_user_bundle
-from kotobacore.emotion import detect_emotion
-from kotobacore.normalizer import normalize
-from kotobacore.schema import EmotionExpression, EmotionResult
-from kotobacore.tokenizer import KaruizawaBackend, merge_keep_as_unit
+from kotobacore.modules.emotion import detect_emotion
+from kotobacore.core.text import normalize
+from kotobacore.core.ir import EmotionExpression, EmotionResult
+from kotobacore.core.token import KaruizawaBackend, merge_keep_as_unit
 
 
 def _detect(text: str, use_external: bool = False) -> EmotionResult:

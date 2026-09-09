@@ -1,6 +1,6 @@
 """Tests for the shared Aho-Corasick surface matcher."""
 
-from kotobacore.matching import SurfaceMatcher
+from kotobacore.core.matching import SurfaceMatcher
 
 
 def test_basic_matches_sorted_by_rank_then_pos():

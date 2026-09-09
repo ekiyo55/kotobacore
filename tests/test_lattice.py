@@ -211,7 +211,7 @@ def test_fine_analyze_keeps_semantic_layer_coarse():
 
 def test_onomatopoeia_hiragana_variants_detected():
     a = Analyzer()
-    assert a.analyze("わくわくする").emotion.primary == "joy"
+    assert a.analyze("わくわくする").emotion.primary == "anticipation"  # v0.6.6: わくわく = anticipation (human evaluation set)
     assert a.analyze("いらいらする").emotion.primary == "irritation"
     assert a.analyze("どきどきした").emotion.primary == "anticipation"
 
@@ -242,7 +242,7 @@ def test_reduplication_leaves_known_words_alone():
 
 def test_emphatic_sokuon_folds_to_base_form():
     a = Analyzer()
-    assert a.analyze("ワックワクだよ").emotion.primary == "joy"
+    assert a.analyze("ワックワクだよ").emotion.primary == "anticipation"  # v0.6.6: ワクワク = anticipation
     toks = a.tokenize("わっくわくした")
     assert toks[0].surface == "わっくわく"
     assert toks[0].dictionary_form == "わくわく"

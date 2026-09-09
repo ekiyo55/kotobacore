@@ -2,9 +2,9 @@
 
 from kotobacore import Analyzer
 from kotobacore.dictionary import load_default_bundle
-from kotobacore.normalizer import normalize
-from kotobacore.schema import Token
-from kotobacore.tokenizer import KaruizawaBackend, merge_keep_as_unit
+from kotobacore.core.text import normalize
+from kotobacore.core.ir import Token
+from kotobacore.core.token import KaruizawaBackend, merge_keep_as_unit
 
 
 def _raw_then_merged(text: str):

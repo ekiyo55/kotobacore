@@ -1,0 +1,80 @@
+{"qid": "q001", "question": "ICカードの乗車履歴を経費に取り込む方法", "doc_id": "d01", "answer": "「ICカード連携」メニューから交通系ICカードをカードリーダーにかざす", "type": "howto", "lexical": "paraphrase"}
+{"qid": "q002", "question": "ケイヒくんの操作の質問は誰に聞けばいい", "doc_id": "d01", "answer": "経理部システム担当の田中係長までメール", "type": "person", "lexical": "synonym"}
+{"qid": "q003", "question": "経費システムの申請締め切り時刻", "doc_id": "d01", "answer": "毎月の申請締め切りは翌月5日の17時", "type": "date", "lexical": "abbrev"}
+{"qid": "q004", "question": "残業申請の手順を教えて", "doc_id": "d02", "answer": "メニューの「残業申請」を開き、予定終了時刻と理由を入力して上長に送信します", "type": "howto", "lexical": "same"}
+{"qid": "q005", "question": "タイムキーパー手順書の今年度の改訂日", "doc_id": "d02", "answer": "本手順書は2026年4月1日改訂版です", "type": "date", "lexical": "relative_time"}
+{"qid": "q006", "question": "タイムキーパーアプリのバグの直し方", "doc_id": "d02", "answer": "アプリを最新版に更新することで解消することが多い", "type": "howto", "lexical": "synonym"}
+{"qid": "q007", "question": "タイムキーパーとは何のシステム", "doc_id": "d02", "answer": "全社で利用している勤怠管理システムです", "type": "definition", "lexical": "same"}
+{"qid": "q008", "question": "トナーの交換手順を知りたい", "doc_id": "d03", "answer": "前面カバーを開けて該当色のカートリッジを引き抜き、新しいカートリッジを差し込みます", "type": "howto", "lexical": "same"}
+{"qid": "q009", "question": "保守契約を結ぶと保証はどう変わる？", "doc_id": "d03", "answer": "保守契約を結ぶと、保証期間が3年間に延長され", "type": "compare", "lexical": "paraphrase"}
+{"qid": "q010", "question": "X200とはどんな製品", "doc_id": "d03", "answer": "業務用のA3対応カラー複合機です", "type": "definition", "lexical": "abbrev"}
+{"qid": "q011", "question": "VPNの接続手順を教えて", "doc_id": "d04", "answer": "SecureLinkを起動し、接続先に「vpn.mirai-denki.example」を入力します", "type": "howto", "lexical": "same"}
+{"qid": "q012", "question": "VPNで認証エラーになるのはなぜ", "doc_id": "d04", "answer": "パスワードの有効期限切れが原因であることが多い", "type": "reason", "lexical": "paraphrase"}
+{"qid": "q013", "question": "私物のパソコンからVPN接続できますか", "doc_id": "d04", "answer": "私物のパソコンからの接続は禁止されています", "type": "yesno", "lexical": "same"}
+{"qid": "q014", "question": "精算の対象となる経費とは", "doc_id": "d05", "answer": "業務遂行のために必要であり、かつ会社が事前または事後に承認した支出をいいます", "type": "definition", "lexical": "same"}
+{"qid": "q015", "question": "接待交際費の一人あたりの限度額", "doc_id": "d05", "answer": "接待交際費は、1人あたり8,000円を上限", "type": "value", "lexical": "synonym"}
+{"qid": "q016", "question": "経費にはどんな区分がある？", "doc_id": "d05", "answer": "交通費、宿泊費、会議費、接待交際費、消耗品費の5つの区分", "type": "list", "lexical": "paraphrase"}
+{"qid": "q017", "question": "出張で新幹線と飛行機はどの席を使える", "doc_id": "d05", "answer": "新幹線は普通車指定席、飛行機はエコノミークラス", "type": "compare", "lexical": "paraphrase"}
+{"qid": "q018", "question": "ミライ電機の有給の付与日", "doc_id": "d06", "answer": "付与日は毎年4月1日に統一されています", "type": "date", "lexical": "abbrev"}
+{"qid": "q019", "question": "有給を取得するやり方は", "doc_id": "d06", "answer": "取得日の3営業日前までに勤怠管理システムから申請します", "type": "howto", "lexical": "synonym"}
+{"qid": "q020", "question": "消滅した有給の買い取りはありますか", "doc_id": "d06", "answer": "消滅した日数の買い取りは行いません", "type": "yesno", "lexical": "same"}
+{"qid": "q021", "question": "北斗物流のドライバー職の有給申請はいつまで", "doc_id": "d07", "answer": "ドライバー職は配車計画の都合上、2週間前までの申請", "type": "date", "lexical": "same"}
+{"qid": "q022", "question": "北斗物流 今年度の有給取得率目標", "doc_id": "d07", "answer": "2026年度の有給休暇取得率の目標を70%", "type": "value", "lexical": "relative_time"}
+{"qid": "q023", "question": "北斗物流で有給の相談ができる人", "doc_id": "d07", "answer": "本社人事課の高橋課長が窓口", "type": "person", "lexical": "paraphrase"}
+{"qid": "q024", "question": "北斗物流で12月に有給が取りにくいのはなぜ", "doc_id": "d07", "answer": "12月と3月は繁忙期のため", "type": "reason", "lexical": "paraphrase"}
+{"qid": "q025", "question": "情報分類の極秘とは何か", "doc_id": "d08", "answer": "漏えいすると会社に重大な損害を与える情報をいい", "type": "definition", "lexical": "same"}
+{"qid": "q026", "question": "ウイルスに感染したかもしれないときの対応", "doc_id": "d08", "answer": "直ちにネットワークから端末を切り離し、情報システム部へ報告してください", "type": "howto", "lexical": "paraphrase"}
+{"qid": "q027", "question": "情報資産の分類の4段階", "doc_id": "d08", "answer": "「極秘」「秘密」「社内限り」「公開」の4段階", "type": "list", "lexical": "same"}
+{"qid": "q028", "question": "MX-500の価格はいくら", "doc_id": "d09", "answer": "希望小売価格は税込59,800円", "type": "value", "lexical": "abbrev"}
+{"qid": "q029", "question": "エアクリア MX-500の発売日", "doc_id": "d09", "answer": "発売日は2026年3月20日", "type": "date", "lexical": "same"}
+{"qid": "q030", "question": "MX-500の開発を担当した部長", "doc_id": "d09", "answer": "開発を担当した商品企画部の佐藤部長", "type": "person", "lexical": "same"}
+{"qid": "q031", "question": "ミライ電機の本社はどこ", "doc_id": "d09", "answer": "本社・東京都品川区、代表取締役社長・鈴木一郎", "type": "location", "lexical": "same"}
+{"qid": "q032", "question": "MX-500のアプリ連携は今年の秋？", "doc_id": "d09", "answer": "2026年秋のアップデートで提供される予定", "type": "date", "lexical": "relative_time"}
+{"qid": "q033", "question": "MX-300とMX-500の違い", "doc_id": "d10", "answer": "最大の違いは適用床面積とフィルターの構成です", "type": "compare", "lexical": "same"}
+{"qid": "q034", "question": "MX-300の価格を抑えられた理由", "doc_id": "d10", "answer": "部品の共通化と製造拠点の集約にあります", "type": "reason", "lexical": "same"}
+{"qid": "q035", "question": "MX-300の交換フィルターの値段", "doc_id": "d10", "answer": "交換用フィルターの価格は1枚3,500円", "type": "value", "lexical": "synonym"}
+{"qid": "q036", "question": "MX-300の本体色", "doc_id": "d10", "answer": "本体色はホワイト、グレー、ネイビーの3色", "type": "list", "lexical": "same"}
+{"qid": "q037", "question": "MX-300にMX-500のフィルターは使える？", "doc_id": "d10", "answer": "MX-500用のフィルターとは互換性がない", "type": "yesno", "lexical": "paraphrase"}
+{"qid": "q038", "question": "北斗物流の大阪支社の移転先", "doc_id": "d11", "answer": "新大阪駅前の「新大阪グランビル」8階", "type": "location", "lexical": "same"}
+{"qid": "q039", "question": "北斗物流はなぜ大阪支社を移した", "doc_id": "d11", "answer": "老朽化への対応に加えて、新幹線を使った出張の利便性を高めるため", "type": "reason", "lexical": "paraphrase"}
+{"qid": "q040", "question": "移転の内装工事費はいくらだった", "doc_id": "d11", "answer": "内装工事が約7,000万円", "type": "value", "lexical": "abbrev"}
+{"qid": "q041", "question": "テクノフェア2026の会場", "doc_id": "d12", "answer": "千葉市の幕張コンベンションセンター", "type": "location", "lexical": "same"}
+{"qid": "q042", "question": "テクノフェア2026の基調講演の講演者", "doc_id": "d12", "answer": "日本家電技術協会の渡辺会長", "type": "person", "lexical": "same"}
+{"qid": "q043", "question": "テクノフェア 来年の開催日", "doc_id": "d12", "answer": "2027年5月19日から21日まで", "type": "date", "lexical": "relative_time"}
+{"qid": "q044", "question": "テクノフェア2026とは", "doc_id": "d12", "answer": "家電と電子機器の総合展示会", "type": "definition", "lexical": "same"}
+{"qid": "q045", "question": "領収書を紛失しても精算できますか", "doc_id": "d13", "answer": "原則として領収書がない経費は精算できません", "type": "yesno", "lexical": "synonym"}
+{"qid": "q046", "question": "領収書画像はアップロード後に削除する？", "doc_id": "d13", "answer": "アップロード後に端末から消去してください", "type": "howto", "lexical": "synonym"}
+{"qid": "q047", "question": "朝に急に休むとき有給にするには", "doc_id": "d14", "answer": "始業時刻までに上長へ電話またはチャットで連絡すれば", "type": "howto", "lexical": "paraphrase"}
+{"qid": "q048", "question": "有給の時季変更権とは何ですか", "doc_id": "d14", "answer": "会社が時季変更権を行使できるのは、業務に著しい支障がある場合に限られます", "type": "definition", "lexical": "same"}
+{"qid": "q049", "question": "エラーコード E-52とは", "doc_id": "d15", "answer": "E-52は定着ユニットの温度異常を示します", "type": "definition", "lexical": "same"}
+{"qid": "q050", "question": "スキャンで保存できるファイル形式", "doc_id": "d15", "answer": "PDF、JPEG、TIFFの3種類", "type": "list", "lexical": "same"}
+{"qid": "q051", "question": "純正トナーと互換トナーの違い", "doc_id": "d15", "answer": "互換品は純正品より安価ですが、印刷品質の保証対象外", "type": "compare", "lexical": "paraphrase"}
+{"qid": "q052", "question": "スキャンデータの初期セーブ先", "doc_id": "d15", "answer": "初期設定では本体内のボックスに保存されます", "type": "value", "lexical": "synonym"}
+{"qid": "q053", "question": "在宅勤務は週に何日まで", "doc_id": "d16", "answer": "在宅勤務は週3日までです", "type": "value", "lexical": "same"}
+{"qid": "q054", "question": "テレワークの手当はいくら", "doc_id": "d16", "answer": "在宅勤務手当として月額4,000円", "type": "value", "lexical": "paraphrase"}
+{"qid": "q055", "question": "昨年度の海外売上高はいくら", "doc_id": "d17", "answer": "国内売上が390億円、海外売上が62億円", "type": "value", "lexical": "relative_time"}
+{"qid": "q056", "question": "原価率が改善した理由", "doc_id": "d17", "answer": "長野工場の生産ラインの自動化により、製造コストが削減されたため", "type": "reason", "lexical": "same"}
+{"qid": "q057", "question": "売上報告書を書いた人", "doc_id": "d17", "answer": "経理部の伊藤部長が作成し", "type": "person", "lexical": "paraphrase"}
+{"qid": "q058", "question": "満足度が最も高い部門と低い部門", "doc_id": "d18", "answer": "商品企画部が4.1点で最も高く、生産管理部が3.1点で最も低い", "type": "compare", "lexical": "same"}
+{"qid": "q059", "question": "来年の満足度調査はいつ", "doc_id": "d18", "answer": "次回の調査は2027年2月に実施する予定", "type": "date", "lexical": "relative_time"}
+{"qid": "q060", "question": "MX-500購入の決め手として最も多かった理由", "doc_id": "d19", "answer": "購入の決め手として最も多かった理由は「静音性」", "type": "reason", "lexical": "same"}
+{"qid": "q061", "question": "MX-500はライバル製品と比べて何が優れている", "doc_id": "d19", "answer": "静音性と省エネ性能で優位に立っています", "type": "compare", "lexical": "paraphrase"}
+{"qid": "q062", "question": "MX-500の交換フィルターの料金", "doc_id": "d19", "answer": "交換用フィルターの価格は1枚6,800円", "type": "value", "lexical": "synonym"}
+{"qid": "q063", "question": "MX-500は何キロある", "doc_id": "d19", "answer": "本体の重量が9.5kg", "type": "value", "lexical": "paraphrase"}
+{"qid": "q064", "question": "大阪支社移転で出張時間はどれだけ縮んだ", "doc_id": "d20", "answer": "所要時間は平均で片道40分短縮されました", "type": "value", "lexical": "paraphrase"}
+{"qid": "q065", "question": "北斗の大阪移転レポートをまとめたのは誰", "doc_id": "d20", "answer": "経営企画部の藤田部長", "type": "person", "lexical": "abbrev"}
+{"qid": "q066", "question": "4月の経営ミーティングの場所", "doc_id": "d21", "answer": "場所：本社5階 大会議室", "type": "location", "lexical": "synonym"}
+{"qid": "q067", "question": "MX-300の発売が延期された理由", "doc_id": "d21", "answer": "長野工場の生産ラインの切り替えに時間を要するため", "type": "reason", "lexical": "same"}
+{"qid": "q068", "question": "今年度の新卒採用は何名", "doc_id": "d21", "answer": "前年の45名から60名に増やす", "type": "value", "lexical": "relative_time"}
+{"qid": "q069", "question": "次回の経営ミーティングはいつ", "doc_id": "d21", "answer": "2026年5月13日（水）10時から", "type": "date", "lexical": "synonym"}
+{"qid": "q070", "question": "フィルター定期購入プランの料金", "doc_id": "d22", "answer": "15%引きの5,780円", "type": "value", "lexical": "synonym"}
+{"qid": "q071", "question": "製品開発ミーティングの欠席者", "doc_id": "d22", "answer": "品質保証部の井上課長", "type": "person", "lexical": "synonym"}
+{"qid": "q072", "question": "iOS版通知バグの修正期限", "doc_id": "d22", "answer": "iOS版で通知が届かない不具合が残っており、8月末までに修正する", "type": "date", "lexical": "synonym"}
+{"qid": "q073", "question": "フィルターの定期購入プランとはどういうもの", "doc_id": "d22", "answer": "年1回の自動配送で、価格は通常の6,800円から", "type": "definition", "lexical": "paraphrase"}
+{"qid": "q074", "question": "健康診断の日程はいつからいつまで", "doc_id": "d23", "answer": "2026年9月8日から9月12日までの5日間", "type": "date", "lexical": "abbrev"}
+{"qid": "q075", "question": "5月の労働災害の原因", "doc_id": "d23", "answer": "台車の通路に部品箱が置かれていたため", "type": "reason", "lexical": "same"}
+{"qid": "q076", "question": "工場が30度を超えたときの休憩ルール", "doc_id": "d23", "answer": "1時間ごとに10分間の休憩を取ることを義務づける", "type": "howto", "lexical": "paraphrase"}
+{"qid": "q077", "question": "安全衛生委員会の開催場所", "doc_id": "d23", "answer": "長野工場 管理棟 第1会議室", "type": "location", "lexical": "same"}
+{"qid": "q078", "question": "新しく入った営業の教育は誰がする", "doc_id": "d24", "answer": "新任者の研修は長谷川課長が担当", "type": "person", "lexical": "paraphrase"}
+{"qid": "q079", "question": "追跡システム改善要望書の提出締め切り", "doc_id": "d24", "answer": "提出期限は8月20日とする", "type": "date", "lexical": "synonym"}
+{"qid": "q080", "question": "営業会議はどこの会議室で開催", "doc_id": "d24", "answer": "場所：大阪支社 会議室A", "type": "location", "lexical": "abbrev"}

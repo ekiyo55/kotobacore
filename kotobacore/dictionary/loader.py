@@ -79,6 +79,34 @@ class NormalizationEntry:
     type: str
 
 
+@dataclass
+class SynonymEntry:
+    """One synonym group (synonym.csv, v0.3 FR-003): canonical + alternatives."""
+
+    canonical: str
+    synonyms: list[str]
+    domain: str
+
+
+@dataclass
+class SentimentEntry:
+    """Evaluative word without an emotion category (sentiment.csv, FR-062)."""
+
+    surface: str
+    polarity: str  # positive | negative
+    intensity: float
+
+
+@dataclass
+class OkuriganaEntry:
+    """Okurigana variants of one word (okurigana.csv, FR-002 N4): canonical 本則 form + compact spellings."""
+
+    canonical: str
+    variants: list[str]
+    pos: str
+    domain: str
+
+
 # ---------------------------------------------------------------------------
 # Bundle
 # ---------------------------------------------------------------------------
@@ -97,6 +125,9 @@ class DictionaryBundle:
     intent_rules: list[IntentRule] = field(default_factory=list)
     stopwords: list[StopwordEntry] = field(default_factory=list)
     normalization: list[NormalizationEntry] = field(default_factory=list)
+    synonym: list[SynonymEntry] = field(default_factory=list)
+    sentiment: list[SentimentEntry] = field(default_factory=list)
+    okurigana: list[OkuriganaEntry] = field(default_factory=list)
 
     # Lazy cache for derived lookup structures. The bundle is immutable after
     # loading, so every derived structure (surface maps, candidate lists …) is
@@ -147,6 +178,18 @@ class DictionaryBundle:
             self._cache["emotion_examples_by_surface"] = c
         return c
 
+    def okurigana_map(self) -> dict[str, str]:
+        """Return {surface: canonical} for every okurigana variant and canonical (N4 語形正規化)."""
+        c = self._cache.get("okurigana_map")
+        if c is None:
+            c = {}
+            for e in self.okurigana:
+                c[e.canonical] = e.canonical
+                for v in e.variants:
+                    c.setdefault(v, e.canonical)
+            self._cache["okurigana_map"] = c
+        return c
+
     def stopword_set(self) -> set[str]:
         c = self._cache.get("stopword_set")
         if c is None:
@@ -160,6 +203,33 @@ class DictionaryBundle:
         if c is None:
             c = {e.source: e.target for e in self.normalization}
             self._cache["normalization_map"] = c
+        return c
+
+    def synonym_map(self) -> dict[str, str]:
+        """Return {word: canonical} for every canonical and synonym (N5 意味正規化)."""
+        c = self._cache.get("synonym_map")
+        if c is None:
+            c = {}
+            for e in self.synonym:
+                c[e.canonical] = e.canonical
+                for w in e.synonyms:
+                    c.setdefault(w, e.canonical)
+            self._cache["synonym_map"] = c
+        return c
+
+    def synonym_groups(self) -> dict[str, list[str]]:
+        """Return {canonical: [canonical, *synonyms]}."""
+        c = self._cache.get("synonym_groups")
+        if c is None:
+            c = {e.canonical: [e.canonical, *e.synonyms] for e in self.synonym}
+            self._cache["synonym_groups"] = c
+        return c
+
+    def sentiment_by_surface(self) -> dict[str, SentimentEntry]:
+        c = self._cache.get("sentiment_by_surface")
+        if c is None:
+            c = {e.surface: e for e in self.sentiment}
+            self._cache["sentiment_by_surface"] = c
         return c
 
     def keep_as_unit_surfaces(self) -> dict[str, str]:
@@ -367,6 +437,39 @@ def load_stopwords(path: Path) -> list[StopwordEntry]:
     return [StopwordEntry(surface=row["surface"], category=row["category"]) for row in rows]
 
 
+def load_synonym(path: Path) -> list[SynonymEntry]:
+    rows = _open_csv(path)
+    _require_columns(rows, {"canonical", "synonyms", "domain"}, file=path.name)
+    out: list[SynonymEntry] = []
+    for row in rows:
+        syns = [w.strip() for w in row["synonyms"].split("|") if w.strip()]
+        out.append(SynonymEntry(canonical=row["canonical"].strip(), synonyms=syns, domain=row["domain"].strip()))
+    return out
+
+
+def load_sentiment(path: Path) -> list[SentimentEntry]:
+    rows = _open_csv(path)
+    _require_columns(rows, {"surface", "polarity", "intensity"}, file=path.name)
+    out: list[SentimentEntry] = []
+    for row in rows:
+        polarity = row["polarity"].strip()
+        if polarity not in ("positive", "negative"):
+            raise DictionaryLoadError(f"{path.name}: polarity must be positive|negative, got {polarity!r}")
+        out.append(SentimentEntry(surface=row["surface"].strip(), polarity=polarity,
+                                  intensity=_to_float_range(row["intensity"], field="intensity")))
+    return out
+
+
+def load_okurigana(path: Path) -> list[OkuriganaEntry]:
+    rows = _open_csv(path)
+    _require_columns(rows, {"canonical", "variants", "pos", "domain"}, file=path.name)
+    out: list[OkuriganaEntry] = []
+    for row in rows:
+        variants = [w.strip() for w in row["variants"].split("|") if w.strip()]
+        out.append(OkuriganaEntry(canonical=row["canonical"].strip(), variants=variants, pos=row["pos"].strip(), domain=row["domain"].strip()))
+    return out
+
+
 def load_normalization(path: Path) -> list[NormalizationEntry]:
     rows = _open_csv(path)
     _require_columns(rows, {"source", "target", "type"}, file=path.name)
@@ -452,7 +555,7 @@ _DEFAULT_DICT_DIR = _resolve_default_dict_dir()
 
 
 def load_dictionary_bundle(dict_dir: Path | str) -> DictionaryBundle:
-    """Load all 6 dictionary files from ``dict_dir`` into a bundle.
+    """Load all dictionary files from ``dict_dir`` into a bundle.
 
     Missing optional files are tolerated (treated as empty). slang / emotion /
     entity / intent_rules / stopwords / emotion_examples are all looked for.
@@ -470,6 +573,9 @@ def load_dictionary_bundle(dict_dir: Path | str) -> DictionaryBundle:
         ("intent_rules.csv", "intent_rules", load_intent_rules),
         ("stopwords.csv", "stopwords", load_stopwords),
         ("normalization.csv", "normalization", load_normalization),
+        ("synonym.csv", "synonym", load_synonym),
+        ("sentiment.csv", "sentiment", load_sentiment),
+        ("okurigana.csv", "okurigana", load_okurigana),
     ]
     for filename, attr, loader in pairs:
         path = base / filename

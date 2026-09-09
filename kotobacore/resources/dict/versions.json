@@ -1,0 +1,71 @@
+{
+  "set_version": "1.0",
+  "policy": "1.0.0 で全 CSV を 1.0 に統一。追加はパッチ (1.0.x)、意味変更はマイナー (1.x)。rows は tests/test_versions.py が実 CSV と照合する (辞書を変えたら version と rows を更新)",
+  "files": {
+    "emotion.csv": {
+      "version": "1.0",
+      "rows": 739,
+      "note": "感情語 + Plutchik。0.2.7 オノマトペ 26 語、0.5.1 追加、1.5 (0.6.5) surprise/trust/disgust 分離 (再ラベル 62 + 追加 47)、1.6 (0.6.6) レビュー由来 +71・モヤモヤ→anxiety・わくわく→anticipation、定型句 +77"
+    },
+    "emotion_examples.csv": {
+      "version": "1.0",
+      "rows": 17,
+      "note": "感情例文 (seed)"
+    },
+    "entity.csv": {
+      "version": "1.0",
+      "rows": 1814,
+      "note": "1.1 日本企業 401 社 (0.2.3)、1.2 Wikipedia 日本 680 件 (0.2.4)、1.3 坊っちゃん関連 (0.2.5)"
+    },
+    "intent_rules.csv": {
+      "version": "1.0",
+      "rows": 9,
+      "note": "SNS 意図。笑い表現追加 (0.1.x)"
+    },
+    "normalization.csv": {
+      "version": "1.0",
+      "rows": 182,
+      "note": "N2 表記正規化 182 行 (0.3.0)"
+    },
+    "okurigana.csv": {
+      "version": "1.0",
+      "rows": 81,
+      "note": "N4 送り仮名揺れ 82 グループ (0.6.3)"
+    },
+    "sentiment.csv": {
+      "version": "1.0",
+      "rows": 334,
+      "note": "評価語 215 (0.3.0) → 253 (0.5.1 重複整理 v2)、1.2 (0.6.6) レビュー由来 +69、修辞疑問 +12"
+    },
+    "slang.csv": {
+      "version": "1.0",
+      "rows": 203,
+      "note": "SNS スラング。ワラッタ等追加 (0.1.x)"
+    },
+    "stopwords.csv": {
+      "version": "1.0",
+      "rows": 113,
+      "note": "ストップワード"
+    },
+    "synonym.csv": {
+      "version": "1.0",
+      "rows": 478,
+      "note": "同義語 218 グループ (0.3.0) → 478 (0.5.2 ドメイン同義語)"
+    }
+  },
+  "history": {
+    "set_version_before_1.0": "2026.09.09b",
+    "files_before_1.0": {
+      "emotion.csv": "1.6",
+      "emotion_examples.csv": "1.0",
+      "entity.csv": "1.4",
+      "intent_rules.csv": "1.1",
+      "normalization.csv": "1.0",
+      "okurigana.csv": "1.0",
+      "sentiment.csv": "1.2",
+      "slang.csv": "1.1",
+      "stopwords.csv": "1.0",
+      "synonym.csv": "1.1"
+    }
+  }
+}

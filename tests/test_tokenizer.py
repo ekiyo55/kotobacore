@@ -1,8 +1,8 @@
 """Tokenizer backend tests per 07_テスト仕様 §6."""
 
 from kotobacore import Analyzer
-from kotobacore.schema import Token
-from kotobacore.tokenizer import KaruizawaBackend
+from kotobacore.core.ir import Token
+from kotobacore.core.token import KaruizawaBackend
 
 
 def test_tok_001_tokenize_preserves_tokyo_to():

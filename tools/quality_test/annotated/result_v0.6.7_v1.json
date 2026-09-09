@@ -1,0 +1,2644 @@
+{
+  "version": "0.6.7",
+  "items": 300,
+  "tokenization": {
+    "precision": 0.8976,
+    "recall": 0.904,
+    "f1": 0.9008,
+    "tp": 640,
+    "fp": 73,
+    "fn": 68,
+    "items": 73
+  },
+  "entity_surface": {
+    "precision": 0.9085,
+    "recall": 0.8142,
+    "f1": 0.8588,
+    "tp": 149,
+    "fp": 15,
+    "fn": 34
+  },
+  "entity_typed": {
+    "precision": 0.8902,
+    "recall": 0.7978,
+    "f1": 0.8415,
+    "tp": 146,
+    "fp": 18,
+    "fn": 37
+  },
+  "sentiment": {
+    "accuracy": 83.0,
+    "n": 300,
+    "confusion": {
+      "None->None": 176,
+      "None->negative": 6,
+      "None->positive": 16,
+      "negative->None": 15,
+      "negative->negative": 28,
+      "negative->positive": 5,
+      "positive->None": 8,
+      "positive->negative": 1,
+      "positive->positive": 45
+    }
+  },
+  "emotion": {
+    "accuracy": 84.1,
+    "n": 182,
+    "canary_false_positive": 0.0,
+    "canary_n": 22
+  },
+  "intent": {
+    "accuracy": 70.0,
+    "n": 300,
+    "confusion": {
+      "admiration->admiration": 2,
+      "admiration->negative_feedback": 1,
+      "admiration->positive_feedback": 2,
+      "admiration->share_experience": 1,
+      "agreement->agreement": 4,
+      "desire->desire": 4,
+      "inform->agreement": 1,
+      "inform->desire": 1,
+      "inform->inform": 95,
+      "inform->negative_feedback": 5,
+      "inform->positive_feedback": 3,
+      "inform->question": 4,
+      "inform->request": 5,
+      "inform->share_experience": 5,
+      "negative_feedback->inform": 2,
+      "negative_feedback->negative_feedback": 14,
+      "negative_feedback->positive_feedback": 4,
+      "negative_feedback->question": 2,
+      "negative_feedback->request": 1,
+      "negative_feedback->share_experience": 3,
+      "positive_feedback->inform": 1,
+      "positive_feedback->positive_feedback": 20,
+      "positive_feedback->pricing_complaint": 1,
+      "positive_feedback->question": 1,
+      "positive_feedback->request": 1,
+      "positive_feedback->share_experience": 1,
+      "pricing_complaint->negative_feedback": 1,
+      "pricing_complaint->positive_feedback": 1,
+      "pricing_complaint->pricing_complaint": 6,
+      "question->agreement": 1,
+      "question->inform": 1,
+      "question->negative_feedback": 1,
+      "question->positive_feedback": 1,
+      "question->question": 15,
+      "question->request": 2,
+      "question->share_experience": 1,
+      "request->inform": 3,
+      "request->question": 1,
+      "request->request": 15,
+      "share_experience->agreement": 1,
+      "share_experience->inform": 5,
+      "share_experience->negative_feedback": 11,
+      "share_experience->positive_feedback": 12,
+      "share_experience->request": 1,
+      "share_experience->share_experience": 34,
+      "support_request->negative_feedback": 1,
+      "support_request->question": 1,
+      "support_request->support_request": 1
+    }
+  },
+  "sentiment_target": {
+    "accuracy": 56.7,
+    "n": 67
+  },
+  "per_genre": {
+    "business": {
+      "sentiment_acc": 86.7,
+      "emotion_acc": 95.7,
+      "intent_acc": 83.3
+    },
+    "conversation": {
+      "sentiment_acc": 75.0,
+      "emotion_acc": 87.8,
+      "intent_acc": 56.7
+    },
+    "literary": {
+      "sentiment_acc": 88.3,
+      "emotion_acc": 73.0,
+      "intent_acc": 78.3
+    },
+    "sns": {
+      "sentiment_acc": 80.0,
+      "emotion_acc": 76.1,
+      "intent_acc": 63.3
+    },
+    "tech": {
+      "sentiment_acc": 85.0,
+      "emotion_acc": 94.3,
+      "intent_acc": 68.3
+    }
+  },
+  "timing_ms": {
+    "mean": 6.3,
+    "p95": 4.25
+  },
+  "failures": [
+    {
+      "id": "sns-002",
+      "kind": "sentiment",
+      "gold": "negative",
+      "sys": null,
+      "text": "新しいiPhone買ったけど正直そこまで感動しない。"
+    },
+    {
+      "id": "sns-005",
+      "kind": "tokens",
+      "gold": [
+        "隣",
+        "の",
+        "猫",
+        "が",
+        "にゃーにゃー",
+        "鳴いてる",
+        "。"
+      ],
+      "sys": [
+        "隣",
+        "の",
+        "猫",
+        "が",
+        "にゃーにゃー",
+        "鳴い",
+        "てる",
+        "。"
+      ]
+    },
+    {
+      "id": "sns-006",
+      "kind": "tokens",
+      "gold": [
+        "渋谷",
+        "の",
+        "スクランブル交差点",
+        "、",
+        "人",
+        "多すぎて",
+        "疲れた",
+        "😩"
+      ],
+      "sys": [
+        "渋谷",
+        "の",
+        "スクランブル",
+        "交差点",
+        "、",
+        "人多すぎて",
+        "疲れた",
+        "😩"
+      ]
+    },
+    {
+      "id": "sns-006",
+      "kind": "sentiment",
+      "gold": null,
+      "sys": "negative",
+      "text": "渋谷のスクランブル交差点、人多すぎて疲れた😩"
+    },
+    {
+      "id": "sns-007",
+      "kind": "sentiment",
+      "gold": "negative",
+      "sys": "positive",
+      "text": "このカフェ、コーヒーは微妙だけどケーキは神。"
+    },
+    {
+      "id": "sns-008",
+      "kind": "sentiment",
+      "gold": null,
+      "sys": "positive",
+      "text": "誰か新宿でおすすめのラーメン屋教えて！"
+    },
+    {
+      "id": "sns-010",
+      "kind": "tokens",
+      "gold": [
+        "3",
+        "年",
+        "ぶり",
+        "に",
+        "実家",
+        "帰ったら",
+        "犬",
+        "が",
+        "覚えててくれて",
+        "泣いた",
+        "🥲"
+      ],
+      "sys": [
+        "3",
+        "年ぶ",
+        "り",
+        "に",
+        "実家帰",
+        "っ",
+        "たら",
+        "犬",
+        "が",
+        "覚えててくれて",
+        "泣いた",
+        "🥲"
+      ]
+    },
+    {
+      "id": "sns-011",
+      "kind": "emotion",
+      "gold": [
+        "irritation"
+      ],
+      "sys": null,
+      "text": "正直、今回のアップデートは改悪だと思う。"
+    },
+    {
+      "id": "sns-013",
+      "kind": "tokens",
+      "gold": [
+        "田中",
+        "さん",
+        "の",
+        "新曲",
+        "、",
+        "何回",
+        "聴いても",
+        "飽きない",
+        "✨"
+      ],
+      "sys": [
+        "田中",
+        "さん",
+        "の",
+        "新曲",
+        "、",
+        "何回",
+        "聴いて",
+        "も",
+        "飽きない",
+        "✨"
+      ]
+    },
+    {
+      "id": "sns-013",
+      "kind": "sentiment",
+      "gold": "positive",
+      "sys": null,
+      "text": "田中さんの新曲、何回聴いても飽きない✨"
+    },
+    {
+      "id": "sns-013",
+      "kind": "emotion",
+      "gold": [
+        "admiration"
+      ],
+      "sys": "anticipation",
+      "text": "田中さんの新曲、何回聴いても飽きない✨"
+    },
+    {
+      "id": "sns-015",
+      "kind": "tokens",
+      "gold": [
+        "悪くない",
+        "ん",
+        "だ",
+        "けど",
+        "、",
+        "リピート",
+        "は",
+        "しない",
+        "か",
+        "な",
+        "。"
+      ],
+      "sys": [
+        "悪くない",
+        "んだ",
+        "けど",
+        "、",
+        "リピート",
+        "はしないか",
+        "な",
+        "。"
+      ]
+    },
+    {
+      "id": "sns-015",
+      "kind": "sentiment",
+      "gold": "negative",
+      "sys": "positive",
+      "text": "悪くないんだけど、リピートはしないかな。"
+    },
+    {
+      "id": "sns-017",
+      "kind": "emotion",
+      "gold": [
+        "sadness"
+      ],
+      "sys": "admiration",
+      "text": "ぴえん🥺推しのグッズ売り切れてた…"
+    },
+    {
+      "id": "sns-019",
+      "kind": "tokens",
+      "gold": [
+        "なんで",
+        "月曜",
+        "って",
+        "来る",
+        "の",
+        "早い",
+        "ん",
+        "だろ",
+        "😇"
+      ],
+      "sys": [
+        "なん",
+        "で",
+        "月曜って",
+        "来る",
+        "の",
+        "早い",
+        "んだろ",
+        "😇"
+      ]
+    },
+    {
+      "id": "sns-019",
+      "kind": "sentiment",
+      "gold": null,
+      "sys": "positive",
+      "text": "なんで月曜って来るの早いんだろ😇"
+    },
+    {
+      "id": "sns-019",
+      "kind": "emotion",
+      "gold": [
+        "irritation"
+      ],
+      "sys": "exaggeration",
+      "text": "なんで月曜って来るの早いんだろ😇"
+    },
+    {
+      "id": "sns-020",
+      "kind": "tokens",
+      "gold": [
+        "映画",
+        "『",
+        "夜明けの列車",
+        "』",
+        "、",
+        "泣きすぎて",
+        "目",
+        "が",
+        "腫れた",
+        "。"
+      ],
+      "sys": [
+        "映画",
+        "『",
+        "夜明",
+        "け",
+        "の",
+        "列車",
+        "』、",
+        "泣きすぎ",
+        "て",
+        "目が腫れた",
+        "。"
+      ]
+    },
+    {
+      "id": "sns-024",
+      "kind": "target",
+      "gold": [
+        "新作プリン"
+      ],
+      "sys": [
+        "味"
+      ],
+      "text": "マルコ堂の新作プリン、350円でこの味はすごい。"
+    },
+    {
+      "id": "sns-025",
+      "kind": "emotion",
+      "gold": [
+        "anxiety"
+      ],
+      "sys": "sadness",
+      "text": "嬉しくないと言えば嘘になるけど、素直に喜べない。"
+    },
+    {
+      "id": "sns-029",
+      "kind": "emotion",
+      "gold": [
+        "irritation"
+      ],
+      "sys": null,
+      "text": "3日連続で残業とかブラックすぎん？"
+    },
+    {
+      "id": "sns-031",
+      "kind": "emotion",
+      "gold": [
+        "surprise"
+      ],
+      "sys": null,
+      "text": "ちょっと待って、これ2019年の投稿じゃん。"
+    },
+    {
+      "id": "sns-034",
+      "kind": "target",
+      "gold": [
+        "値上げ"
+      ],
+      "sys": [],
+      "text": "値上げばっかりで、もう外食できないよ…"
+    },
+    {
+      "id": "sns-035",
+      "kind": "target",
+      "gold": [
+        "講演"
+      ],
+      "sys": [
+        "本当"
+      ],
+      "text": "佐藤先生の講演、聞けて本当によかった。"
+    },
+    {
+      "id": "sns-037",
+      "kind": "sentiment",
+      "gold": null,
+      "sys": "negative",
+      "text": "いいね押しすぎて指が疲れた笑"
+    },
+    {
+      "id": "sns-039",
+      "kind": "sentiment",
+      "gold": null,
+      "sys": "negative",
+      "text": "なんか今日はモヤモヤする。理由はわからない。"
+    },
+    {
+      "id": "sns-041",
+      "kind": "sentiment",
+      "gold": null,
+      "sys": "positive",
+      "text": "来週の花火大会、雨降らないといいな🎆"
+    },
+    {
+      "id": "sns-044",
+      "kind": "sentiment",
+      "gold": "positive",
+      "sys": null,
+      "text": "京都の紅葉、写真じゃ伝わらない美しさだった。"
+    },
+    {
+      "id": "sns-044",
+      "kind": "emotion",
+      "gold": [
+        "admiration"
+      ],
+      "sys": null,
+      "text": "京都の紅葉、写真じゃ伝わらない美しさだった。"
+    },
+    {
+      "id": "sns-045",
+      "kind": "emotion",
+      "gold": [
+        "admiration"
+      ],
+      "sys": "refusal",
+      "text": "え、待って、無理、可愛すぎる🫠"
+    },
+    {
+      "id": "sns-046",
+      "kind": "sentiment",
+      "gold": "positive",
+      "sys": "negative",
+      "text": "バイト先の店長、口は悪いけど面倒見はいい。"
+    },
+    {
+      "id": "sns-046",
+      "kind": "target",
+      "gold": [
+        "店長"
+      ],
+      "sys": [
+        "口"
+      ],
+      "text": "バイト先の店長、口は悪いけど面倒見はいい。"
+    },
+    {
+      "id": "sns-050",
+      "kind": "emotion",
+      "gold": [
+        "irritation"
+      ],
+      "sys": "joy",
+      "text": "2万円のイヤホン、音は最高だけど耳が痛くなる。"
+    },
+    {
+      "id": "sns-057",
+      "kind": "target",
+      "gold": [
+        "タピオカ"
+      ],
+      "sys": [
+        "時"
+      ],
+      "text": "ここのタピオカ、正直ブームの時より美味しくなってる。"
+    },
+    {
+      "id": "sns-057",
+      "kind": "emotion",
+      "gold": [
+        "admiration"
+      ],
+      "sys": null,
+      "text": "ここのタピオカ、正直ブームの時より美味しくなってる。"
+    },
+    {
+      "id": "business-001",
+      "kind": "tokens",
+      "gold": [
+        "お世話",
+        "に",
+        "なっております",
+        "。",
+        "株式会社山田商事",
+        "の",
+        "鈴木",
+        "です",
+        "。"
+      ],
+      "sys": [
+        "お",
+        "世話",
+        "になっております",
+        "。",
+        "株式会社山田商事",
+        "の",
+        "鈴木",
+        "です",
+        "。"
+      ]
+    },
+    {
+      "id": "business-003",
+      "kind": "tokens",
+      "gold": [
+        "来週",
+        "の",
+        "定例会議",
+        "は",
+        "水曜",
+        "10",
+        "時",
+        "に",
+        "変更いたします",
+        "。"
+      ],
+      "sys": [
+        "来週",
+        "の",
+        "定例会議",
+        "は",
+        "水曜",
+        "10",
+        "時",
+        "に",
+        "変更いた",
+        "します",
+        "。"
+      ]
+    },
+    {
+      "id": "business-004",
+      "kind": "tokens",
+      "gold": [
+        "貴社",
+        "の",
+        "ご提案",
+        "、",
+        "大変",
+        "魅力的",
+        "に",
+        "感じております",
+        "。"
+      ],
+      "sys": [
+        "貴社",
+        "のご",
+        "提案",
+        "、",
+        "大変魅力的",
+        "に",
+        "感じております",
+        "。"
+      ]
+    },
+    {
+      "id": "business-005",
+      "kind": "tokens",
+      "gold": [
+        "恐れ入ります",
+        "が",
+        "、",
+        "見積書",
+        "を",
+        "再送いただけますでしょうか",
+        "。"
+      ],
+      "sys": [
+        "恐れ入ります",
+        "が",
+        "、",
+        "見積書",
+        "を",
+        "再送いただけますで",
+        "しょう",
+        "か",
+        "。"
+      ]
+    },
+    {
+      "id": "business-008",
+      "kind": "tokens",
+      "gold": [
+        "田中",
+        "部長",
+        "は",
+        "今回",
+        "の",
+        "結果",
+        "に",
+        "大変",
+        "満足されていました",
+        "。"
+      ],
+      "sys": [
+        "田中部長",
+        "は",
+        "今回",
+        "の",
+        "結果",
+        "に",
+        "大変満足",
+        "されていました",
+        "。"
+      ]
+    },
+    {
+      "id": "business-008",
+      "kind": "target",
+      "gold": [
+        "結果"
+      ],
+      "sys": [],
+      "text": "田中部長は今回の結果に大変満足されていました。"
+    },
+    {
+      "id": "business-009",
+      "kind": "tokens",
+      "gold": [
+        "単価",
+        "5,000",
+        "円",
+        "は",
+        "予算",
+        "を",
+        "大きく",
+        "超えており",
+        "、",
+        "再検討",
+        "を",
+        "お願いします",
+        "。"
+      ],
+      "sys": [
+        "単価",
+        "5",
+        ",",
+        "000",
+        "円",
+        "は",
+        "予算",
+        "を",
+        "大きく",
+        "超えて",
+        "おり",
+        "、",
+        "再検討",
+        "をお",
+        "願いします",
+        "。"
+      ]
+    },
+    {
+      "id": "business-009",
+      "kind": "sentiment",
+      "gold": "negative",
+      "sys": null,
+      "text": "単価5,000円は予算を大きく超えており、再検討をお願いします。"
+    },
+    {
+      "id": "business-011",
+      "kind": "tokens",
+      "gold": [
+        "新サービス",
+        "「",
+        "Kanso",
+        "」",
+        "は",
+        "6月1日",
+        "より",
+        "提供",
+        "開始いたします",
+        "。"
+      ],
+      "sys": [
+        "新",
+        "サービス",
+        "「",
+        "Kanso",
+        "」",
+        "は",
+        "6",
+        "月",
+        "1",
+        "日",
+        "より",
+        "提供開始",
+        "いたします",
+        "。"
+      ]
+    },
+    {
+      "id": "business-013",
+      "kind": "tokens",
+      "gold": [
+        "先日",
+        "の",
+        "説明会",
+        "に",
+        "は",
+        "約",
+        "200",
+        "名",
+        "の",
+        "方",
+        "に",
+        "ご参加いただきました",
+        "。"
+      ],
+      "sys": [
+        "先日",
+        "の",
+        "説明会",
+        "には",
+        "約",
+        "200",
+        "名",
+        "の",
+        "方",
+        "にご",
+        "参加いただきました",
+        "。"
+      ]
+    },
+    {
+      "id": "business-014",
+      "kind": "tokens",
+      "gold": [
+        "品質",
+        "に",
+        "問題",
+        "は",
+        "ない",
+        "ものの",
+        "、",
+        "コスト面",
+        "で",
+        "採用",
+        "は",
+        "見送ります",
+        "。"
+      ],
+      "sys": [
+        "品質",
+        "に",
+        "問題",
+        "は",
+        "ない",
+        "もの",
+        "の",
+        "、",
+        "コスト",
+        "面",
+        "で",
+        "採用",
+        "は",
+        "見送ります",
+        "。"
+      ]
+    },
+    {
+      "id": "business-014",
+      "kind": "sentiment",
+      "gold": "positive",
+      "sys": null,
+      "text": "品質に問題はないものの、コスト面で採用は見送ります。"
+    },
+    {
+      "id": "business-016",
+      "kind": "tokens",
+      "gold": [
+        "今期",
+        "の",
+        "目標",
+        "未達",
+        "は",
+        "非常に",
+        "残念",
+        "です",
+        "が",
+        "、",
+        "原因",
+        "は",
+        "明確",
+        "です",
+        "。"
+      ],
+      "sys": [
+        "今期",
+        "の",
+        "目標未達",
+        "は",
+        "非常",
+        "に",
+        "残念",
+        "です",
+        "が",
+        "、",
+        "原因",
+        "は",
+        "明確",
+        "です",
+        "。"
+      ]
+    },
+    {
+      "id": "business-017",
+      "kind": "tokens",
+      "gold": [
+        "弊社",
+        "は",
+        "2026年4月",
+        "に",
+        "大阪支社",
+        "を",
+        "開設いたしました",
+        "。"
+      ],
+      "sys": [
+        "弊社",
+        "は",
+        "2026",
+        "年",
+        "4",
+        "月",
+        "に",
+        "大阪支社",
+        "を",
+        "開設いた",
+        "しました",
+        "。"
+      ]
+    },
+    {
+      "id": "business-018",
+      "kind": "tokens",
+      "gold": [
+        "ご返信",
+        "が",
+        "遅くなり",
+        "、",
+        "大変",
+        "申し訳ございません",
+        "。"
+      ],
+      "sys": [
+        "ご",
+        "返信",
+        "が",
+        "遅く",
+        "なり",
+        "、",
+        "大変申し訳ございません",
+        "。"
+      ]
+    },
+    {
+      "id": "business-019",
+      "kind": "tokens",
+      "gold": [
+        "「",
+        "感動",
+        "」",
+        "は",
+        "当社",
+        "の",
+        "新型",
+        "加湿器",
+        "の",
+        "ブランド名",
+        "です",
+        "。"
+      ],
+      "sys": [
+        "「",
+        "感動",
+        "」",
+        "は",
+        "当社",
+        "の",
+        "新型加湿器",
+        "の",
+        "ブランド",
+        "名",
+        "です",
+        "。"
+      ]
+    },
+    {
+      "id": "business-022",
+      "kind": "sentiment",
+      "gold": "negative",
+      "sys": null,
+      "text": "正直なところ、今回の提案には期待しておりません。"
+    },
+    {
+      "id": "business-023",
+      "kind": "sentiment",
+      "gold": "positive",
+      "sys": null,
+      "text": "山本様のご尽力には深く感謝しております。"
+    },
+    {
+      "id": "business-023",
+      "kind": "emotion",
+      "gold": [
+        "moved"
+      ],
+      "sys": null,
+      "text": "山本様のご尽力には深く感謝しております。"
+    },
+    {
+      "id": "business-027",
+      "kind": "sentiment",
+      "gold": "negative",
+      "sys": null,
+      "text": "会場の音響が悪く、後方の席では聞き取れませんでした。"
+    },
+    {
+      "id": "business-037",
+      "kind": "sentiment",
+      "gold": "positive",
+      "sys": null,
+      "text": "決して安くはありませんが、投資に見合う効果が期待できます。"
+    },
+    {
+      "id": "business-038",
+      "kind": "target",
+      "gold": [
+        "サーバー"
+      ],
+      "sys": [
+        "応答"
+      ],
+      "text": "御社サーバーの応答が遅く、業務に支障が出ております。"
+    },
+    {
+      "id": "business-040",
+      "kind": "sentiment",
+      "gold": "negative",
+      "sys": null,
+      "text": "上司はこの企画にまったく乗り気ではないようです。"
+    },
+    {
+      "id": "business-043",
+      "kind": "sentiment",
+      "gold": null,
+      "sys": "positive",
+      "text": "弊社の売上高は3年連続で過去最高を更新しました。"
+    },
+    {
+      "id": "business-048",
+      "kind": "target",
+      "gold": [
+        "高橋さん"
+      ],
+      "sys": [
+        "飲み込み"
+      ],
+      "text": "新人の高橋さんは飲み込みが早く、頼もしい限りです。"
+    },
+    {
+      "id": "business-056",
+      "kind": "target",
+      "gold": [
+        "新製品"
+      ],
+      "sys": [
+        "受注"
+      ],
+      "text": "新製品の受注が好調で、生産が追いついておりません。"
+    },
+    {
+      "id": "tech-001",
+      "kind": "tokens",
+      "gold": [
+        "Python3.12",
+        "で",
+        "asyncio",
+        "の",
+        "挙動",
+        "が",
+        "変わった",
+        "らしい",
+        "。"
+      ],
+      "sys": [
+        "Python",
+        "3",
+        ".",
+        "12",
+        "で",
+        "asyncio",
+        "の",
+        "挙動",
+        "が",
+        "変わったらしい",
+        "。"
+      ]
+    },
+    {
+      "id": "tech-002",
+      "kind": "tokens",
+      "gold": [
+        "この",
+        "ライブラリ",
+        "、",
+        "ドキュメント",
+        "が",
+        "少なすぎて",
+        "使いにくい",
+        "。"
+      ],
+      "sys": [
+        "この",
+        "ライブラリ",
+        "、",
+        "ドキュメント",
+        "が",
+        "少なすぎ",
+        "て",
+        "使いにくい",
+        "。"
+      ]
+    },
+    {
+      "id": "tech-002",
+      "kind": "target",
+      "gold": [
+        "ライブラリ"
+      ],
+      "sys": [
+        "ドキュメント"
+      ],
+      "text": "このライブラリ、ドキュメントが少なすぎて使いにくい。"
+    },
+    {
+      "id": "tech-004",
+      "kind": "tokens",
+      "gold": [
+        "新しい",
+        "GPU",
+        "の",
+        "ベンチマーク",
+        "、",
+        "前世代",
+        "の",
+        "1.8",
+        "倍",
+        "で",
+        "驚いた",
+        "。"
+      ],
+      "sys": [
+        "新しい",
+        "GPU",
+        "の",
+        "ベンチマーク",
+        "、",
+        "前世代",
+        "の",
+        "1",
+        ".",
+        "8",
+        "倍",
+        "で",
+        "驚いた",
+        "。"
+      ]
+    },
+    {
+      "id": "tech-007",
+      "kind": "tokens",
+      "gold": [
+        "TypeScript",
+        "の",
+        "型エラー",
+        "が",
+        "100",
+        "件",
+        "以上",
+        "出て",
+        "泣きそう",
+        "。"
+      ],
+      "sys": [
+        "TypeScript",
+        "の",
+        "型",
+        "エラー",
+        "が",
+        "100",
+        "件以上出",
+        "て",
+        "泣きそう",
+        "。"
+      ]
+    },
+    {
+      "id": "tech-008",
+      "kind": "tokens",
+      "gold": [
+        "正直",
+        "、",
+        "この",
+        "フレームワーク",
+        "は",
+        "学習コスト",
+        "の",
+        "割",
+        "に",
+        "メリット",
+        "が",
+        "薄い",
+        "。"
+      ],
+      "sys": [
+        "正直",
+        "、",
+        "この",
+        "フレームワーク",
+        "は",
+        "学習",
+        "コスト",
+        "の",
+        "割",
+        "に",
+        "メリットが薄い",
+        "。"
+      ]
+    },
+    {
+      "id": "tech-009",
+      "kind": "tokens",
+      "gold": [
+        "AWS",
+        "の",
+        "請求",
+        "が",
+        "先月",
+        "より",
+        "3万",
+        "円",
+        "も",
+        "増えていて",
+        "焦った",
+        "。"
+      ],
+      "sys": [
+        "AWS",
+        "の",
+        "請求",
+        "が",
+        "先月",
+        "より",
+        "3",
+        "万円",
+        "も",
+        "増えていて",
+        "焦った",
+        "。"
+      ]
+    },
+    {
+      "id": "tech-012",
+      "kind": "tokens",
+      "gold": [
+        "この",
+        "API",
+        "の",
+        "レスポンス",
+        "、",
+        "200",
+        "ms",
+        "を",
+        "切らないと",
+        "要件",
+        "を",
+        "満たせない",
+        "。"
+      ],
+      "sys": [
+        "この",
+        "API",
+        "の",
+        "レスポンス",
+        "、",
+        "200",
+        "ms",
+        "を",
+        "切らない",
+        "と",
+        "要件",
+        "を",
+        "満たせない",
+        "。"
+      ]
+    },
+    {
+      "id": "tech-013",
+      "kind": "sentiment",
+      "gold": "negative",
+      "sys": null,
+      "text": "新しいエディタに乗り換えたけど、結局元に戻した。"
+    },
+    {
+      "id": "tech-014",
+      "kind": "tokens",
+      "gold": [
+        "LLM",
+        "の",
+        "出力",
+        "を",
+        "そのまま",
+        "本番",
+        "に",
+        "流す",
+        "の",
+        "は",
+        "怖すぎる",
+        "。"
+      ],
+      "sys": [
+        "LLM",
+        "の",
+        "出力",
+        "をそのまま",
+        "本番",
+        "に",
+        "流す",
+        "の",
+        "は",
+        "怖すぎる",
+        "。"
+      ]
+    },
+    {
+      "id": "tech-015",
+      "kind": "tokens",
+      "gold": [
+        "バージョン",
+        "2.3.0",
+        "で",
+        "この",
+        "バグ",
+        "は",
+        "修正済み",
+        "です",
+        "。"
+      ],
+      "sys": [
+        "バージョン",
+        "2",
+        ".",
+        "3",
+        ".",
+        "0",
+        "で",
+        "この",
+        "バグ",
+        "は",
+        "修正済",
+        "みです",
+        "。"
+      ]
+    },
+    {
+      "id": "tech-016",
+      "kind": "tokens",
+      "gold": [
+        "git",
+        "rebase",
+        "で",
+        "履歴が消えた",
+        "。",
+        "バックアップ",
+        "取ってなかった",
+        "。"
+      ],
+      "sys": [
+        "git",
+        "rebase",
+        "で",
+        "履歴が消えた",
+        "。",
+        "バックアップ",
+        "取ってなかった",
+        "。"
+      ]
+    },
+    {
+      "id": "tech-017",
+      "kind": "target",
+      "gold": [
+        "ヤマダさん"
+      ],
+      "sys": [
+        "一晩"
+      ],
+      "text": "Kubernetesの設定、ヤマダさんが一晩で直してくれて神。"
+    },
+    {
+      "id": "tech-018",
+      "kind": "target",
+      "gold": [
+        "ログ"
+      ],
+      "sys": [
+        "エラー"
+      ],
+      "text": "ログがだらだら流れて肝心のエラーが見つからない。"
+    },
+    {
+      "id": "tech-020",
+      "kind": "tokens",
+      "gold": [
+        "「",
+        "驚き",
+        "」",
+        "は",
+        "この",
+        "ゲームエンジン",
+        "の",
+        "パーティクル機能",
+        "の",
+        "名称",
+        "です",
+        "。"
+      ],
+      "sys": [
+        "「",
+        "驚き",
+        "」",
+        "は",
+        "この",
+        "ゲームエンジン",
+        "の",
+        "パーティクル",
+        "機能",
+        "の",
+        "名称",
+        "です",
+        "。"
+      ]
+    },
+    {
+      "id": "tech-021",
+      "kind": "target",
+      "gold": [
+        "PostgreSQL 16"
+      ],
+      "sys": [
+        "検索"
+      ],
+      "text": "PostgreSQL 16にアップグレードしたら検索が2倍速くなった。"
+    },
+    {
+      "id": "tech-023",
+      "kind": "target",
+      "gold": [
+        "CI"
+      ],
+      "sys": [
+        "40分"
+      ],
+      "text": "CIが40分もかかるのはさすがに耐えられない。"
+    },
+    {
+      "id": "tech-025",
+      "kind": "emotion",
+      "gold": [
+        "anxiety"
+      ],
+      "sys": "admiration",
+      "text": "認証周りの実装、正直不安しかない。"
+    },
+    {
+      "id": "tech-026",
+      "kind": "target",
+      "gold": [
+        "ミライAI"
+      ],
+      "sys": [
+        "値上げ"
+      ],
+      "text": "ミライAIのAPI、値上げではなく値下げだったので助かる。"
+    },
+    {
+      "id": "tech-026",
+      "kind": "emotion",
+      "gold": [
+        "joy"
+      ],
+      "sys": "trust",
+      "text": "ミライAIのAPI、値上げではなく値下げだったので助かる。"
+    },
+    {
+      "id": "tech-029",
+      "kind": "sentiment",
+      "gold": "negative",
+      "sys": "positive",
+      "text": "このエラーメッセージ、何を直せばいいのか全然わからない。"
+    },
+    {
+      "id": "tech-029",
+      "kind": "target",
+      "gold": [
+        "エラーメッセージ"
+      ],
+      "sys": [
+        "何",
+        "全然"
+      ],
+      "text": "このエラーメッセージ、何を直せばいいのか全然わからない。"
+    },
+    {
+      "id": "tech-032",
+      "kind": "sentiment",
+      "gold": null,
+      "sys": "negative",
+      "text": "SDKのv3は破壊的変更が多くて移行が辛い。"
+    },
+    {
+      "id": "tech-033",
+      "kind": "sentiment",
+      "gold": "negative",
+      "sys": null,
+      "text": "３２ＧＢのメモリを積んだのにまだスワップが発生する。"
+    },
+    {
+      "id": "tech-034",
+      "kind": "target",
+      "gold": [
+        "佐藤さん"
+      ],
+      "sys": [
+        "判断"
+      ],
+      "text": "障害の復旧、佐藤さんの判断が的確だった。"
+    },
+    {
+      "id": "tech-037",
+      "kind": "target",
+      "gold": [
+        "アルゴリズム"
+      ],
+      "sys": [
+        "実用上"
+      ],
+      "text": "このアルゴリズム、計算量O(n²)なのは分かるけど実用上は十分速い。"
+    },
+    {
+      "id": "tech-038",
+      "kind": "sentiment",
+      "gold": null,
+      "sys": "positive",
+      "text": "新入社員がGitの使い方を1日で覚えて感心した。"
+    },
+    {
+      "id": "tech-039",
+      "kind": "target",
+      "gold": [
+        "マイクロサービス化"
+      ],
+      "sys": [
+        "正直"
+      ],
+      "text": "マイクロサービス化、正直やらなきゃよかった。"
+    },
+    {
+      "id": "tech-041",
+      "kind": "sentiment",
+      "gold": null,
+      "sys": "positive",
+      "text": "質問です。Pythonで日本語の文字数を正確に数える方法はありますか？"
+    },
+    {
+      "id": "tech-042",
+      "kind": "sentiment",
+      "gold": "negative",
+      "sys": null,
+      "text": "ライセンス費が年間120万円は中小企業には厳しい。"
+    },
+    {
+      "id": "tech-046",
+      "kind": "target",
+      "gold": [
+        "型推論"
+      ],
+      "sys": [
+        "何"
+      ],
+      "text": "型推論が賢すぎて、逆に何が起きているのか追えない。"
+    },
+    {
+      "id": "tech-048",
+      "kind": "sentiment",
+      "gold": "negative",
+      "sys": null,
+      "text": "AIチャットに聞いたら堂々と間違ったコードを出してきて笑った。"
+    },
+    {
+      "id": "tech-050",
+      "kind": "sentiment",
+      "gold": null,
+      "sys": "positive",
+      "text": "エラーが再現しないんですが、どう調べればいいですか？"
+    },
+    {
+      "id": "tech-056",
+      "kind": "target",
+      "gold": [
+        "コードレビュー"
+      ],
+      "sys": [
+        "毎回"
+      ],
+      "text": "田村さんのコードレビューは厳しいけど、毎回学びがある。"
+    },
+    {
+      "id": "literary-002",
+      "kind": "tokens",
+      "gold": [
+        "彼女",
+        "は",
+        "嬉しくなかった",
+        "。",
+        "ただ",
+        "、",
+        "静かに",
+        "頷いた",
+        "。"
+      ],
+      "sys": [
+        "彼女",
+        "は",
+        "嬉しくなかった",
+        "。",
+        "ただ",
+        "、",
+        "静",
+        "か",
+        "に",
+        "頷いた",
+        "。"
+      ]
+    },
+    {
+      "id": "literary-003",
+      "kind": "tokens",
+      "gold": [
+        "春",
+        "の",
+        "光",
+        "が",
+        "、",
+        "古い",
+        "縁側",
+        "に",
+        "やわらかく",
+        "落ちていた",
+        "。"
+      ],
+      "sys": [
+        "春",
+        "の",
+        "光",
+        "が",
+        "、",
+        "古い",
+        "縁側",
+        "にやわらかく",
+        "落ちていた",
+        "。"
+      ]
+    },
+    {
+      "id": "literary-003",
+      "kind": "sentiment",
+      "gold": null,
+      "sys": "negative",
+      "text": "春の光が、古い縁側にやわらかく落ちていた。"
+    },
+    {
+      "id": "literary-004",
+      "kind": "emotion",
+      "gold": [
+        "sadness"
+      ],
+      "sys": "moved",
+      "text": "田中は手紙を読み終えると、声を上げて泣いた。"
+    },
+    {
+      "id": "literary-005",
+      "kind": "tokens",
+      "gold": [
+        "遠く",
+        "で",
+        "犬",
+        "が",
+        "わんわん",
+        "と",
+        "吠えている",
+        "。",
+        "それ",
+        "だけ",
+        "の",
+        "夜",
+        "だった",
+        "。"
+      ],
+      "sys": [
+        "遠くで",
+        "犬",
+        "が",
+        "わんわん",
+        "と",
+        "吠えている",
+        "。",
+        "それ",
+        "だけ",
+        "の",
+        "夜だった",
+        "。"
+      ]
+    },
+    {
+      "id": "literary-006",
+      "kind": "tokens",
+      "gold": [
+        "少年",
+        "は",
+        "、",
+        "初めて",
+        "見る",
+        "雪",
+        "に",
+        "目",
+        "を",
+        "輝かせた",
+        "。"
+      ],
+      "sys": [
+        "少年",
+        "は",
+        "、",
+        "初めて",
+        "見る雪",
+        "に",
+        "目を輝かせた",
+        "。"
+      ]
+    },
+    {
+      "id": "literary-007",
+      "kind": "tokens",
+      "gold": [
+        "悪くない",
+        "人生",
+        "だった",
+        "、",
+        "と",
+        "老人",
+        "は",
+        "呟いた",
+        "。"
+      ],
+      "sys": [
+        "悪くない",
+        "人生だった",
+        "、",
+        "と",
+        "老人",
+        "は",
+        "呟いた",
+        "。"
+      ]
+    },
+    {
+      "id": "literary-007",
+      "kind": "target",
+      "gold": [
+        "人生"
+      ],
+      "sys": [],
+      "text": "悪くない人生だった、と老人は呟いた。"
+    },
+    {
+      "id": "literary-008",
+      "kind": "tokens",
+      "gold": [
+        "昭和五十二年",
+        "の",
+        "夏",
+        "、",
+        "ぼくら",
+        "は",
+        "川",
+        "で",
+        "一日中",
+        "泳いでいた",
+        "。"
+      ],
+      "sys": [
+        "昭和五十二年",
+        "の",
+        "夏",
+        "、",
+        "ぼく",
+        "ら",
+        "は",
+        "川",
+        "で",
+        "一日",
+        "中泳いでいた",
+        "。"
+      ]
+    },
+    {
+      "id": "literary-009",
+      "kind": "emotion",
+      "gold": [
+        "sadness"
+      ],
+      "sys": null,
+      "text": "母の背中は、思っていたよりずっと小さかった。"
+    },
+    {
+      "id": "literary-010",
+      "kind": "tokens",
+      "gold": [
+        "彼",
+        "は",
+        "怒っていた",
+        "わけ",
+        "で",
+        "は",
+        "ない",
+        "。",
+        "ただ",
+        "、",
+        "疲れていた",
+        "の",
+        "だ",
+        "。"
+      ],
+      "sys": [
+        "彼",
+        "は",
+        "怒っていたわけで",
+        "は",
+        "ない",
+        "。",
+        "ただ",
+        "、",
+        "疲れていたのだ",
+        "。"
+      ]
+    },
+    {
+      "id": "literary-011",
+      "kind": "tokens",
+      "gold": [
+        "京都",
+        "の",
+        "路地",
+        "に",
+        "降る",
+        "しとしと",
+        "雨",
+        "が",
+        "、",
+        "彼",
+        "を",
+        "少し",
+        "だけ",
+        "寂しくさせた",
+        "。"
+      ],
+      "sys": [
+        "京都",
+        "の",
+        "路地",
+        "に",
+        "降る",
+        "しとしと",
+        "雨",
+        "が",
+        "、",
+        "彼",
+        "を",
+        "少し",
+        "だけ",
+        "寂しく",
+        "させた",
+        "。"
+      ]
+    },
+    {
+      "id": "literary-012",
+      "kind": "tokens",
+      "gold": [
+        "『",
+        "月影の庭",
+        "』",
+        "を",
+        "書き上げた",
+        "とき",
+        "、",
+        "彼女",
+        "は",
+        "三十",
+        "歳",
+        "に",
+        "なっていた",
+        "。"
+      ],
+      "sys": [
+        "『",
+        "月影",
+        "の",
+        "庭",
+        "』",
+        "を",
+        "書き上げた",
+        "とき",
+        "、",
+        "彼女",
+        "は",
+        "三十歳",
+        "に",
+        "なっていた",
+        "。"
+      ]
+    },
+    {
+      "id": "literary-013",
+      "kind": "emotion",
+      "gold": [
+        "moved"
+      ],
+      "sys": null,
+      "text": "祖父の時計は、今も胸の奥でこちこちと鳴っている。"
+    },
+    {
+      "id": "literary-014",
+      "kind": "tokens",
+      "gold": [
+        "彼女",
+        "の",
+        "笑顔",
+        "を",
+        "見た",
+        "瞬間",
+        "、",
+        "胸",
+        "の",
+        "つかえ",
+        "が",
+        "すっと",
+        "消えた",
+        "。"
+      ],
+      "sys": [
+        "彼女",
+        "の",
+        "笑顔",
+        "を",
+        "見た瞬間",
+        "、",
+        "胸のつかえが",
+        "すっと消えた",
+        "。"
+      ]
+    },
+    {
+      "id": "literary-016",
+      "kind": "tokens",
+      "gold": [
+        "東京駅",
+        "の",
+        "雑踏",
+        "の",
+        "中",
+        "で",
+        "、",
+        "彼",
+        "は",
+        "ふと",
+        "故郷",
+        "の",
+        "匂い",
+        "を",
+        "思い出した",
+        "。"
+      ],
+      "sys": [
+        "東京駅",
+        "の",
+        "雑踏",
+        "の",
+        "中",
+        "で",
+        "、",
+        "彼",
+        "はふ",
+        "と",
+        "故郷",
+        "の",
+        "匂い",
+        "を",
+        "思い出した",
+        "。"
+      ]
+    },
+    {
+      "id": "literary-016",
+      "kind": "emotion",
+      "gold": [
+        "moved"
+      ],
+      "sys": null,
+      "text": "東京駅の雑踏の中で、彼はふと故郷の匂いを思い出した。"
+    },
+    {
+      "id": "literary-017",
+      "kind": "tokens",
+      "gold": [
+        "それ",
+        "は",
+        "、",
+        "たしかに",
+        "美しい",
+        "嘘",
+        "だった",
+        "。"
+      ],
+      "sys": [
+        "それ",
+        "は",
+        "、",
+        "たしかに",
+        "美しい",
+        "嘘だった",
+        "。"
+      ]
+    },
+    {
+      "id": "literary-017",
+      "kind": "target",
+      "gold": [
+        "嘘"
+      ],
+      "sys": [],
+      "text": "それは、たしかに美しい嘘だった。"
+    },
+    {
+      "id": "literary-018",
+      "kind": "sentiment",
+      "gold": null,
+      "sys": "positive",
+      "text": "娘が生まれた日、男は初めて神に感謝した。"
+    },
+    {
+      "id": "literary-018",
+      "kind": "emotion",
+      "gold": [
+        "moved"
+      ],
+      "sys": "admiration",
+      "text": "娘が生まれた日、男は初めて神に感謝した。"
+    },
+    {
+      "id": "literary-019",
+      "kind": "tokens",
+      "gold": [
+        "「",
+        "もう",
+        "二度と",
+        "会わない",
+        "」",
+        "と",
+        "、",
+        "彼女",
+        "は",
+        "言った",
+        "。"
+      ],
+      "sys": [
+        "「",
+        "もう",
+        "二度と会わない",
+        "」",
+        "と",
+        "、",
+        "彼女",
+        "は",
+        "言った",
+        "。"
+      ]
+    },
+    {
+      "id": "literary-020",
+      "kind": "tokens",
+      "gold": [
+        "五月",
+        "の",
+        "風",
+        "が",
+        "、",
+        "カーテン",
+        "を",
+        "ふわり",
+        "と",
+        "揺らした",
+        "。"
+      ],
+      "sys": [
+        "五月",
+        "の",
+        "風",
+        "が",
+        "、",
+        "カーテン",
+        "をふわり",
+        "と",
+        "揺らした",
+        "。"
+      ]
+    },
+    {
+      "id": "literary-023",
+      "kind": "sentiment",
+      "gold": "positive",
+      "sys": null,
+      "text": "彼は約束を破らなかった。ただ一度も、だ。"
+    },
+    {
+      "id": "literary-026",
+      "kind": "sentiment",
+      "gold": "positive",
+      "sys": null,
+      "text": "彼女の声は震えていたが、瞳は少しも揺らがなかった。"
+    },
+    {
+      "id": "literary-027",
+      "kind": "emotion",
+      "gold": [
+        "moved"
+      ],
+      "sys": null,
+      "text": "父は何も言わず、ただ私の頭に手を置いた。"
+    },
+    {
+      "id": "literary-031",
+      "kind": "emotion",
+      "gold": [
+        "sadness"
+      ],
+      "sys": "joy",
+      "text": "「ありがとう」と言えなかったことを、彼は今も悔やんでいる。"
+    },
+    {
+      "id": "literary-032",
+      "kind": "sentiment",
+      "gold": null,
+      "sys": "positive",
+      "text": "「もう少しだけ、ここにいてもいい？」と彼女は小さく言った。"
+    },
+    {
+      "id": "literary-032",
+      "kind": "emotion",
+      "gold": [
+        "anxiety"
+      ],
+      "sys": null,
+      "text": "「もう少しだけ、ここにいてもいい？」と彼女は小さく言った。"
+    },
+    {
+      "id": "literary-038",
+      "kind": "sentiment",
+      "gold": "negative",
+      "sys": null,
+      "text": "彼の作った料理は、正直に言えば、うまくはなかった。"
+    },
+    {
+      "id": "literary-049",
+      "kind": "sentiment",
+      "gold": "negative",
+      "sys": null,
+      "text": "新しい家は広くて明るかったが、どこか落ち着かなかった。"
+    },
+    {
+      "id": "literary-051",
+      "kind": "emotion",
+      "gold": [
+        "sadness"
+      ],
+      "sys": null,
+      "text": "「行くな」と言えば、彼は行かなかっただろう。"
+    },
+    {
+      "id": "literary-058",
+      "kind": "emotion",
+      "gold": [
+        "admiration"
+      ],
+      "sys": null,
+      "text": "祖母の作る味噌汁は、世界で一番おいしかった。"
+    },
+    {
+      "id": "conversation-001",
+      "kind": "sentiment",
+      "gold": null,
+      "sys": "positive",
+      "text": "ねえ、今日の夕飯何がいい？"
+    },
+    {
+      "id": "conversation-002",
+      "kind": "sentiment",
+      "gold": "negative",
+      "sys": null,
+      "text": "えー、またカレー？昨日も食べたじゃん。"
+    },
+    {
+      "id": "conversation-003",
+      "kind": "tokens",
+      "gold": [
+        "別に",
+        "怒ってない",
+        "よ",
+        "。",
+        "ただ",
+        "ちょっと",
+        "疲れてる",
+        "だけ",
+        "。"
+      ],
+      "sys": [
+        "別",
+        "に",
+        "怒ってない",
+        "よ",
+        "。",
+        "ただ",
+        "ちょっと",
+        "疲れてる",
+        "だけ",
+        "。"
+      ]
+    },
+    {
+      "id": "conversation-003",
+      "kind": "sentiment",
+      "gold": null,
+      "sys": "negative",
+      "text": "別に怒ってないよ。ただちょっと疲れてるだけ。"
+    },
+    {
+      "id": "conversation-004",
+      "kind": "emotion",
+      "gold": [
+        "sadness"
+      ],
+      "sys": "admiration",
+      "text": "ごめん、明日の約束、やっぱり行けなくなった。"
+    },
+    {
+      "id": "conversation-007",
+      "kind": "tokens",
+      "gold": [
+        "その",
+        "話",
+        "、",
+        "前",
+        "に",
+        "も",
+        "聞いた",
+        "けど",
+        "、",
+        "何回",
+        "聞いても",
+        "面白い",
+        "ね",
+        "。"
+      ],
+      "sys": [
+        "その",
+        "話",
+        "、",
+        "前",
+        "に",
+        "も",
+        "聞いた",
+        "けど",
+        "、",
+        "何回",
+        "聞いて",
+        "も",
+        "面白い",
+        "ね",
+        "。"
+      ]
+    },
+    {
+      "id": "conversation-007",
+      "kind": "target",
+      "gold": [
+        "話"
+      ],
+      "sys": [
+        "何回"
+      ],
+      "text": "その話、前にも聞いたけど、何回聞いても面白いね。"
+    },
+    {
+      "id": "conversation-009",
+      "kind": "tokens",
+      "gold": [
+        "うーん",
+        "、",
+        "悪くはない",
+        "けど",
+        "、",
+        "もう",
+        "少し",
+        "安い",
+        "と",
+        "嬉しい",
+        "な",
+        "。"
+      ],
+      "sys": [
+        "う",
+        "ー",
+        "ん",
+        "、",
+        "悪くはない",
+        "けど",
+        "、",
+        "もう",
+        "少し",
+        "安い",
+        "と",
+        "嬉しい",
+        "な",
+        "。"
+      ]
+    },
+    {
+      "id": "conversation-009",
+      "kind": "sentiment",
+      "gold": "negative",
+      "sys": "positive",
+      "text": "うーん、悪くはないけど、もう少し安いと嬉しいな。"
+    },
+    {
+      "id": "conversation-010",
+      "kind": "sentiment",
+      "gold": null,
+      "sys": "positive",
+      "text": "お母さん、田中くんの家に泊まってもいい？"
+    },
+    {
+      "id": "conversation-014",
+      "kind": "tokens",
+      "gold": [
+        "先週末",
+        "、",
+        "家族",
+        "で",
+        "軽井沢",
+        "に",
+        "行ってきた",
+        "ん",
+        "だ",
+        "。"
+      ],
+      "sys": [
+        "先週末",
+        "、",
+        "家族",
+        "で",
+        "軽井沢",
+        "に",
+        "行ってきたんだ",
+        "。"
+      ]
+    },
+    {
+      "id": "conversation-015",
+      "kind": "tokens",
+      "gold": [
+        "いや",
+        "、",
+        "それ",
+        "は",
+        "違う",
+        "と",
+        "思う",
+        "な",
+        "。"
+      ],
+      "sys": [
+        "い",
+        "や",
+        "、",
+        "それ",
+        "は",
+        "違うと思う",
+        "な",
+        "。"
+      ]
+    },
+    {
+      "id": "conversation-015",
+      "kind": "sentiment",
+      "gold": "negative",
+      "sys": null,
+      "text": "いや、それは違うと思うな。"
+    },
+    {
+      "id": "conversation-017",
+      "kind": "tokens",
+      "gold": [
+        "猫",
+        "が",
+        "ゴロゴロ",
+        "喉",
+        "鳴らしてる",
+        "。"
+      ],
+      "sys": [
+        "猫",
+        "が",
+        "ゴロゴロ",
+        "喉鳴らしてる",
+        "。"
+      ]
+    },
+    {
+      "id": "conversation-018",
+      "kind": "tokens",
+      "gold": [
+        "来月",
+        "の",
+        "家賃",
+        "、",
+        "また",
+        "5000",
+        "円",
+        "上がる",
+        "ん",
+        "だって",
+        "。",
+        "ありえない",
+        "。"
+      ],
+      "sys": [
+        "来月",
+        "の",
+        "家賃",
+        "、",
+        "また",
+        "5000",
+        "円上",
+        "がるんだ",
+        "って",
+        "。",
+        "ありえない",
+        "。"
+      ]
+    },
+    {
+      "id": "conversation-018",
+      "kind": "target",
+      "gold": [
+        "家賃"
+      ],
+      "sys": [
+        "円上"
+      ],
+      "text": "来月の家賃、また5000円上がるんだって。ありえない。"
+    },
+    {
+      "id": "conversation-020",
+      "kind": "tokens",
+      "gold": [
+        "山田",
+        "さん",
+        "って",
+        "、",
+        "いつも",
+        "笑顔",
+        "で",
+        "感じ",
+        "いい",
+        "よ",
+        "ね",
+        "。"
+      ],
+      "sys": [
+        "山田さんって",
+        "、",
+        "いつも",
+        "笑顔",
+        "で",
+        "感じいい",
+        "よ",
+        "ね",
+        "。"
+      ]
+    },
+    {
+      "id": "conversation-020",
+      "kind": "target",
+      "gold": [
+        "山田さん"
+      ],
+      "sys": [
+        "感じ"
+      ],
+      "text": "山田さんって、いつも笑顔で感じいいよね。"
+    },
+    {
+      "id": "conversation-022",
+      "kind": "sentiment",
+      "gold": null,
+      "sys": "positive",
+      "text": "えっと、駅までどう行けばいいですか？"
+    },
+    {
+      "id": "conversation-025",
+      "kind": "emotion",
+      "gold": [
+        "joy"
+      ],
+      "sys": "sadness",
+      "text": "別に嬉しくないし。……まあ、ちょっとは嬉しいけど。"
+    },
+    {
+      "id": "conversation-026",
+      "kind": "sentiment",
+      "gold": null,
+      "sys": "positive",
+      "text": "大丈夫だよ、心配しないで。私がついてる。"
+    },
+    {
+      "id": "conversation-030",
+      "kind": "sentiment",
+      "gold": "negative",
+      "sys": null,
+      "text": "何でいつも私ばっかり片付けなきゃいけないの？"
+    },
+    {
+      "id": "conversation-031",
+      "kind": "sentiment",
+      "gold": "positive",
+      "sys": null,
+      "text": "この前のパン屋、また行きたいね。"
+    },
+    {
+      "id": "conversation-037",
+      "kind": "emotion",
+      "gold": [
+        "surprise"
+      ],
+      "sys": null,
+      "text": "それ、３０００円もしたの？高くない？"
+    },
+    {
+      "id": "conversation-038",
+      "kind": "sentiment",
+      "gold": null,
+      "sys": "positive",
+      "text": "全然大丈夫。気にしないで。"
+    },
+    {
+      "id": "conversation-042",
+      "kind": "sentiment",
+      "gold": "negative",
+      "sys": "positive",
+      "text": "佐藤さん、また遅刻？いい加減にしてほしい。"
+    },
+    {
+      "id": "conversation-042",
+      "kind": "target",
+      "gold": [
+        "佐藤さん"
+      ],
+      "sys": [
+        "遅刻"
+      ],
+      "text": "佐藤さん、また遅刻？いい加減にしてほしい。"
+    },
+    {
+      "id": "conversation-043",
+      "kind": "target",
+      "gold": [
+        "アプリ"
+      ],
+      "sys": [
+        "無料"
+      ],
+      "text": "このアプリ、無料なのにすごく便利だね。"
+    },
+    {
+      "id": "conversation-049",
+      "kind": "sentiment",
+      "gold": null,
+      "sys": "positive",
+      "text": "なんか今日、顔色悪くない？大丈夫？"
+    },
+    {
+      "id": "conversation-052",
+      "kind": "sentiment",
+      "gold": "negative",
+      "sys": null,
+      "text": "弟が「宿題やった」って言うけど、絶対やってない。"
+    },
+    {
+      "id": "conversation-055",
+      "kind": "target",
+      "gold": [
+        "田舎の夜"
+      ],
+      "sys": [
+        "虫"
+      ],
+      "text": "田舎の夜って、虫がりんりん鳴いてて風情あるよね。"
+    },
+    {
+      "id": "conversation-059",
+      "kind": "sentiment",
+      "gold": null,
+      "sys": "positive",
+      "text": "明日、雨降らないといいね。運動会だし。"
+    },
+    {
+      "id": "conversation-059",
+      "kind": "emotion",
+      "gold": [
+        "anxiety"
+      ],
+      "sys": "anticipation",
+      "text": "明日、雨降らないといいね。運動会だし。"
+    },
+    {
+      "id": "conversation-060",
+      "kind": "emotion",
+      "gold": [
+        "anticipation"
+      ],
+      "sys": null,
+      "text": "よし、決めた。来年こそ海外行く。"
+    }
+  ]
+}

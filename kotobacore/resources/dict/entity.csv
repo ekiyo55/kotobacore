@@ -1801,3 +1801,15 @@ K-1,ORGANIZATION,K-1,,75,true
 草枕,WORK,草枕,,70,false
 虞美人草,WORK,虞美人草,,70,false
 坊ちゃん,WORK,坊っちゃん,,80,true
+iPhone,PRODUCT,iPhone,アイフォン|アイホン,90,false
+iPad,PRODUCT,iPad,アイパッド,90,false
+MacBook,PRODUCT,MacBook,マックブック,90,false
+Mac,PRODUCT,Mac,マック,85,false
+Android,PRODUCT,Android,アンドロイド,88,false
+Galaxy,PRODUCT,Galaxy,ギャラクシー,85,false
+Pixel,PRODUCT,Pixel,ピクセル,80,false
+Windows,PRODUCT,Windows,ウィンドウズ,88,false
+PlayStation,PRODUCT,PlayStation,プレステ|プレイステーション,88,false
+Nintendo Switch,PRODUCT,Nintendo Switch,スイッチ|ニンテンドースイッチ,85,true
+AirPods,PRODUCT,AirPods,エアポッズ,85,false
+Apple Watch,PRODUCT,Apple Watch,アップルウォッチ,85,true

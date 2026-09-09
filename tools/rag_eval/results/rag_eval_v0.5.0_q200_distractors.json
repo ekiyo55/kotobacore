@@ -1,0 +1,3177 @@
+{
+  "version": "0.5.0",
+  "docs": 24,
+  "chunks": 447,
+  "questions": 200,
+  "gold_missing": [],
+  "overall": {
+    "bm25_raw": {
+      "recall@1": 68.5,
+      "recall@3": 82.0,
+      "recall@5": 89.5,
+      "mrr@10": 0.769,
+      "n": 200
+    },
+    "bm25_raw+rerank": {
+      "recall@1": 74.5,
+      "recall@3": 88.0,
+      "recall@5": 93.0,
+      "mrr@10": 0.824,
+      "n": 200
+    },
+    "bm25_ir": {
+      "recall@1": 70.5,
+      "recall@3": 86.0,
+      "recall@5": 93.5,
+      "mrr@10": 0.792,
+      "n": 200
+    },
+    "bm25_ir+filter": {
+      "recall@1": 72.5,
+      "recall@3": 87.0,
+      "recall@5": 94.5,
+      "mrr@10": 0.808,
+      "n": 200
+    },
+    "bm25_ir+filter+rerank": {
+      "recall@1": 74.5,
+      "recall@3": 89.5,
+      "recall@5": 94.0,
+      "mrr@10": 0.826,
+      "n": 200
+    },
+    "tfidf_raw": {
+      "recall@1": 69.5,
+      "recall@3": 81.5,
+      "recall@5": 89.5,
+      "mrr@10": 0.773,
+      "n": 200
+    },
+    "tfidf_raw+rerank": {
+      "recall@1": 74.0,
+      "recall@3": 87.0,
+      "recall@5": 93.5,
+      "mrr@10": 0.817,
+      "n": 200
+    }
+  },
+  "by_type": {
+    "compare": {
+      "bm25_raw": {
+        "recall@1": 86.7,
+        "recall@3": 93.3,
+        "recall@5": 93.3,
+        "mrr@10": 0.889,
+        "n": 15
+      },
+      "bm25_ir": {
+        "recall@1": 80.0,
+        "recall@3": 93.3,
+        "recall@5": 93.3,
+        "mrr@10": 0.867,
+        "n": 15
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 66.7,
+        "recall@3": 86.7,
+        "recall@5": 93.3,
+        "mrr@10": 0.79,
+        "n": 15
+      },
+      "tfidf_raw": {
+        "recall@1": 86.7,
+        "recall@3": 93.3,
+        "recall@5": 93.3,
+        "mrr@10": 0.9,
+        "n": 15
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 80.0,
+        "recall@3": 86.7,
+        "recall@5": 93.3,
+        "mrr@10": 0.85,
+        "n": 15
+      }
+    },
+    "date": {
+      "bm25_raw": {
+        "recall@1": 73.3,
+        "recall@3": 80.0,
+        "recall@5": 93.3,
+        "mrr@10": 0.797,
+        "n": 30
+      },
+      "bm25_ir": {
+        "recall@1": 70.0,
+        "recall@3": 80.0,
+        "recall@5": 93.3,
+        "mrr@10": 0.783,
+        "n": 30
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 73.3,
+        "recall@3": 93.3,
+        "recall@5": 96.7,
+        "mrr@10": 0.829,
+        "n": 30
+      },
+      "tfidf_raw": {
+        "recall@1": 73.3,
+        "recall@3": 80.0,
+        "recall@5": 93.3,
+        "mrr@10": 0.802,
+        "n": 30
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 76.7,
+        "recall@3": 90.0,
+        "recall@5": 96.7,
+        "mrr@10": 0.848,
+        "n": 30
+      }
+    },
+    "definition": {
+      "bm25_raw": {
+        "recall@1": 70.0,
+        "recall@3": 85.0,
+        "recall@5": 95.0,
+        "mrr@10": 0.792,
+        "n": 20
+      },
+      "bm25_ir": {
+        "recall@1": 70.0,
+        "recall@3": 90.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.797,
+        "n": 20
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 85.0,
+        "recall@3": 95.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.904,
+        "n": 20
+      },
+      "tfidf_raw": {
+        "recall@1": 75.0,
+        "recall@3": 80.0,
+        "recall@5": 95.0,
+        "mrr@10": 0.81,
+        "n": 20
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 85.0,
+        "recall@3": 90.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.9,
+        "n": 20
+      }
+    },
+    "howto": {
+      "bm25_raw": {
+        "recall@1": 64.0,
+        "recall@3": 84.0,
+        "recall@5": 92.0,
+        "mrr@10": 0.758,
+        "n": 25
+      },
+      "bm25_ir": {
+        "recall@1": 68.0,
+        "recall@3": 88.0,
+        "recall@5": 96.0,
+        "mrr@10": 0.785,
+        "n": 25
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 72.0,
+        "recall@3": 92.0,
+        "recall@5": 96.0,
+        "mrr@10": 0.815,
+        "n": 25
+      },
+      "tfidf_raw": {
+        "recall@1": 68.0,
+        "recall@3": 88.0,
+        "recall@5": 92.0,
+        "mrr@10": 0.782,
+        "n": 25
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 72.0,
+        "recall@3": 88.0,
+        "recall@5": 92.0,
+        "mrr@10": 0.798,
+        "n": 25
+      }
+    },
+    "list": {
+      "bm25_raw": {
+        "recall@1": 80.0,
+        "recall@3": 80.0,
+        "recall@5": 80.0,
+        "mrr@10": 0.827,
+        "n": 10
+      },
+      "bm25_ir": {
+        "recall@1": 90.0,
+        "recall@3": 90.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.925,
+        "n": 10
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 90.0,
+        "recall@3": 90.0,
+        "recall@5": 90.0,
+        "mrr@10": 0.912,
+        "n": 10
+      },
+      "tfidf_raw": {
+        "recall@1": 80.0,
+        "recall@3": 80.0,
+        "recall@5": 90.0,
+        "mrr@10": 0.834,
+        "n": 10
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 80.0,
+        "recall@3": 90.0,
+        "recall@5": 90.0,
+        "mrr@10": 0.863,
+        "n": 10
+      }
+    },
+    "location": {
+      "bm25_raw": {
+        "recall@1": 46.7,
+        "recall@3": 73.3,
+        "recall@5": 93.3,
+        "mrr@10": 0.602,
+        "n": 15
+      },
+      "bm25_ir": {
+        "recall@1": 46.7,
+        "recall@3": 80.0,
+        "recall@5": 93.3,
+        "mrr@10": 0.63,
+        "n": 15
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 73.3,
+        "recall@3": 86.7,
+        "recall@5": 93.3,
+        "mrr@10": 0.824,
+        "n": 15
+      },
+      "tfidf_raw": {
+        "recall@1": 40.0,
+        "recall@3": 60.0,
+        "recall@5": 86.7,
+        "mrr@10": 0.551,
+        "n": 15
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 66.7,
+        "recall@3": 86.7,
+        "recall@5": 93.3,
+        "mrr@10": 0.776,
+        "n": 15
+      }
+    },
+    "person": {
+      "bm25_raw": {
+        "recall@1": 65.0,
+        "recall@3": 75.0,
+        "recall@5": 85.0,
+        "mrr@10": 0.722,
+        "n": 20
+      },
+      "bm25_ir": {
+        "recall@1": 70.0,
+        "recall@3": 85.0,
+        "recall@5": 90.0,
+        "mrr@10": 0.786,
+        "n": 20
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 65.0,
+        "recall@3": 85.0,
+        "recall@5": 95.0,
+        "mrr@10": 0.767,
+        "n": 20
+      },
+      "tfidf_raw": {
+        "recall@1": 65.0,
+        "recall@3": 75.0,
+        "recall@5": 85.0,
+        "mrr@10": 0.722,
+        "n": 20
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 65.0,
+        "recall@3": 80.0,
+        "recall@5": 85.0,
+        "mrr@10": 0.746,
+        "n": 20
+      }
+    },
+    "reason": {
+      "bm25_raw": {
+        "recall@1": 70.0,
+        "recall@3": 80.0,
+        "recall@5": 85.0,
+        "mrr@10": 0.778,
+        "n": 20
+      },
+      "bm25_ir": {
+        "recall@1": 75.0,
+        "recall@3": 85.0,
+        "recall@5": 90.0,
+        "mrr@10": 0.817,
+        "n": 20
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 75.0,
+        "recall@3": 90.0,
+        "recall@5": 90.0,
+        "mrr@10": 0.825,
+        "n": 20
+      },
+      "tfidf_raw": {
+        "recall@1": 70.0,
+        "recall@3": 80.0,
+        "recall@5": 85.0,
+        "mrr@10": 0.775,
+        "n": 20
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 70.0,
+        "recall@3": 90.0,
+        "recall@5": 95.0,
+        "mrr@10": 0.812,
+        "n": 20
+      }
+    },
+    "value": {
+      "bm25_raw": {
+        "recall@1": 62.9,
+        "recall@3": 80.0,
+        "recall@5": 82.9,
+        "mrr@10": 0.73,
+        "n": 35
+      },
+      "bm25_ir": {
+        "recall@1": 65.7,
+        "recall@3": 82.9,
+        "recall@5": 88.6,
+        "mrr@10": 0.752,
+        "n": 35
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 71.4,
+        "recall@3": 82.9,
+        "recall@5": 88.6,
+        "mrr@10": 0.78,
+        "n": 35
+      },
+      "tfidf_raw": {
+        "recall@1": 65.7,
+        "recall@3": 82.9,
+        "recall@5": 82.9,
+        "mrr@10": 0.74,
+        "n": 35
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 68.6,
+        "recall@3": 80.0,
+        "recall@5": 91.4,
+        "mrr@10": 0.759,
+        "n": 35
+      }
+    },
+    "yesno": {
+      "bm25_raw": {
+        "recall@1": 80.0,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.883,
+        "n": 10
+      },
+      "bm25_ir": {
+        "recall@1": 90.0,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.933,
+        "n": 10
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 90.0,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.933,
+        "n": 10
+      },
+      "tfidf_raw": {
+        "recall@1": 80.0,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.883,
+        "n": 10
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 90.0,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.933,
+        "n": 10
+      }
+    }
+  },
+  "by_lexical": {
+    "abbrev": {
+      "bm25_raw": {
+        "recall@1": 70.0,
+        "recall@3": 85.0,
+        "recall@5": 95.0,
+        "mrr@10": 0.781,
+        "n": 20
+      },
+      "bm25_ir": {
+        "recall@1": 70.0,
+        "recall@3": 80.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.789,
+        "n": 20
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 65.0,
+        "recall@3": 80.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.756,
+        "n": 20
+      },
+      "tfidf_raw": {
+        "recall@1": 70.0,
+        "recall@3": 75.0,
+        "recall@5": 90.0,
+        "mrr@10": 0.777,
+        "n": 20
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 65.0,
+        "recall@3": 80.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.756,
+        "n": 20
+      }
+    },
+    "paraphrase": {
+      "bm25_raw": {
+        "recall@1": 67.3,
+        "recall@3": 76.9,
+        "recall@5": 90.4,
+        "mrr@10": 0.756,
+        "n": 52
+      },
+      "bm25_ir": {
+        "recall@1": 71.2,
+        "recall@3": 86.5,
+        "recall@5": 92.3,
+        "mrr@10": 0.792,
+        "n": 52
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 71.2,
+        "recall@3": 90.4,
+        "recall@5": 96.2,
+        "mrr@10": 0.812,
+        "n": 52
+      },
+      "tfidf_raw": {
+        "recall@1": 71.2,
+        "recall@3": 82.7,
+        "recall@5": 92.3,
+        "mrr@10": 0.78,
+        "n": 52
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 75.0,
+        "recall@3": 88.5,
+        "recall@5": 94.2,
+        "mrr@10": 0.825,
+        "n": 52
+      }
+    },
+    "relative_time": {
+      "bm25_raw": {
+        "recall@1": 68.4,
+        "recall@3": 78.9,
+        "recall@5": 89.5,
+        "mrr@10": 0.772,
+        "n": 19
+      },
+      "bm25_ir": {
+        "recall@1": 68.4,
+        "recall@3": 84.2,
+        "recall@5": 94.7,
+        "mrr@10": 0.778,
+        "n": 19
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 73.7,
+        "recall@3": 94.7,
+        "recall@5": 100.0,
+        "mrr@10": 0.835,
+        "n": 19
+      },
+      "tfidf_raw": {
+        "recall@1": 73.7,
+        "recall@3": 78.9,
+        "recall@5": 89.5,
+        "mrr@10": 0.801,
+        "n": 19
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 68.4,
+        "recall@3": 89.5,
+        "recall@5": 100.0,
+        "mrr@10": 0.813,
+        "n": 19
+      }
+    },
+    "same": {
+      "bm25_raw": {
+        "recall@1": 78.6,
+        "recall@3": 92.9,
+        "recall@5": 97.1,
+        "mrr@10": 0.86,
+        "n": 70
+      },
+      "bm25_ir": {
+        "recall@1": 80.0,
+        "recall@3": 95.7,
+        "recall@5": 98.6,
+        "mrr@10": 0.874,
+        "n": 70
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 84.3,
+        "recall@3": 95.7,
+        "recall@5": 95.7,
+        "mrr@10": 0.902,
+        "n": 70
+      },
+      "tfidf_raw": {
+        "recall@1": 80.0,
+        "recall@3": 91.4,
+        "recall@5": 97.1,
+        "mrr@10": 0.864,
+        "n": 70
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 84.3,
+        "recall@3": 95.7,
+        "recall@5": 97.1,
+        "mrr@10": 0.898,
+        "n": 70
+      }
+    },
+    "synonym": {
+      "bm25_raw": {
+        "recall@1": 51.3,
+        "recall@3": 69.2,
+        "recall@5": 71.8,
+        "mrr@10": 0.615,
+        "n": 39
+      },
+      "bm25_ir": {
+        "recall@1": 53.8,
+        "recall@3": 71.8,
+        "recall@5": 82.1,
+        "mrr@10": 0.655,
+        "n": 39
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 66.7,
+        "recall@3": 79.5,
+        "recall@5": 82.1,
+        "mrr@10": 0.738,
+        "n": 39
+      },
+      "tfidf_raw": {
+        "recall@1": 46.2,
+        "recall@3": 66.7,
+        "recall@5": 71.8,
+        "mrr@10": 0.584,
+        "n": 39
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 61.5,
+        "recall@3": 71.8,
+        "recall@5": 79.5,
+        "mrr@10": 0.695,
+        "n": 39
+      }
+    }
+  },
+  "per_question": [
+    {
+      "qid": "q001",
+      "type": "howto",
+      "lexical": "paraphrase",
+      "intent": "how_to",
+      "terms": [
+        "ICカード",
+        "乗車履歴",
+        "経費",
+        "費用",
+        "コスト",
+        "出費"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q002",
+      "type": "person",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "ケイヒ",
+        "操作",
+        "質問",
+        "聞",
+        "問い合わせ",
+        "質疑",
+        "クエスチョン"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q003",
+      "type": "date",
+      "lexical": "abbrev",
+      "intent": "search_value",
+      "terms": [
+        "経費システム",
+        "切り時刻",
+        "申請締",
+        "費用",
+        "コスト"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q004",
+      "type": "howto",
+      "lexical": "same",
+      "intent": "how_to",
+      "terms": [
+        "残業申請",
+        "手順"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q005",
+      "type": "date",
+      "lexical": "relative_time",
+      "intent": "how_to",
+      "terms": [
+        "タイムキーパー手順書",
+        "今年度",
+        "改訂日"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q006",
+      "type": "howto",
+      "lexical": "synonym",
+      "intent": "lookup",
+      "terms": [
+        "タイムキーパーアプリ",
+        "直し方",
+        "バグ",
+        "不具合",
+        "障害"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q007",
+      "type": "definition",
+      "lexical": "same",
+      "intent": "definition",
+      "terms": [
+        "タイムキーパー",
+        "システム"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q008",
+      "type": "howto",
+      "lexical": "same",
+      "intent": "how_to",
+      "terms": [
+        "交換手順",
+        "トナー"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q009",
+      "type": "compare",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "保守契約",
+        "保証"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q010",
+      "type": "definition",
+      "lexical": "abbrev",
+      "intent": "definition",
+      "terms": [
+        "X",
+        "200",
+        "製品",
+        "商品",
+        "プロダクト",
+        "グッズ"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q011",
+      "type": "howto",
+      "lexical": "same",
+      "intent": "how_to",
+      "terms": [
+        "接続手順",
+        "VPN"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q012",
+      "type": "reason",
+      "lexical": "paraphrase",
+      "intent": "reason",
+      "terms": [
+        "認証エラー",
+        "VPN",
+        "認証",
+        "オーセンティケーション",
+        "本人確認"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q013",
+      "type": "yesno",
+      "lexical": "same",
+      "intent": "yes_no",
+      "terms": [
+        "VPN接続",
+        "パソコン",
+        "私物",
+        "PC",
+        "コンピューター",
+        "パーソナルコンピュータ",
+        "コネクション",
+        "連結"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q014",
+      "type": "definition",
+      "lexical": "same",
+      "intent": "definition",
+      "terms": [
+        "対象",
+        "精算",
+        "経費",
+        "費用",
+        "コスト",
+        "出費"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q015",
+      "type": "value",
+      "lexical": "synonym",
+      "intent": "lookup",
+      "terms": [
+        "接待交際費",
+        "限度額"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q016",
+      "type": "list",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "区分",
+        "経費",
+        "費用",
+        "コスト",
+        "出費"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q017",
+      "type": "compare",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "新幹線",
+        "飛行機",
+        "出張",
+        "席"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q018",
+      "type": "date",
+      "lexical": "abbrev",
+      "intent": "lookup",
+      "terms": [
+        "ミライ電機",
+        "付与日",
+        "有給"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q019",
+      "type": "howto",
+      "lexical": "synonym",
+      "intent": "how_to",
+      "terms": [
+        "有給",
+        "方"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q020",
+      "type": "yesno",
+      "lexical": "same",
+      "intent": "list",
+      "terms": [
+        "有給",
+        "消滅"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q021",
+      "type": "date",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "ドライバー職",
+        "北斗物流",
+        "有給申請"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q022",
+      "type": "value",
+      "lexical": "relative_time",
+      "intent": "search_value",
+      "terms": [
+        "有給取得率目標",
+        "北斗物流",
+        "今年度"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q023",
+      "type": "person",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "北斗物流",
+        "有給",
+        "相談"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q024",
+      "type": "reason",
+      "lexical": "paraphrase",
+      "intent": "reason",
+      "terms": [
+        "12月",
+        "北斗物流",
+        "有給"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q025",
+      "type": "definition",
+      "lexical": "same",
+      "intent": "definition",
+      "terms": [
+        "情報分類",
+        "極秘"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q026",
+      "type": "howto",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "ウイルス",
+        "対応"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q027",
+      "type": "list",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "4段階",
+        "情報資産",
+        "分類"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q028",
+      "type": "value",
+      "lexical": "abbrev",
+      "intent": "search_value",
+      "terms": [
+        "500",
+        "MX",
+        "価格",
+        "値段",
+        "プライス",
+        "金額"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q029",
+      "type": "date",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "エアクリア",
+        "500",
+        "発売日",
+        "MX"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q030",
+      "type": "person",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "500",
+        "MX",
+        "担当",
+        "部長",
+        "開発",
+        "ディベロップメント",
+        "構築",
+        "担当者",
+        "窓口"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q031",
+      "type": "location",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "ミライ電機",
+        "本社"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q032",
+      "type": "date",
+      "lexical": "relative_time",
+      "intent": "yes_no",
+      "terms": [
+        "アプリ連携",
+        "500",
+        "MX",
+        "今年",
+        "秋"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q033",
+      "type": "compare",
+      "lexical": "same",
+      "intent": "compare",
+      "terms": [
+        "300",
+        "500",
+        "MX"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q034",
+      "type": "reason",
+      "lexical": "same",
+      "intent": "reason",
+      "terms": [
+        "300",
+        "MX",
+        "価格",
+        "値段",
+        "プライス",
+        "金額"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q035",
+      "type": "value",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "交換フィルター",
+        "300",
+        "MX",
+        "値段",
+        "価格",
+        "プライス",
+        "絞り込み",
+        "フィルタリング",
+        "金額"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q036",
+      "type": "list",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "300",
+        "本体色",
+        "MX"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q037",
+      "type": "yesno",
+      "lexical": "paraphrase",
+      "intent": "yes_no",
+      "terms": [
+        "フィルター",
+        "300",
+        "500",
+        "MX",
+        "絞り込み",
+        "フィルタリング"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q038",
+      "type": "location",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "北斗物流",
+        "大阪支社",
+        "移転先"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q039",
+      "type": "reason",
+      "lexical": "paraphrase",
+      "intent": "reason",
+      "terms": [
+        "北斗物流",
+        "大阪支社",
+        "移"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q040",
+      "type": "value",
+      "lexical": "abbrev",
+      "intent": "search_value",
+      "terms": [
+        "内装工事費",
+        "移転"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q041",
+      "type": "location",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "テクノフェア2026",
+        "会場"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q042",
+      "type": "person",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "テクノフェア2026",
+        "基調講演",
+        "講演者"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q043",
+      "type": "date",
+      "lexical": "relative_time",
+      "intent": "lookup",
+      "terms": [
+        "テクノフェア",
+        "開催日",
+        "来年"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q044",
+      "type": "definition",
+      "lexical": "same",
+      "intent": "definition",
+      "terms": [
+        "テクノフェア2026",
+        "テクノフェア"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q045",
+      "type": "yesno",
+      "lexical": "synonym",
+      "intent": "yes_no",
+      "terms": [
+        "領収書",
+        "精算",
+        "紛失",
+        "レシート",
+        "受領書"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q046",
+      "type": "howto",
+      "lexical": "synonym",
+      "intent": "yes_no",
+      "terms": [
+        "アップロード後",
+        "領収書画像",
+        "削除",
+        "消去",
+        "デリート",
+        "除去"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q047",
+      "type": "howto",
+      "lexical": "paraphrase",
+      "intent": "how_to",
+      "terms": [
+        "有給",
+        "朝",
+        "急"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q048",
+      "type": "definition",
+      "lexical": "same",
+      "intent": "definition",
+      "terms": [
+        "時季変更権",
+        "有給"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q049",
+      "type": "definition",
+      "lexical": "same",
+      "intent": "definition",
+      "terms": [
+        "エラーコード",
+        "52",
+        "E"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q050",
+      "type": "list",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "ファイル形式",
+        "スキャン",
+        "保存",
+        "セーブ"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q051",
+      "type": "compare",
+      "lexical": "paraphrase",
+      "intent": "compare",
+      "terms": [
+        "互換トナー",
+        "純正トナー",
+        "純正"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q052",
+      "type": "value",
+      "lexical": "synonym",
+      "intent": "lookup",
+      "terms": [
+        "初期セーブ先",
+        "スキャンデータ",
+        "保存"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q053",
+      "type": "value",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "在宅勤務",
+        "週"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q054",
+      "type": "value",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "テレワーク",
+        "手当"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q055",
+      "type": "value",
+      "lexical": "relative_time",
+      "intent": "search_value",
+      "terms": [
+        "海外売上高",
+        "昨年度"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q056",
+      "type": "reason",
+      "lexical": "same",
+      "intent": "reason",
+      "terms": [
+        "原価率",
+        "改善",
+        "改良",
+        "ブラッシュアップ"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q057",
+      "type": "person",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "売上報告書"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q058",
+      "type": "compare",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "満足度",
+        "部門",
+        "最",
+        "部署",
+        "セクション"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q059",
+      "type": "date",
+      "lexical": "relative_time",
+      "intent": "search_value",
+      "terms": [
+        "満足度調査",
+        "来年"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q060",
+      "type": "reason",
+      "lexical": "same",
+      "intent": "reason",
+      "terms": [
+        "500購入",
+        "決め手",
+        "MX",
+        "最"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q061",
+      "type": "compare",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "ライバル製品",
+        "500",
+        "MX",
+        "商品",
+        "プロダクト"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q062",
+      "type": "value",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "交換フィルター",
+        "500",
+        "MX",
+        "料金",
+        "絞り込み",
+        "フィルタリング"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q063",
+      "type": "value",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "500",
+        "MX"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q064",
+      "type": "value",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "大阪支社移転",
+        "出張時間"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q065",
+      "type": "person",
+      "lexical": "abbrev",
+      "intent": "search_value",
+      "terms": [
+        "大阪移転レポート",
+        "北斗",
+        "報告書",
+        "報告"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q066",
+      "type": "location",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "経営ミーティング",
+        "4月",
+        "会議",
+        "打ち合わせ"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q067",
+      "type": "reason",
+      "lexical": "same",
+      "intent": "reason",
+      "terms": [
+        "300",
+        "MX",
+        "延期",
+        "発売"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q068",
+      "type": "value",
+      "lexical": "relative_time",
+      "intent": "lookup",
+      "terms": [
+        "新卒採用",
+        "今年度"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q069",
+      "type": "date",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "経営ミーティング",
+        "次回",
+        "会議",
+        "打ち合わせ"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q070",
+      "type": "value",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "フィルター定期購入プラン",
+        "料金",
+        "計画",
+        "プランニング"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q071",
+      "type": "person",
+      "lexical": "synonym",
+      "intent": "lookup",
+      "terms": [
+        "製品開発ミーティング",
+        "欠席者",
+        "会議",
+        "打ち合わせ"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q072",
+      "type": "date",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "iOS版通知バグ",
+        "修正期限",
+        "不具合",
+        "障害"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q073",
+      "type": "definition",
+      "lexical": "paraphrase",
+      "intent": "definition",
+      "terms": [
+        "定期購入プラン",
+        "フィルター",
+        "絞り込み",
+        "フィルタリング",
+        "計画",
+        "プランニング"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q074",
+      "type": "date",
+      "lexical": "abbrev",
+      "intent": "search_value",
+      "terms": [
+        "健康診断",
+        "日程"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q075",
+      "type": "reason",
+      "lexical": "same",
+      "intent": "reason",
+      "terms": [
+        "5月",
+        "労働災害",
+        "原因",
+        "災害",
+        "要因",
+        "起因"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q076",
+      "type": "howto",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "休憩ルール",
+        "30度",
+        "工場",
+        "度"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q077",
+      "type": "location",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "安全衛生委員会",
+        "開催場所"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q078",
+      "type": "person",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "営業",
+        "教育",
+        "セールス",
+        "販売活動"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q079",
+      "type": "date",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "追跡システム改善要望書",
+        "提出締",
+        "切"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q080",
+      "type": "location",
+      "lexical": "abbrev",
+      "intent": "search_value",
+      "terms": [
+        "営業会議",
+        "会議室",
+        "開催"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q081",
+      "type": "value",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "初回ログインパスワード",
+        "ケイヒ"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q082",
+      "type": "yesno",
+      "lexical": "same",
+      "intent": "yes_no",
+      "terms": [
+        "パート社員",
+        "ケイヒ",
+        "対象",
+        "従業員",
+        "職員"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q083",
+      "type": "howto",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "承認ルート",
+        "10万円",
+        "経費",
+        "承認",
+        "費用",
+        "コスト",
+        "出費",
+        "許可",
+        "認可",
+        "決裁"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q084",
+      "type": "date",
+      "lexical": "abbrev",
+      "intent": "lookup",
+      "terms": [
+        "旧経費システム",
+        "利用停止日"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q085",
+      "type": "value",
+      "lexical": "synonym",
+      "intent": "lookup",
+      "terms": [
+        "電話サポート",
+        "ケイヒ",
+        "時間帯",
+        "テレフォン",
+        "フォン"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q086",
+      "type": "location",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "出退勤",
+        "打刻"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q087",
+      "type": "howto",
+      "lexical": "same",
+      "intent": "how_to",
+      "terms": [
+        "在宅勤務",
+        "打刻方法"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q088",
+      "type": "howto",
+      "lexical": "paraphrase",
+      "intent": "how_to",
+      "terms": [],
+      "filtered": false
+    },
+    {
+      "qid": "q089",
+      "type": "date",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "キャンセル",
+        "休暇申請",
+        "可能",
+        "本人"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q090",
+      "type": "list",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "タイムキーパー",
+        "機能"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q091",
+      "type": "compare",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "X",
+        "PrintMaster",
+        "モノクロ",
+        "印刷速度",
+        "200",
+        "カラー"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q092",
+      "type": "value",
+      "lexical": "abbrev",
+      "intent": "lookup",
+      "terms": [
+        "X",
+        "スペース",
+        "200",
+        "必要",
+        "設置"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q093",
+      "type": "reason",
+      "lexical": "same",
+      "intent": "reason",
+      "terms": [
+        "10cm以上離",
+        "複合機",
+        "壁"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q094",
+      "type": "list",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "X",
+        "PrintMaster",
+        "200",
+        "機能"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q095",
+      "type": "definition",
+      "lexical": "same",
+      "intent": "definition",
+      "terms": [
+        "X",
+        "200",
+        "TN"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q096",
+      "type": "location",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "ダウンロード場所",
+        "SecureLink"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q097",
+      "type": "value",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "認証コード",
+        "VPN",
+        "認証",
+        "オーセンティケーション",
+        "本人確認"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q098",
+      "type": "person",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "VPN",
+        "担当者",
+        "緊急時",
+        "連絡",
+        "担当",
+        "窓口"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q099",
+      "type": "howto",
+      "lexical": "synonym",
+      "intent": "lookup",
+      "terms": [
+        "業務システム",
+        "フリーWi",
+        "ルール",
+        "Fi",
+        "仕事",
+        "ワーク"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q100",
+      "type": "definition",
+      "lexical": "same",
+      "intent": "definition",
+      "terms": [
+        "SecureLink"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q101",
+      "type": "compare",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "東京",
+        "宿泊費",
+        "上限",
+        "地方"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q102",
+      "type": "value",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "片道何キロ",
+        "新幹線"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q103",
+      "type": "howto",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "経費精算規程",
+        "改定手続"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q104",
+      "type": "yesno",
+      "lexical": "synonym",
+      "intent": "yes_no",
+      "terms": [
+        "接待交際費",
+        "飲み会",
+        "社内"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q105",
+      "type": "date",
+      "lexical": "relative_time",
+      "intent": "lookup",
+      "terms": [
+        "経費精算規程",
+        "今年度改定",
+        "改定日"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q106",
+      "type": "person",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "経費規程",
+        "判断",
+        "場合",
+        "疑義",
+        "解釈"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q107",
+      "type": "compare",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "午前半休",
+        "午後半休",
+        "時間帯"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q108",
+      "type": "value",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "時間単位",
+        "年何日",
+        "有給"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q109",
+      "type": "definition",
+      "lexical": "same",
+      "intent": "definition",
+      "terms": [
+        "計画的付与",
+        "有給"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q110",
+      "type": "person",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "有給取得率",
+        "部署",
+        "部門",
+        "セクション"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q111",
+      "type": "date",
+      "lexical": "relative_time",
+      "intent": "lookup",
+      "terms": [
+        "有給休暇取得規程",
+        "今年度",
+        "施行日",
+        "施行"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q112",
+      "type": "yesno",
+      "lexical": "same",
+      "intent": "yes_no",
+      "terms": [
+        "有給付与日",
+        "全社一斉",
+        "北斗物流"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q113",
+      "type": "value",
+      "lexical": "relative_time",
+      "intent": "lookup",
+      "terms": [
+        "有給取得率",
+        "北斗物流",
+        "昨年度"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q114",
+      "type": "date",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "申請期限",
+        "繁忙期",
+        "有給"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q115",
+      "type": "compare",
+      "lexical": "same",
+      "intent": "compare",
+      "terms": [
+        "ドライバー職",
+        "半日休暇",
+        "事務職"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q116",
+      "type": "person",
+      "lexical": "abbrev",
+      "intent": "search_value",
+      "terms": [
+        "有給申請書",
+        "北斗"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q117",
+      "type": "definition",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "有給ガイドライン",
+        "北斗物流",
+        "文書",
+        "資料",
+        "ドキュメント",
+        "書類"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q118",
+      "type": "value",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "パスワード",
+        "何文字以上",
+        "文字",
+        "暗証番号",
+        "パスコード",
+        "合言葉"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q119",
+      "type": "howto",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "USBメモリー",
+        "使用ルール",
+        "外部記憶媒体",
+        "使う",
+        "利用"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q120",
+      "type": "value",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "情報セキュリティ研修",
+        "年何回",
+        "トレーニング",
+        "講習"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q121",
+      "type": "reason",
+      "lexical": "paraphrase",
+      "intent": "reason",
+      "terms": [
+        "報告",
+        "必要",
+        "確証",
+        "報告書",
+        "レポート"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q122",
+      "type": "date",
+      "lexical": "relative_time",
+      "intent": "lookup",
+      "terms": [
+        "情報セキュリティポリシー",
+        "今年改定",
+        "改定日"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q123",
+      "type": "person",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "ポリシー遵守状況",
+        "監査"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q124",
+      "type": "value",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "花粉除去率",
+        "500",
+        "MX",
+        "上"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q125",
+      "type": "value",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "消費電力",
+        "500",
+        "MX"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q126",
+      "type": "reason",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "500",
+        "MX",
+        "背景",
+        "開発",
+        "ディベロップメント",
+        "構築"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q127",
+      "type": "date",
+      "lexical": "relative_time",
+      "intent": "yes_no",
+      "terms": [
+        "業務用モデル",
+        "500",
+        "来年度",
+        "MX"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q128",
+      "type": "definition",
+      "lexical": "same",
+      "intent": "definition",
+      "terms": [
+        "デュアルイオンフィルター"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q129",
+      "type": "date",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "フィルター無料キャンペーン",
+        "購入期限",
+        "絞り込み",
+        "フィルタリング"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q130",
+      "type": "value",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "適用床面積",
+        "300",
+        "MX"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q131",
+      "type": "location",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "300",
+        "MX",
+        "工場"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q132",
+      "type": "value",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "発売1",
+        "300",
+        "MX",
+        "台数",
+        "月"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q133",
+      "type": "person",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "コメント",
+        "300",
+        "本部長",
+        "MX",
+        "価格",
+        "値段",
+        "プライス",
+        "意見",
+        "見解",
+        "金額",
+        "オピニオン"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q134",
+      "type": "definition",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "300",
+        "用途向",
+        "MX"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q135",
+      "type": "value",
+      "lexical": "abbrev",
+      "intent": "search_value",
+      "terms": [
+        "製造コスト削減率",
+        "廉価モデル",
+        "費用",
+        "経費"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q136",
+      "type": "value",
+      "lexical": "synonym",
+      "intent": "lookup",
+      "terms": [
+        "新オフィス",
+        "新大阪",
+        "広"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q137",
+      "type": "location",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "旧大阪支社",
+        "所在地",
+        "場所",
+        "ロケーション",
+        "プレイス"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q138",
+      "type": "yesno",
+      "lexical": "paraphrase",
+      "intent": "yes_no",
+      "terms": [
+        "大阪支社",
+        "電話番号",
+        "移転"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q139",
+      "type": "date",
+      "lexical": "relative_time",
+      "intent": "yes_no",
+      "terms": [
+        "神戸営業所",
+        "来年",
+        "開設"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q140",
+      "type": "reason",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "新大阪",
+        "決め手",
+        "移転"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q141",
+      "type": "date",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "転送期限",
+        "郵便物",
+        "住所"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q142",
+      "type": "value",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "テクノフェア2026",
+        "出展社数"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q143",
+      "type": "reason",
+      "lexical": "paraphrase",
+      "intent": "reason",
+      "terms": [
+        "テクノフェア大賞",
+        "500",
+        "MX"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q144",
+      "type": "date",
+      "lexical": "abbrev",
+      "intent": "search_value",
+      "terms": [
+        "X",
+        "300",
+        "発売"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q145",
+      "type": "value",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "2030年",
+        "削減目標",
+        "消費電力",
+        "家電",
+        "年"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q146",
+      "type": "date",
+      "lexical": "relative_time",
+      "intent": "yes_no",
+      "terms": [
+        "テクノフェア",
+        "出展申込",
+        "来年",
+        "来月"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q147",
+      "type": "yesno",
+      "lexical": "same",
+      "intent": "yes_no",
+      "terms": [
+        "領収書",
+        "上様",
+        "レシート",
+        "受領書"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q148",
+      "type": "date",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "25日",
+        "振込日",
+        "振込",
+        "休",
+        "日"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q149",
+      "type": "howto",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "交通費",
+        "場合",
+        "自宅",
+        "計算",
+        "直接出張先",
+        "家",
+        "住まい",
+        "住居"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q150",
+      "type": "howto",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "レンタカー料金",
+        "出張先",
+        "条件",
+        "精算"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q151",
+      "type": "reason",
+      "lexical": "paraphrase",
+      "intent": "reason",
+      "terms": [
+        "領収書画像",
+        "クラウド"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q152",
+      "type": "value",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "週3日勤務",
+        "有給日数",
+        "パート"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q153",
+      "type": "value",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "入社半年以内",
+        "休暇日数",
+        "無給"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q154",
+      "type": "person",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "有給申請",
+        "相談先"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q155",
+      "type": "location",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "残日数",
+        "有給",
+        "表示"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q156",
+      "type": "yesno",
+      "lexical": "synonym",
+      "intent": "yes_no",
+      "terms": [
+        "有給",
+        "前"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q157",
+      "type": "howto",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "印刷",
+        "対処"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q158",
+      "type": "howto",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "直し方",
+        "52",
+        "E"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q159",
+      "type": "compare",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "300dpi",
+        "600dpi",
+        "ファイルサイズ"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q160",
+      "type": "list",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "両面印刷",
+        "用紙"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q161",
+      "type": "value",
+      "lexical": "abbrev",
+      "intent": "lookup",
+      "terms": [
+        "X",
+        "スキャン解像度",
+        "200",
+        "初期値"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q162",
+      "type": "howto",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "VPN",
+        "接続",
+        "頻繁",
+        "コネクション",
+        "連結"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q163",
+      "type": "howto",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "海外出張前",
+        "VPN"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q164",
+      "type": "value",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "貸与モニター",
+        "サイズ",
+        "画面",
+        "スクリーン"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q165",
+      "type": "date",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "テレワーク",
+        "申請期限"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q166",
+      "type": "list",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "在宅勤務手当",
+        "費用",
+        "コスト",
+        "経費",
+        "出費"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q167",
+      "type": "date",
+      "lexical": "abbrev",
+      "intent": "search_value",
+      "terms": [
+        "代替機",
+        "PC",
+        "パソコン",
+        "コンピューター",
+        "パーソナルコンピュータ"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q168",
+      "type": "definition",
+      "lexical": "relative_time",
+      "intent": "search_value",
+      "terms": [
+        "売上報告書",
+        "対象期間",
+        "昨年度"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q169",
+      "type": "reason",
+      "lexical": "synonym",
+      "intent": "lookup",
+      "terms": [
+        "販売費"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q170",
+      "type": "compare",
+      "lexical": "abbrev",
+      "intent": "search_value",
+      "terms": [
+        "海外売上比率",
+        "中計",
+        "実績",
+        "目標",
+        "成果",
+        "アウトカム",
+        "ゴール",
+        "ターゲット"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q171",
+      "type": "person",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "満足度アンケート",
+        "担当",
+        "集計",
+        "担当者",
+        "窓口"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q172",
+      "type": "definition",
+      "lexical": "relative_time",
+      "intent": "definition",
+      "terms": [
+        "従業員満足度調査",
+        "今年",
+        "調査"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q173",
+      "type": "reason",
+      "lexical": "synonym",
+      "intent": "reason",
+      "terms": [
+        "生産管理部",
+        "原因",
+        "不満",
+        "主",
+        "要因",
+        "起因"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q174",
+      "type": "definition",
+      "lexical": "same",
+      "intent": "definition",
+      "terms": [
+        "500市場調査報告書",
+        "MX",
+        "市場調査報告書"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q175",
+      "type": "reason",
+      "lexical": "synonym",
+      "intent": "lookup",
+      "terms": [
+        "クレーム",
+        "500",
+        "MX"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q176",
+      "type": "reason",
+      "lexical": "synonym",
+      "intent": "reason",
+      "terms": [
+        "定期購入プラン",
+        "提案",
+        "プロポーザル",
+        "提言",
+        "計画",
+        "プランニング"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q177",
+      "type": "compare",
+      "lexical": "abbrev",
+      "intent": "search_value",
+      "terms": [
+        "販売比率",
+        "500",
+        "量販店",
+        "MX",
+        "直販"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q178",
+      "type": "person",
+      "lexical": "abbrev",
+      "intent": "lookup",
+      "terms": [
+        "効果検証",
+        "大阪移転",
+        "北斗",
+        "担当",
+        "部署",
+        "検証",
+        "部門",
+        "セクション",
+        "担当者",
+        "窓口",
+        "試験",
+        "テスト"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q179",
+      "type": "definition",
+      "lexical": "same",
+      "intent": "definition",
+      "terms": [
+        "大阪支社移転効果検証レポート",
+        "検証",
+        "試験",
+        "テスト",
+        "報告書",
+        "報告"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q180",
+      "type": "reason",
+      "lexical": "synonym",
+      "intent": "lookup",
+      "terms": [
+        "新規受注",
+        "移転後",
+        "要因",
+        "原因",
+        "起因"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q181",
+      "type": "compare",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "大阪支社",
+        "移転前後",
+        "家賃"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q182",
+      "type": "location",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "増員分",
+        "新卒",
+        "配属"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q183",
+      "type": "person",
+      "lexical": "synonym",
+      "intent": "lookup",
+      "terms": [
+        "経営ミーティング",
+        "4月",
+        "議事録",
+        "会議録",
+        "議事メモ",
+        "ミーティングノート",
+        "会議",
+        "打ち合わせ"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q184",
+      "type": "reason",
+      "lexical": "synonym",
+      "intent": "reason",
+      "terms": [
+        "海外営業部",
+        "人員増",
+        "優先"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q185",
+      "type": "list",
+      "lexical": "abbrev",
+      "intent": "lookup",
+      "terms": [
+        "経費規程改定",
+        "変更点",
+        "主"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q186",
+      "type": "location",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "製品開発ミーティング",
+        "7月",
+        "会議",
+        "打ち合わせ"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q187",
+      "type": "definition",
+      "lexical": "same",
+      "intent": "definition",
+      "terms": [
+        "100",
+        "モデル",
+        "MX"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q188",
+      "type": "howto",
+      "lexical": "synonym",
+      "intent": "how_to",
+      "terms": [
+        "次期モデル",
+        "方"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q189",
+      "type": "date",
+      "lexical": "relative_time",
+      "intent": "yes_no",
+      "terms": [
+        "アップデート配信",
+        "アプリ連携",
+        "来月",
+        "更新"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q190",
+      "type": "location",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "安全衛生委員会",
+        "議事録",
+        "掲示",
+        "会議録",
+        "議事メモ",
+        "ミーティングノート"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q191",
+      "type": "location",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "経口補水液",
+        "置く場所"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q192",
+      "type": "person",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "長野工場",
+        "産業医"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q193",
+      "type": "howto",
+      "lexical": "abbrev",
+      "intent": "lookup",
+      "terms": [
+        "未受診者",
+        "健診",
+        "対応"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q194",
+      "type": "howto",
+      "lexical": "synonym",
+      "intent": "lookup",
+      "terms": [
+        "再発",
+        "労災",
+        "対策"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q195",
+      "type": "date",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "黄色ライン",
+        "作業",
+        "期限",
+        "引く",
+        "床",
+        "タスク",
+        "オペレーション",
+        "締め切り",
+        "デッドライン"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q196",
+      "type": "person",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "大阪支社営業会議",
+        "議事録作成者"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q197",
+      "type": "definition",
+      "lexical": "synonym",
+      "intent": "lookup",
+      "terms": [
+        "7月",
+        "大口受注",
+        "内容"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q198",
+      "type": "compare",
+      "lexical": "paraphrase",
+      "intent": "compare",
+      "terms": [
+        "7月",
+        "月間目標",
+        "売上高",
+        "比較",
+        "売上",
+        "売上金額"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q199",
+      "type": "date",
+      "lexical": "relative_time",
+      "intent": "yes_no",
+      "terms": [
+        "営業7名",
+        "来年1月",
+        "採用",
+        "来月",
+        "残",
+        "雇用",
+        "リクルート",
+        "セールス",
+        "販売活動",
+        "雇い入れ"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q200",
+      "type": "list",
+      "lexical": "relative_time",
+      "intent": "lookup",
+      "terms": [
+        "大阪支社営業会議",
+        "出席者",
+        "先月"
+      ],
+      "filtered": true
+    }
+  ]
+}

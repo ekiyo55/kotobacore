@@ -1,44 +1,9 @@
-"""Unicode normalization that preserves SNS expressions and emoji.
+"""Compatibility shim: moved to kotobacore.core.text (v0.3). Deprecated since 0.6.4, removed in 1.1."""
 
-Design per 04_内部設計書 §6:
-- NFKC for 全角/半角 / 丸数字 unification
-- Line ending: CRLF → LF
-- Control characters: strip (keep \n, \t)
-- DO NOT over-normalize SNS expressions like しぬwww
-- DO NOT strip emoji (NFKC keeps them)
-"""
+import kotobacore.core.text as _m
+from kotobacore._compat import deprecated_module as _dep
 
-from __future__ import annotations
+_dep('kotobacore.normalizer.unicode_normalizer', 'kotobacore.core.text')
 
-import unicodedata
-
-_ALLOWED_CONTROL = {"\n", "\t"}
-
-
-def normalize(text: str) -> str:
-    """Return the normalized form of ``text``.
-
-    The transformation is intentionally conservative — it should not change
-    user-visible semantics for SNS/emoji content.
-    """
-    if not text:
-        return text
-
-    # 1. Line endings: CRLF / CR → LF
-    text = text.replace("\r\n", "\n").replace("\r", "\n")
-
-    # 2. Strip control characters except newline/tab
-    text = "".join(
-        ch
-        for ch in text
-        if ch in _ALLOWED_CONTROL or unicodedata.category(ch)[0] != "C"
-    )
-
-    # 3. NFKC normalization
-    #    - Ｔｅｓｔ１２３ → Test123
-    #    - ｶﾀｶﾅ → カタカナ
-    #    - ① → 1
-    #    - ㈱ → (株)  (NFKC default)
-    text = unicodedata.normalize("NFKC", text)
-
-    return text
+globals().update({k: v for k, v in vars(_m).items() if not k.startswith('__')})
+del _m

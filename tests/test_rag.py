@@ -1,12 +1,13 @@
 """Tests for RAG optimizer per 07_テスト仕様 §14."""
 
 from kotobacore.dictionary import load_default_bundle
-from kotobacore.emotion import detect_emotion
-from kotobacore.intent import classify_intent
-from kotobacore.normalizer import normalize
+from kotobacore.modules.emotion import detect_emotion
+from kotobacore.modules.intent import classify_intent
+from kotobacore.core.text import normalize
 from kotobacore.rag import optimize_rag
-from kotobacore.semantic import build_semantic_tokens, chunk
-from kotobacore.tokenizer import KaruizawaBackend
+from kotobacore.core.entity import build_semantic_tokens
+from kotobacore.core.chunker import chunk
+from kotobacore.core.token import KaruizawaBackend
 
 
 def _pipeline_rag(text: str):

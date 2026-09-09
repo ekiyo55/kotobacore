@@ -1,12 +1,10 @@
 """Tests for dictionary loader per 07_テスト仕様 §15."""
 
-import csv
 from pathlib import Path
 
 import pytest
 
 from kotobacore.dictionary import (
-    DictionaryBundle,
     EmotionEntry,
     EmotionExampleEntry,
     EntityEntry,
@@ -18,11 +16,6 @@ from kotobacore.dictionary import (
 )
 from kotobacore.dictionary.loader import (
     load_emotion,
-    load_emotion_examples,
-    load_entity,
-    load_intent_rules,
-    load_slang,
-    load_stopwords,
 )
 from kotobacore.errors import DictionaryLoadError
 

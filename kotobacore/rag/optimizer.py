@@ -13,8 +13,7 @@ also surfaced as additional keywords.
 
 from __future__ import annotations
 
-from kotobacore.dictionary import DictionaryBundle
-from kotobacore.schema import (
+from kotobacore.core.ir import (
     EmotionResult,
     IntentResult,
     RagResult,
@@ -22,6 +21,7 @@ from kotobacore.schema import (
     SemanticToken,
     Token,
 )
+from kotobacore.dictionary import DictionaryBundle
 
 # Priority tiers for keyword ranking (lower = higher priority)
 _PRIORITY_ENTITY = 1

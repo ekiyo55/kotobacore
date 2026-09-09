@@ -1,0 +1,1670 @@
+{
+  "version": "0.5.0",
+  "docs": 24,
+  "chunks": 447,
+  "questions": 80,
+  "gold_missing": [],
+  "overall": {
+    "bm25_raw": {
+      "recall@1": 63.8,
+      "recall@3": 80.0,
+      "recall@5": 88.8,
+      "mrr@10": 0.738,
+      "n": 80
+    },
+    "bm25_raw+rerank": {
+      "recall@1": 71.2,
+      "recall@3": 87.5,
+      "recall@5": 93.8,
+      "mrr@10": 0.81,
+      "n": 80
+    },
+    "bm25_ir": {
+      "recall@1": 66.2,
+      "recall@3": 83.8,
+      "recall@5": 93.8,
+      "mrr@10": 0.765,
+      "n": 80
+    },
+    "bm25_ir+filter": {
+      "recall@1": 66.2,
+      "recall@3": 83.8,
+      "recall@5": 95.0,
+      "mrr@10": 0.767,
+      "n": 80
+    },
+    "bm25_ir+filter+rerank": {
+      "recall@1": 70.0,
+      "recall@3": 86.2,
+      "recall@5": 96.2,
+      "mrr@10": 0.803,
+      "n": 80
+    },
+    "tfidf_raw": {
+      "recall@1": 65.0,
+      "recall@3": 78.8,
+      "recall@5": 88.8,
+      "mrr@10": 0.739,
+      "n": 80
+    },
+    "tfidf_raw+rerank": {
+      "recall@1": 71.2,
+      "recall@3": 86.2,
+      "recall@5": 95.0,
+      "mrr@10": 0.804,
+      "n": 80
+    }
+  },
+  "by_type": {
+    "compare": {
+      "bm25_raw": {
+        "recall@1": 100.0,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 1.0,
+        "n": 6
+      },
+      "bm25_ir": {
+        "recall@1": 83.3,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.917,
+        "n": 6
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 83.3,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.917,
+        "n": 6
+      },
+      "tfidf_raw": {
+        "recall@1": 100.0,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 1.0,
+        "n": 6
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 83.3,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.917,
+        "n": 6
+      }
+    },
+    "date": {
+      "bm25_raw": {
+        "recall@1": 75.0,
+        "recall@3": 75.0,
+        "recall@5": 91.7,
+        "mrr@10": 0.787,
+        "n": 12
+      },
+      "bm25_ir": {
+        "recall@1": 66.7,
+        "recall@3": 75.0,
+        "recall@5": 91.7,
+        "mrr@10": 0.75,
+        "n": 12
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 58.3,
+        "recall@3": 75.0,
+        "recall@5": 83.3,
+        "mrr@10": 0.688,
+        "n": 12
+      },
+      "tfidf_raw": {
+        "recall@1": 66.7,
+        "recall@3": 75.0,
+        "recall@5": 91.7,
+        "mrr@10": 0.754,
+        "n": 12
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 58.3,
+        "recall@3": 83.3,
+        "recall@5": 91.7,
+        "mrr@10": 0.697,
+        "n": 12
+      }
+    },
+    "definition": {
+      "bm25_raw": {
+        "recall@1": 62.5,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.771,
+        "n": 8
+      },
+      "bm25_ir": {
+        "recall@1": 62.5,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.771,
+        "n": 8
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 100.0,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 1.0,
+        "n": 8
+      },
+      "tfidf_raw": {
+        "recall@1": 75.0,
+        "recall@3": 87.5,
+        "recall@5": 100.0,
+        "mrr@10": 0.823,
+        "n": 8
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 87.5,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.938,
+        "n": 8
+      }
+    },
+    "howto": {
+      "bm25_raw": {
+        "recall@1": 60.0,
+        "recall@3": 90.0,
+        "recall@5": 90.0,
+        "mrr@10": 0.762,
+        "n": 10
+      },
+      "bm25_ir": {
+        "recall@1": 70.0,
+        "recall@3": 90.0,
+        "recall@5": 90.0,
+        "mrr@10": 0.817,
+        "n": 10
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 70.0,
+        "recall@3": 90.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.825,
+        "n": 10
+      },
+      "tfidf_raw": {
+        "recall@1": 70.0,
+        "recall@3": 90.0,
+        "recall@5": 90.0,
+        "mrr@10": 0.796,
+        "n": 10
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 70.0,
+        "recall@3": 90.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.82,
+        "n": 10
+      }
+    },
+    "list": {
+      "bm25_raw": {
+        "recall@1": 50.0,
+        "recall@3": 50.0,
+        "recall@5": 50.0,
+        "mrr@10": 0.567,
+        "n": 4
+      },
+      "bm25_ir": {
+        "recall@1": 75.0,
+        "recall@3": 75.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.812,
+        "n": 4
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 75.0,
+        "recall@3": 75.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.812,
+        "n": 4
+      },
+      "tfidf_raw": {
+        "recall@1": 50.0,
+        "recall@3": 50.0,
+        "recall@5": 75.0,
+        "mrr@10": 0.586,
+        "n": 4
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 75.0,
+        "recall@3": 75.0,
+        "recall@5": 75.0,
+        "mrr@10": 0.786,
+        "n": 4
+      }
+    },
+    "location": {
+      "bm25_raw": {
+        "recall@1": 33.3,
+        "recall@3": 66.7,
+        "recall@5": 100.0,
+        "mrr@10": 0.519,
+        "n": 6
+      },
+      "bm25_ir": {
+        "recall@1": 33.3,
+        "recall@3": 66.7,
+        "recall@5": 100.0,
+        "mrr@10": 0.528,
+        "n": 6
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 66.7,
+        "recall@3": 83.3,
+        "recall@5": 100.0,
+        "mrr@10": 0.792,
+        "n": 6
+      },
+      "tfidf_raw": {
+        "recall@1": 16.7,
+        "recall@3": 50.0,
+        "recall@5": 83.3,
+        "mrr@10": 0.413,
+        "n": 6
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 66.7,
+        "recall@3": 83.3,
+        "recall@5": 100.0,
+        "mrr@10": 0.783,
+        "n": 6
+      }
+    },
+    "person": {
+      "bm25_raw": {
+        "recall@1": 37.5,
+        "recall@3": 62.5,
+        "recall@5": 75.0,
+        "mrr@10": 0.531,
+        "n": 8
+      },
+      "bm25_ir": {
+        "recall@1": 62.5,
+        "recall@3": 75.0,
+        "recall@5": 87.5,
+        "mrr@10": 0.719,
+        "n": 8
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 37.5,
+        "recall@3": 75.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.598,
+        "n": 8
+      },
+      "tfidf_raw": {
+        "recall@1": 50.0,
+        "recall@3": 62.5,
+        "recall@5": 75.0,
+        "mrr@10": 0.594,
+        "n": 8
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 50.0,
+        "recall@3": 62.5,
+        "recall@5": 87.5,
+        "mrr@10": 0.619,
+        "n": 8
+      }
+    },
+    "reason": {
+      "bm25_raw": {
+        "recall@1": 75.0,
+        "recall@3": 75.0,
+        "recall@5": 87.5,
+        "mrr@10": 0.799,
+        "n": 8
+      },
+      "bm25_ir": {
+        "recall@1": 75.0,
+        "recall@3": 75.0,
+        "recall@5": 87.5,
+        "mrr@10": 0.793,
+        "n": 8
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 75.0,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.875,
+        "n": 8
+      },
+      "tfidf_raw": {
+        "recall@1": 75.0,
+        "recall@3": 75.0,
+        "recall@5": 87.5,
+        "mrr@10": 0.793,
+        "n": 8
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 87.5,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.938,
+        "n": 8
+      }
+    },
+    "value": {
+      "bm25_raw": {
+        "recall@1": 64.3,
+        "recall@3": 78.6,
+        "recall@5": 85.7,
+        "mrr@10": 0.744,
+        "n": 14
+      },
+      "bm25_ir": {
+        "recall@1": 64.3,
+        "recall@3": 85.7,
+        "recall@5": 92.9,
+        "mrr@10": 0.749,
+        "n": 14
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 71.4,
+        "recall@3": 78.6,
+        "recall@5": 92.9,
+        "mrr@10": 0.796,
+        "n": 14
+      },
+      "tfidf_raw": {
+        "recall@1": 64.3,
+        "recall@3": 85.7,
+        "recall@5": 85.7,
+        "mrr@10": 0.735,
+        "n": 14
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 71.4,
+        "recall@3": 78.6,
+        "recall@5": 92.9,
+        "mrr@10": 0.794,
+        "n": 14
+      }
+    },
+    "yesno": {
+      "bm25_raw": {
+        "recall@1": 75.0,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.833,
+        "n": 4
+      },
+      "bm25_ir": {
+        "recall@1": 75.0,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.833,
+        "n": 4
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 75.0,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.833,
+        "n": 4
+      },
+      "tfidf_raw": {
+        "recall@1": 75.0,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.833,
+        "n": 4
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 75.0,
+        "recall@3": 100.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.833,
+        "n": 4
+      }
+    }
+  },
+  "by_lexical": {
+    "abbrev": {
+      "bm25_raw": {
+        "recall@1": 37.5,
+        "recall@3": 62.5,
+        "recall@5": 87.5,
+        "mrr@10": 0.535,
+        "n": 8
+      },
+      "bm25_ir": {
+        "recall@1": 37.5,
+        "recall@3": 50.0,
+        "recall@5": 100.0,
+        "mrr@10": 0.535,
+        "n": 8
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 50.0,
+        "recall@3": 50.0,
+        "recall@5": 87.5,
+        "mrr@10": 0.588,
+        "n": 8
+      },
+      "tfidf_raw": {
+        "recall@1": 37.5,
+        "recall@3": 37.5,
+        "recall@5": 75.0,
+        "mrr@10": 0.504,
+        "n": 8
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 37.5,
+        "recall@3": 50.0,
+        "recall@5": 87.5,
+        "mrr@10": 0.519,
+        "n": 8
+      }
+    },
+    "paraphrase": {
+      "bm25_raw": {
+        "recall@1": 55.0,
+        "recall@3": 65.0,
+        "recall@5": 80.0,
+        "mrr@10": 0.651,
+        "n": 20
+      },
+      "bm25_ir": {
+        "recall@1": 60.0,
+        "recall@3": 80.0,
+        "recall@5": 85.0,
+        "mrr@10": 0.707,
+        "n": 20
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 65.0,
+        "recall@3": 95.0,
+        "recall@5": 95.0,
+        "mrr@10": 0.79,
+        "n": 20
+      },
+      "tfidf_raw": {
+        "recall@1": 60.0,
+        "recall@3": 75.0,
+        "recall@5": 85.0,
+        "mrr@10": 0.684,
+        "n": 20
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 75.0,
+        "recall@3": 90.0,
+        "recall@5": 90.0,
+        "mrr@10": 0.825,
+        "n": 20
+      }
+    },
+    "relative_time": {
+      "bm25_raw": {
+        "recall@1": 85.7,
+        "recall@3": 85.7,
+        "recall@5": 85.7,
+        "mrr@10": 0.857,
+        "n": 7
+      },
+      "bm25_ir": {
+        "recall@1": 85.7,
+        "recall@3": 85.7,
+        "recall@5": 85.7,
+        "mrr@10": 0.857,
+        "n": 7
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 71.4,
+        "recall@3": 71.4,
+        "recall@5": 85.7,
+        "mrr@10": 0.774,
+        "n": 7
+      },
+      "tfidf_raw": {
+        "recall@1": 85.7,
+        "recall@3": 85.7,
+        "recall@5": 85.7,
+        "mrr@10": 0.871,
+        "n": 7
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 71.4,
+        "recall@3": 85.7,
+        "recall@5": 100.0,
+        "mrr@10": 0.79,
+        "n": 7
+      }
+    },
+    "same": {
+      "bm25_raw": {
+        "recall@1": 73.3,
+        "recall@3": 90.0,
+        "recall@5": 96.7,
+        "mrr@10": 0.825,
+        "n": 30
+      },
+      "bm25_ir": {
+        "recall@1": 76.7,
+        "recall@3": 93.3,
+        "recall@5": 100.0,
+        "mrr@10": 0.85,
+        "n": 30
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 80.0,
+        "recall@3": 93.3,
+        "recall@5": 100.0,
+        "mrr@10": 0.878,
+        "n": 30
+      },
+      "tfidf_raw": {
+        "recall@1": 76.7,
+        "recall@3": 90.0,
+        "recall@5": 96.7,
+        "mrr@10": 0.836,
+        "n": 30
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 80.0,
+        "recall@3": 93.3,
+        "recall@5": 96.7,
+        "mrr@10": 0.874,
+        "n": 30
+      }
+    },
+    "synonym": {
+      "bm25_raw": {
+        "recall@1": 60.0,
+        "recall@3": 86.7,
+        "recall@5": 86.7,
+        "mrr@10": 0.731,
+        "n": 15
+      },
+      "bm25_ir": {
+        "recall@1": 60.0,
+        "recall@3": 86.7,
+        "recall@5": 93.3,
+        "mrr@10": 0.75,
+        "n": 15
+      },
+      "bm25_ir+filter+rerank": {
+        "recall@1": 66.7,
+        "recall@3": 86.7,
+        "recall@5": 100.0,
+        "mrr@10": 0.8,
+        "n": 15
+      },
+      "tfidf_raw": {
+        "recall@1": 53.3,
+        "recall@3": 80.0,
+        "recall@5": 86.7,
+        "mrr@10": 0.681,
+        "n": 15
+      },
+      "tfidf_raw+rerank": {
+        "recall@1": 66.7,
+        "recall@3": 86.7,
+        "recall@5": 100.0,
+        "mrr@10": 0.793,
+        "n": 15
+      }
+    }
+  },
+  "per_question": [
+    {
+      "qid": "q001",
+      "type": "howto",
+      "lexical": "paraphrase",
+      "intent": "how_to",
+      "terms": [
+        "ICカード",
+        "乗車履歴",
+        "経費",
+        "費用",
+        "コスト",
+        "出費",
+        "やり方",
+        "手法",
+        "手段",
+        "メソッド"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q002",
+      "type": "person",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "ケイヒ",
+        "操作",
+        "質問",
+        "聞",
+        "問い合わせ",
+        "質疑",
+        "クエスチョン"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q003",
+      "type": "date",
+      "lexical": "abbrev",
+      "intent": "search_value",
+      "terms": [
+        "経費システム",
+        "切り時刻",
+        "申請締",
+        "費用",
+        "コスト",
+        "出費"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q004",
+      "type": "howto",
+      "lexical": "same",
+      "intent": "how_to",
+      "terms": [
+        "残業申請",
+        "手順"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q005",
+      "type": "date",
+      "lexical": "relative_time",
+      "intent": "how_to",
+      "terms": [
+        "タイムキーパー手順書",
+        "今年度",
+        "改訂日"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q006",
+      "type": "howto",
+      "lexical": "synonym",
+      "intent": "lookup",
+      "terms": [
+        "タイムキーパーアプリ",
+        "直し方",
+        "バグ",
+        "不具合",
+        "障害"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q007",
+      "type": "definition",
+      "lexical": "same",
+      "intent": "definition",
+      "terms": [
+        "タイムキーパー",
+        "システム"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q008",
+      "type": "howto",
+      "lexical": "same",
+      "intent": "how_to",
+      "terms": [
+        "交換手順",
+        "トナー"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q009",
+      "type": "compare",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "保守契約",
+        "保証"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q010",
+      "type": "definition",
+      "lexical": "abbrev",
+      "intent": "definition",
+      "terms": [
+        "X",
+        "200",
+        "製品",
+        "商品",
+        "プロダクト",
+        "グッズ"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q011",
+      "type": "howto",
+      "lexical": "same",
+      "intent": "how_to",
+      "terms": [
+        "接続手順",
+        "VPN"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q012",
+      "type": "reason",
+      "lexical": "paraphrase",
+      "intent": "reason",
+      "terms": [
+        "認証エラー",
+        "VPN",
+        "認証",
+        "オーセンティケーション",
+        "本人確認"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q013",
+      "type": "yesno",
+      "lexical": "same",
+      "intent": "yes_no",
+      "terms": [
+        "VPN接続",
+        "パソコン",
+        "私物",
+        "PC",
+        "コンピューター",
+        "パーソナルコンピュータ",
+        "コネクション",
+        "連結"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q014",
+      "type": "definition",
+      "lexical": "same",
+      "intent": "definition",
+      "terms": [
+        "対象",
+        "精算",
+        "経費",
+        "費用",
+        "コスト",
+        "出費"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q015",
+      "type": "value",
+      "lexical": "synonym",
+      "intent": "lookup",
+      "terms": [
+        "接待交際費",
+        "限度額"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q016",
+      "type": "list",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "区分",
+        "経費",
+        "費用",
+        "コスト",
+        "出費"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q017",
+      "type": "compare",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "新幹線",
+        "飛行機",
+        "出張",
+        "席"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q018",
+      "type": "date",
+      "lexical": "abbrev",
+      "intent": "lookup",
+      "terms": [
+        "ミライ電機",
+        "付与日",
+        "有給"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q019",
+      "type": "howto",
+      "lexical": "synonym",
+      "intent": "how_to",
+      "terms": [
+        "有給",
+        "方"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q020",
+      "type": "yesno",
+      "lexical": "same",
+      "intent": "list",
+      "terms": [
+        "有給",
+        "消滅"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q021",
+      "type": "date",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "ドライバー職",
+        "北斗物流",
+        "有給申請"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q022",
+      "type": "value",
+      "lexical": "relative_time",
+      "intent": "search_value",
+      "terms": [
+        "有給取得率目標",
+        "北斗物流",
+        "今年度"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q023",
+      "type": "person",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "北斗物流",
+        "有給",
+        "相談",
+        "人"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q024",
+      "type": "reason",
+      "lexical": "paraphrase",
+      "intent": "reason",
+      "terms": [
+        "12月",
+        "北斗物流",
+        "有給"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q025",
+      "type": "definition",
+      "lexical": "same",
+      "intent": "definition",
+      "terms": [
+        "情報分類",
+        "極秘"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q026",
+      "type": "howto",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "ウイルス",
+        "対応"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q027",
+      "type": "list",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "4段階",
+        "情報資産",
+        "分類"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q028",
+      "type": "value",
+      "lexical": "abbrev",
+      "intent": "search_value",
+      "terms": [
+        "500",
+        "MX",
+        "価格",
+        "値段",
+        "プライス",
+        "金額"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q029",
+      "type": "date",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "エアクリア",
+        "500",
+        "発売日",
+        "MX"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q030",
+      "type": "person",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "500",
+        "MX",
+        "担当",
+        "部長",
+        "開発",
+        "ディベロップメント",
+        "構築",
+        "担当者",
+        "窓口"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q031",
+      "type": "location",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "ミライ電機",
+        "本社"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q032",
+      "type": "date",
+      "lexical": "relative_time",
+      "intent": "yes_no",
+      "terms": [
+        "アプリ連携",
+        "500",
+        "MX",
+        "今年",
+        "秋"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q033",
+      "type": "compare",
+      "lexical": "same",
+      "intent": "compare",
+      "terms": [
+        "300",
+        "500",
+        "MX"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q034",
+      "type": "reason",
+      "lexical": "same",
+      "intent": "reason",
+      "terms": [
+        "300",
+        "MX",
+        "価格",
+        "値段",
+        "プライス",
+        "金額",
+        "わけ",
+        "事由",
+        "根拠"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q035",
+      "type": "value",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "交換フィルター",
+        "300",
+        "MX",
+        "値段",
+        "価格",
+        "プライス",
+        "金額",
+        "絞り込み",
+        "フィルタリング"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q036",
+      "type": "list",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "300",
+        "本体色",
+        "MX"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q037",
+      "type": "yesno",
+      "lexical": "paraphrase",
+      "intent": "yes_no",
+      "terms": [
+        "フィルター",
+        "300",
+        "500",
+        "MX",
+        "絞り込み",
+        "フィルタリング"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q038",
+      "type": "location",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "北斗物流",
+        "大阪支社",
+        "移転先"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q039",
+      "type": "reason",
+      "lexical": "paraphrase",
+      "intent": "reason",
+      "terms": [
+        "北斗物流",
+        "大阪支社",
+        "移"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q040",
+      "type": "value",
+      "lexical": "abbrev",
+      "intent": "search_value",
+      "terms": [
+        "内装工事費",
+        "移転"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q041",
+      "type": "location",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "テクノフェア2026",
+        "会場"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q042",
+      "type": "person",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "テクノフェア2026",
+        "基調講演",
+        "講演者"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q043",
+      "type": "date",
+      "lexical": "relative_time",
+      "intent": "lookup",
+      "terms": [
+        "テクノフェア",
+        "開催日",
+        "来年"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q044",
+      "type": "definition",
+      "lexical": "same",
+      "intent": "definition",
+      "terms": [
+        "テクノフェア2026",
+        "テクノフェア"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q045",
+      "type": "yesno",
+      "lexical": "synonym",
+      "intent": "yes_no",
+      "terms": [
+        "領収書",
+        "精算",
+        "紛失",
+        "レシート",
+        "受領書"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q046",
+      "type": "howto",
+      "lexical": "synonym",
+      "intent": "yes_no",
+      "terms": [
+        "アップロード後",
+        "領収書画像",
+        "削除",
+        "消去",
+        "デリート",
+        "除去"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q047",
+      "type": "howto",
+      "lexical": "paraphrase",
+      "intent": "how_to",
+      "terms": [
+        "有給",
+        "朝",
+        "急"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q048",
+      "type": "definition",
+      "lexical": "same",
+      "intent": "definition",
+      "terms": [
+        "時季変更権",
+        "有給"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q049",
+      "type": "definition",
+      "lexical": "same",
+      "intent": "definition",
+      "terms": [
+        "エラーコード",
+        "52",
+        "E"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q050",
+      "type": "list",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "ファイル形式",
+        "スキャン",
+        "保存",
+        "セーブ"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q051",
+      "type": "compare",
+      "lexical": "paraphrase",
+      "intent": "compare",
+      "terms": [
+        "互換トナー",
+        "純正トナー",
+        "純正"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q052",
+      "type": "value",
+      "lexical": "synonym",
+      "intent": "lookup",
+      "terms": [
+        "初期セーブ先",
+        "スキャンデータ",
+        "保存"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q053",
+      "type": "value",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "在宅勤務",
+        "何日",
+        "週"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q054",
+      "type": "value",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "テレワーク",
+        "手当"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q055",
+      "type": "value",
+      "lexical": "relative_time",
+      "intent": "search_value",
+      "terms": [
+        "海外売上高",
+        "昨年度"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q056",
+      "type": "reason",
+      "lexical": "same",
+      "intent": "reason",
+      "terms": [
+        "原価率",
+        "改善",
+        "改良",
+        "ブラッシュアップ",
+        "わけ",
+        "事由",
+        "根拠"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q057",
+      "type": "person",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "売上報告書",
+        "人"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q058",
+      "type": "compare",
+      "lexical": "same",
+      "intent": "lookup",
+      "terms": [
+        "満足度",
+        "部門",
+        "最",
+        "部署",
+        "セクション"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q059",
+      "type": "date",
+      "lexical": "relative_time",
+      "intent": "search_value",
+      "terms": [
+        "満足度調査",
+        "来年"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q060",
+      "type": "reason",
+      "lexical": "same",
+      "intent": "reason",
+      "terms": [
+        "500購入",
+        "決め手",
+        "MX",
+        "最",
+        "わけ",
+        "事由",
+        "根拠"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q061",
+      "type": "compare",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "ライバル製品",
+        "500",
+        "MX",
+        "競合",
+        "競争相手",
+        "競合他社",
+        "商品",
+        "プロダクト",
+        "グッズ"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q062",
+      "type": "value",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "交換フィルター",
+        "500",
+        "MX",
+        "料金",
+        "絞り込み",
+        "フィルタリング"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q063",
+      "type": "value",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "何キロ",
+        "500",
+        "MX"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q064",
+      "type": "value",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "大阪支社移転",
+        "出張時間"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q065",
+      "type": "person",
+      "lexical": "abbrev",
+      "intent": "search_value",
+      "terms": [
+        "大阪移転レポート",
+        "北斗",
+        "報告書",
+        "報告"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q066",
+      "type": "location",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "経営ミーティング",
+        "4月",
+        "場所",
+        "ロケーション",
+        "所在地",
+        "プレイス",
+        "マネジメント",
+        "運営",
+        "会議",
+        "打ち合わせ"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q067",
+      "type": "reason",
+      "lexical": "same",
+      "intent": "reason",
+      "terms": [
+        "300",
+        "MX",
+        "延期",
+        "発売",
+        "わけ",
+        "事由",
+        "根拠"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q068",
+      "type": "value",
+      "lexical": "relative_time",
+      "intent": "lookup",
+      "terms": [
+        "新卒採用",
+        "今年度",
+        "何名"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q069",
+      "type": "date",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "経営ミーティング",
+        "次回",
+        "マネジメント",
+        "運営",
+        "会議",
+        "打ち合わせ"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q070",
+      "type": "value",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "フィルター定期購入プラン",
+        "料金",
+        "絞り込み",
+        "フィルタリング",
+        "計画",
+        "プランニング"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q071",
+      "type": "person",
+      "lexical": "synonym",
+      "intent": "lookup",
+      "terms": [
+        "製品開発ミーティング",
+        "欠席者",
+        "会議",
+        "打ち合わせ"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q072",
+      "type": "date",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "iOS版通知バグ",
+        "修正期限",
+        "不具合",
+        "障害"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q073",
+      "type": "definition",
+      "lexical": "paraphrase",
+      "intent": "definition",
+      "terms": [
+        "定期購入プラン",
+        "フィルター",
+        "絞り込み",
+        "フィルタリング",
+        "計画",
+        "プランニング"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q074",
+      "type": "date",
+      "lexical": "abbrev",
+      "intent": "search_value",
+      "terms": [
+        "健康診断",
+        "日程"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q075",
+      "type": "reason",
+      "lexical": "same",
+      "intent": "reason",
+      "terms": [
+        "5月",
+        "労働災害",
+        "原因",
+        "災害",
+        "要因",
+        "起因"
+      ],
+      "filtered": true
+    },
+    {
+      "qid": "q076",
+      "type": "howto",
+      "lexical": "paraphrase",
+      "intent": "lookup",
+      "terms": [
+        "休憩ルール",
+        "30度",
+        "工場",
+        "度"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q077",
+      "type": "location",
+      "lexical": "same",
+      "intent": "search_value",
+      "terms": [
+        "安全衛生委員会",
+        "開催場所"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q078",
+      "type": "person",
+      "lexical": "paraphrase",
+      "intent": "search_value",
+      "terms": [
+        "営業",
+        "教育",
+        "セールス",
+        "販売活動"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q079",
+      "type": "date",
+      "lexical": "synonym",
+      "intent": "search_value",
+      "terms": [
+        "追跡システム改善要望書",
+        "提出締",
+        "切"
+      ],
+      "filtered": false
+    },
+    {
+      "qid": "q080",
+      "type": "location",
+      "lexical": "abbrev",
+      "intent": "search_value",
+      "terms": [
+        "営業会議",
+        "会議室",
+        "開催"
+      ],
+      "filtered": false
+    }
+  ]
+}

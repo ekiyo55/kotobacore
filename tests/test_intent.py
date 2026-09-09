@@ -1,9 +1,9 @@
 """Tests for intent classifier per 07_テスト仕様 §13."""
 
 from kotobacore.dictionary import load_default_bundle
-from kotobacore.intent import classify_intent
-from kotobacore.normalizer import normalize
-from kotobacore.schema import IntentCandidate, IntentResult
+from kotobacore.modules.intent import classify_intent
+from kotobacore.core.text import normalize
+from kotobacore.core.ir import IntentCandidate, IntentResult
 
 
 def _classify(text: str) -> IntentResult:
@@ -60,10 +60,11 @@ def test_intent_confidence_in_range():
     assert 0.0 <= r.confidence <= 1.0
 
 
-def test_unknown_intent_for_neutral_text():
+def test_inform_intent_for_neutral_declarative_text():
+    # v0.6.5: a declarative sentence with no other signal is 'inform' (情報提供), not 'unknown'
     r = _classify("今日は晴れています")
-    assert r.label == "unknown"
-    assert r.confidence == 0.0
+    assert r.label in ("inform", "share_experience")  # 今日 reads as a personal note (v0.6.6); either is a non-feedback default
+    assert 0.0 < r.confidence < 0.5
 
 
 def test_empty_text_unknown():
@@ -117,12 +118,13 @@ def test_tabako_does_not_falsely_trigger_positive():
 
 
 def test_neutral_topic_words_do_not_trigger_feedback():
-    # 仕様変更/バグ/高い は不満とは限らない — 中立文は unknown
+    # 仕様変更/バグ/高い は不満とは限らない — 中立文は feedback にならない (v0.6.5 以降は inform)
     from kotobacore import Analyzer
     a = Analyzer()
     for s in ["バグを修正しました", "仕様変更を反映しました。", "高い山に登る"]:
         r = a.analyze(s)
-        assert r.intent.label == "unknown", f"{s}: {r.intent.label}"
+        assert r.intent.label in ("inform", "unknown"), f"{s}: {r.intent.label}"
+        assert "feedback" not in (r.intent.label or ""), f"{s}: {r.intent.label}"
 
 
 def test_sentence_final_question_mark():

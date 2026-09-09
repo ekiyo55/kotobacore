@@ -446,7 +446,7 @@ def run() -> dict:
                     for k, v in entry.items():
                         if k != "hit":
                             print(f"    {k}: {v}")
-                    print(f"    → FAIL")
+                    print("    → FAIL")
 
     return {
         "meta": {

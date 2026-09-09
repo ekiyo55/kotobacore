@@ -1,7 +1,7 @@
 """Tests for SemanticToken builder + SemanticChunker per 07_テスト仕様 §8, §9."""
 
 from kotobacore import Analyzer
-from kotobacore.schema import SemanticChunk, SemanticToken
+from kotobacore.core.ir import SemanticChunk, SemanticToken
 
 
 def _pipeline(text: str):

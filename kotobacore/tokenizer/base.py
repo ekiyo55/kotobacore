@@ -1,16 +1,9 @@
-"""Tokenizer backend abstraction.
+"""Compatibility shim: moved to kotobacore.core.token.base (v0.3). Deprecated since 0.6.4, removed in 1.1."""
 
-Per 04_内部設計書 §7. The semantic layer must not depend on a specific
-backend implementation; this base class defines the contract.
-"""
+import kotobacore.core.token.base as _m
+from kotobacore._compat import deprecated_module as _dep
 
-from __future__ import annotations
+_dep('kotobacore.tokenizer.base', 'kotobacore.core.token.base')
 
-from kotobacore.schema import Token
-
-
-class TokenizerBackend:
-    """Abstract tokenizer backend."""
-
-    def tokenize(self, text: str, mode: str = "C") -> list[Token]:
-        raise NotImplementedError
+globals().update({k: v for k, v in vars(_m).items() if not k.startswith('__')})
+del _m

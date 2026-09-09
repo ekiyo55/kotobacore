@@ -2,6 +2,452 @@
 
 All notable changes to KotobaCore will be documented in this file.
 
+## [1.0.0] - 2026-09-09
+
+**Semantic IR Schema を凍結し、全構成要素の版を 1.0 に統一**（ユーザー決定「凍結、全部 1.0.0 に統一」）。公開版（PyPI / GitHub）は 0.2.7 のまま＝公開は別判断。
+
+### Changed
+- `core.ir.SCHEMA_VERSION` **0.4 → 1.0**（フィールドは 0.4 と同一。以後、追加はマイナー・削除／型変更はメジャー）。`docs/IR_SCHEMA.md` を再生成
+- `core.token.TOKENIZER_VERSION` 2.4 → **1.0**、`versions.MODULE_VERSIONS` intent 1.2 / emotion 1.1 / sentiment 1.1 / topic 1.0 → **すべて 1.0**、辞書セット 2026.09.09b → **1.0**（各 CSV も 1.0、旧番号は `versions.json` の `history` に保存）、HTTP API `API_VERSION` "1" → **"1.0"**。Vocabulary 形式は `kotobacore-vocab-1.0` のまま。旧番号の系譜は各モジュールのコメントに記録
+- pyproject: `Development Status :: 4 - Beta`
+- 要件定義書 **v1.0**（`KotobaCore_要件定義書_v1.0.md`）: §0-4 に凍結と統一の決定、§12 v1.0 ✅、§13 全項目 ✅（感情辞書ライブラリ比較のみ環境都合で未実施）
+
+### Decided
+- **語彙データは同梱しない**（FR-070 のまま）: 語彙はコーパス依存で 1 つの正解が無く、id は追記のみで安定させる約束なので、パッケージ版と語彙版を絡めない。参照語彙は別リポジトリ `kotobacore-vocab`（fine 2,680 ids / coarse 2,860 ids、公開コーパス 9,726 行から決定的に再構築可能）で配布する
+- HTTP API の常駐（mooma）は引き続き保留。PyPI への 1.0.0 公開は別途判断
+
+### 到達点（人手 300 文 v1 / 6,500 文 / RAG / NFR-001）
+- 人手 300 文: 分割 F1 0.90 / Entity F1 0.86 / Sentiment 83.0% / Emotion 84.1%（カナリア 0%）/ Intent 70.0%
+- 6,500 文: 感情正確度 96.8% / 極性 96.7% / 意図 75.1% / エラー 0
+- RAG: 自作 200 問 MRR 0.846（ハイブリッド 0.868）、実務 120 問 0.720（0.777）。ベースライン: 分割 F1 coarse 0.894 vs SudachiPy C 0.875 / janome 0.865
+- NFR-001: 10 万文 98 秒（1,021 文/s）、1 文平均 1.0 ms、1 万字文書 0.63 秒。352 テスト
+
+## [0.6.8] - 2026-09-09
+
+**v1.0 完成条件の品質項目**（NFR-001 バッチ、エラー処理 E1xx〜E7xx、語彙汚染テスト）と要件定義書 v0.6。公開版は 0.2.7 のまま。
+
+### Added
+- **`kotobacore.errors`（§9）**: E101 invalid_utf8 / E102 unsupported_character / E201 tokenization_error / E30x entity・predicate / E401 module_error / E402 rag_error / E50x IR / E601 vocab_version_mismatch / E7xx API のコード定数と `make_error()`、例外 `VocabVersionMismatch`
+- **Analyzer は回復可能エラーで止まらない**: bytes 入力の不正 UTF-8 は置換して E101 を `IR.errors` に、代替文字・サロゲートは除去して E102、分割失敗は文字トークンにフォールバックして E201、Entity / 述語 / 感情 / 評価 / 意図 / トピックの各段の例外は隔離して E30x / E401（空結果で継続）。`analyze_document` は文の errors を文書位置に直して集約。`VocabEncoder` は語彙形式のメジャー版不一致で E601
+- **`tools/benchmark/run_batch_benchmark.py`（NFR-001）**: 10 万文（実文 3,068 種 × 10 変種）と 1 万字文書（本文 479 文）。結果 `batch_benchmark.md`
+- `tests/test_errors.py`（9 本）、`tests/test_vocab_contamination.py`（2 本、OCR 損傷コーパスで汚染候補を検出、清浄コーパスでは 0）。計 352
+- **要件定義書 v0.6**（`KotobaCore_要件定義書_v0.6.md`）: §0-3 に v0.6.0〜0.6.8 の実装結果 10 項目、§12 ロードマップ v0.6 ✅ と v1.0 残（schema v1 凍結 / API ドキュメント / 常駐 / PyPI 公開）、§13 完成条件チェック（必須 12 中 10 ✅、品質 7 中 7 ✅、残: 分割基準の文書化・schema v1 凍結・API ドキュメント・感情辞書ライブラリ比較）、付録 A を v0.6.8 に
+
+### Docs（同日、v1.0 完成条件の文書項目）
+- **`docs/API.md`**（Python API / CLI / HTTP API、認証・レート制限・エラー形・互換性）、**`docs/openapi.json`**（`tools/gen_openapi.py` で FastAPI から生成）、**`docs/IR_SCHEMA.md`**（`tools/gen_schema_doc.py` で `core/ir.py` の dataclass から生成した全 25 型・全フィールドの表、追加版、エラーコード表 — schema v1 凍結の土台）、**`docs/TOKENIZATION.md`**（coarse / fine の分割基準を実測例で仕様化、既知の癖、コスト優先順位、Sudachi 短単位を採らない決定）。README に「ドキュメント」節。要件定義書 v0.6 §13 の「分割基準の仕様書化」「API ドキュメント」を ✅ に（必須 12 中 12 ✅、残は schema v1 凍結の判断のみ）
+
+### Changed
+- **性能**: チャンカーと感情辞書の表層マップを文ごとに再構築していた（dict.setdefault 300 万回 / 1 万字）のを bundle にキャッシュ。**10 万文 246 → 98 秒（1,021 文/s）、1 文平均 2.5 → 1.0 ms、1 万字文書 1.26 → 0.63 秒** — NFR-001 の 3 目標（600 秒 / 5 ms / 1 秒）をすべて達成
+- vocab の汚染検出 mixed_script は漢字＋英字＋数字の混在も対象に
+
+## [0.6.7] - 2026-09-09
+
+**人手評価セット v1 確定**（`annotated_v1.jsonl` = 提案版を採用、ユーザー「そのまま進めて」）と、残っていた意図の混同 4 パターンの対処。公開版は 0.2.7 のまま。
+
+### Changed（意図分類、人手 300 文の残り 115 不一致から）
+- **個人投稿の評価は share_experience**: 評価語・感情由来の feedback は、個人手がかりがあり製品・サービス・組織の Entity も業務対象語（提案 / 見積 / 採用 / 契約 / 対応 …）も無ければ share_experience へ。明示的な規則語（ばかりなのに / ワロタ / ありがとう）による feedback はそのまま
+- **感情語の無い体験報告も share_experience**（週末に…作った / 先週末、軽井沢に行ってきたんだ / 減らしたら…空いた）: 無信号の平叙文でも個人手がかりがあれば inform でなく share_experience。手がかりに 驚いた / 泣きそう / 乗り換えた / 戻した / したら / してみた / お金ない を追加、いただ / なった は除外
+- **第三者の感情・自社の事実報告は inform**: 第三者主語（彼女は / 老人は / 村人たちは / 田中は、文中どこでも）または holder≠speaker、あるいは 弊社・当社・売上・出荷・利益… ＋ 敬体の報告文は、feedback を inform に付け替え
+- **業務対象への拒否・不満は negative_feedback**（品質に問題はないものの…採用は見送ります / 納得しかねます）: 否定系感情 ＋ 業務対象語 ＋ 非個人
+- 括弧内の固有名（「感動」パン屋）は意図ルールにも当てない。positive_feedback 規則から ワクワク（感情語）を除去
+- golden_set: G013 / G019 の期待意図を share_experience に
+
+### 計測（人手 300 文、確定版 gold）
+- **Intent 60.7 → 70.0%**（残 86 件: share_experience→negative_feedback 9 / →positive_feedback 7、inform→share_experience 6、share→inform 5 …）、Sentiment 83.0%、Emotion 84.1%、Entity F1 0.86、分割 F1 0.90
+- 6,500 文: 感情 96.8 / 極性 96.7 / 意図 75.1 / エラー 0 / 平均 2.7 ms。341 テスト
+
+## [0.6.6] - 2026-09-09
+
+**人手評価セットのレビュー（AI 判定案）と、判定から出た system 課題の対処**。公開版は 0.2.7 のまま。
+
+### Review
+- `tools/quality_test/annotated/verdicts_v1_ai.json`（258 文 × 観点の判定案）、`apply_verdicts.py` → `review_sheet_v1_verdict.md`（判定一覧＋課題分類の集計）と `annotated_v1_proposed.jsonl`（gold 修正を適用した提案版: tokens←system 7 / entities 22 / sentiment 削除 26〈感情文〉/ emotion 10 / intent 16、保留 7）
+- 判定の内訳: gold 正しい = system 課題 449 件（dict 95 / rule 56 / ctx 55 / tok 48 / cue 45 / ner 40 / adv 30 / rhet 22 / canary 17 / neg 15 / holder 15 / num 10）、gold 修正 55、sentiment 削除 26、保留 7
+
+### Added / Changed（system 課題の対処）
+- **辞書**: sentiment.csv 1.2（253 → 334: 改悪 / 支障 / 納得いかない / 魅力的 / 有意義 / 屈指 / 快感 / 的確 / 風情 / 修辞疑問 高くない？…）、emotion.csv 1.6（597 → 739: 困る→irritation、助かる→trust、感謝→moved、悔やむ→sadness、頷いた→agreement、うるさい / 面白い / 感じいい / しょうがない…、**定型句** 財布落とした→anxiety / 履歴が消えた→sadness / 返事ない→irritation / 虹出てる→joy / 〜といいな→anticipation / 二度と会わない→refusal / 言葉を失った→surprise…）。モヤモヤ→anxiety、わくわく→anticipation に再ラベル（golden / lattice テスト更新）。ユーザー指示「system 未検出は追加すべき」により文脈推論扱いの 55 件も定型句で対処
+- **意図ルール**: request（〜いただけますか / ください / 〜てくれない？ / 〜ないで / 命令形 来て・見て…）、desire（〜といいな / 〜たいね / こそ）、agreement（ほんとそれ / わかった / 了解）、pricing_complaint（〜円もした / 家賃 上がる / 値段の割に / 予算を超え / ライセンス費…）。6,500 文の意図正確度 68.1 → 75.1%
+- **意図の手がかり**: share_experience の個人手がかりを拡充（体験動詞 泣い/焦っ/買った/届いた…、家族語 母/父/祖母…）。**第三者主体**（部長は / 彼女は / 村人たちは、または感情の holder が speaker 以外）の感情文は inform。**修辞疑問**（〜すぎん？ / 高くない？ / 何回〜ても / なんで…の）は立場があれば question にしない
+- **括弧内の固有名**（「感動」という名のパン屋 / 『月影の庭』 / 新サービス「Kanso」）を Entity に（後続・前置の名詞で ORGANIZATION / BRAND / WORK / PRODUCT / SERVICE を判定、会話の引用は除外）。**括弧内の語は感情・評価から除外** → カナリア誤検出 22.7% → 0%
+- 相対日付語の追加（先日 / 先週末 / この前 / こないだ / 今期 / 来期 / 子どもの頃 / 給料日前 / 今度の日曜…、ISO 値なし）
+- 評価表層（最高だった）が感情語（最高）の照合を塞がないよう AC パスの claim を評価／感情で分離。感情語かつ評価語の原形（面白い）は活用形（面白くない）でも両方の読みを出す
+- **強調は感情**（ユーザー決定）: 0.6.5 で入れた「強調語だけの文は primary None」を撤回。強調語だけなら exaggeration が primary、他の感情語があればそれが主役
+
+### 計測（人手 300 文、**提案版 gold** / 参考: 下書き gold）
+- Sentiment 69.7 → **83.0%**、Emotion 42.3 → **84.1%**（カナリア誤検出 0%）、Intent 49.3 → **60.7%**、Entity F1 0.79 → **0.86**、分割 F1 0.899
+- 6,500 文: 感情 96.8% / 極性 96.7% / 意図 75.1% / エラー 0 / カナリア 0%。処理時間 平均 3.1 ms（辞書 1.7 倍で 1.7 → 3.1 ms、NFR-001 5 ms 以内）
+- 残る意図の混同: share_experience→inform 16 / →positive_feedback 13 / →negative_feedback 11、inform→feedback 19（評価語のある事実報告）。次は「評価語があっても事実報告なら inform」の判定（第三者・敬体・数値報告）
+
+## [0.6.5] - 2026-09-09
+
+**人手評価セットに合わせた体系の修正**（ユーザー決定「gold に寄せて system 修正」2026-09-09）。公開版は 0.2.7 のまま。
+
+### Changed
+- **感情体系に surprise / trust / disgust を追加**（Plutchik の基本 8 感情が揃う）。`emotion.csv` 1.5: exaggeration に混在していた驚き語 19 行を surprise へ（驚いた / びっくり / まさか / 信じられない / 衝撃 / えっ…）、admiration・agreement から信頼語 13 行を trust へ（信頼 / 頼もしい / 心強い / 安心…）、refusal・anger から嫌悪語 30 行を disgust へ（嫌悪 / 気持ち悪い / 不快 / 汚い / ドン引き…）。追加 47 語（意外 / 想定外 / うそでしょ / 信用できる / 落ち着く / 苦手 / 胸糞 / ぞっとした…）＋ 可愛い系 3 語。極性: surprise=mixed、trust=positive、disgust=negative
+- **exaggeration（強調）は感情のまま、ただし他の感情語が同時にあればそちらが primary**（マジで美味しかった → joy）。強調語だけの文（やばい / しぬw）は従来どおり exaggeration が primary（ユーザー決定「強調は感情」2026-09-09。0.6.5 中の一時案「評価語だけを強める場合は primary None」は撤回）
+- **評価表層が感情の原形読みを塞がない**: 美味しかった は sentiment.csv の表層一致で評価、同時に原形 美味しい で joy（`claimed_emo` を分離、重複 overlay は抑止）
+- **意図に inform / share_experience を追加**: 評価語（sentiment.csv）→ feedback、ただし個人的な投稿（私 / 今日 / 絵文字 / ！…）で製品・サービス・組織の Entity が無ければ share_experience。感情語のみ → 製品等の Entity があれば feedback、個人的なら share_experience、それ以外は inform。無信号の平叙文は inform（従来 unknown。断片は unknown のまま）。**意図ルールの一致は否定形を除外**（感動しない は positive_feedback に数えない）
+- NRC 外部辞書の誤訳 `正直`（admiration）を停止（`_EXTERNAL_STOPLIST`）。人手 300 文で 7 回、本物の感情を押し出していた
+- `entity.csv` 1.4: 消費者製品 12 行（iPhone / iPad / Android / Windows / PlayStation …、PRODUCT）
+- N4 修正: 五段の受身・使役 れる / せる は a 段の後だけ剥がす（疲れた → 疲れる、忘れた → 忘れる。従来は 疲る）
+- golden_set.csv: 中立業務文 5 件の期待意図 unknown → inform、頼もしい → trust。テスト 341
+
+### 計測（人手 300 文、v0.6.4 → v0.6.5）
+- **Intent 13.7% → 45.0%**（体系差の解消。残る混同は share_experience→inform 32 / negative_feedback→inform 13 / inform→positive_feedback 11）
+- **Emotion 26.9% → 36.8%**（残る不一致は「system 未検出」= 辞書に語が無い: irritation 23 / sadness 10 / joy 9 / admiration 9 …）
+- Entity F1 0.6583 → 0.6646、Sentiment 62.0 → 61.7%、分割 F1 不変
+- 6,500 文品質: 感情正確度 97.1 → 96.9%、極性 97.0 → 96.7%、意図検出率 71.5 → 100%（inform）、エラー 0、カナリア 0%
+- レビューシート: 不一致 287 → 258 文、体系差の論点 5 → 1（exaggeration 2 件）。§0.5 に辞書追加候補を語単位で集約
+
+## [0.6.4] - 2026-09-09
+
+v1.0 項目 **互換性マトリクス（§8 / NFR-003）と旧 import パスの非推奨化（§3.2）**。公開版は 0.2.7 のまま。
+
+### Added
+- **`kotobacore.versions`**: `component_versions()`（本体 / IR schema / Tokenizer / 辞書セット・各 CSV / モジュール / Vocabulary 形式 / HTTP API / 旧 import の方針）と `compatibility_matrix_markdown()`。CLI `kotobacore version --all`（JSON）/ `--matrix`（README 用 Markdown）
+- **`core.token.TOKENIZER_VERSION = "2.4"`**（Karuizawa 分割版。1.x カスケード → 2.0 ラティス → 2.1 fine → 2.2 オノマトペ → 2.3 評価語ノード → 2.4 送り仮名ノード＋仮定形）
+- **辞書マニフェスト `resources/dict/versions.json`**（辞書セット版 2026.09.09、CSV ごとの version / rows / note）。`tests/test_versions.py` が実 CSV の行数と照合するので、**辞書を変えたら version と rows を更新しないとテストが落ちる**（版上げ忘れ防止）。wheel に同梱（package-data に *.json）
+- `versions.MODULE_VERSIONS`（intent 1.2 / emotion 1.1 / sentiment 1.1 / topic 1.0）
+- **`MetaInfo.components`**（tokenizer / dictionary_set / modules の版を結果に刻む。NFR-002 再現性。既存キーは不変）
+- README に互換性マトリクス
+
+### Changed
+- **旧 import パスは DeprecationWarning**（`kotobacore._compat.KotobaCoreDeprecationWarning`、"deprecated since 0.6.4 … removed in 1.1"）: `kotobacore.schema` / `clause` / `matching` / `normalizer(.unicode_normalizer)` / `tokenizer(.base .karuizawa_backend .lattice .token_normalizer)` / `semantic(.builder .chunker)` / `emotion(.detector)` / `intent(.classifier)` の 17 シム。動作は従来どおり（同一オブジェクトを返す）。`kotobacore.compat`（Karuizawa 互換 API、FR-093）は非推奨にしない
+- テストの import を新パスへ移行（9 ファイル）。`tests/test_compat_deprecation.py` が旧パス 14 本の警告と同一性を、`test_synonym_and_layout.py` が旧パスの import 可能性をそれぞれ担保
+- テスト 337（+20）、ruff OK
+
+### Tools（同日追加、v1.0 完成条件の 2 項目）
+- **`tools/quality_test/build_review_sheet.py`**（人手評価セットのレビュー確定用）: 300 文の gold と現行出力を並べ、tokens / entities / sentiment / emotion / intent の不一致に「判断メモ」を付ける。
+  個別の当否ではなく**体系差**（gold の意図 `inform` 117 / `share_experience` 62 は system 体系に無い、感情 `surprise` 11 / `trust` 9 / `disgust` 5 も同様、system の `exaggeration` 13 は gold に無い、評価極性 gold あり / system なし 89 は 2026-09-08 の極性定義で再判定）を先に決める構成。
+  出力 `annotated/review_sheet_v1.md`（決めること → ジャンル別チェックリスト）と `review_sheet_v1.csv`（verdict / corrected_gold 列付き）。不一致 287 / 300 文
+- **`tools/benchmark/compare_baselines.py`**（既存ツールとのベースライン比較）: janome (IPADIC) / SudachiPy A・B・C / KotobaCore coarse・fine を、人手 100 文の分割境界 P/R/F1・速度・フットプリントで比較。
+  結果 `tools/benchmark/baseline_comparison.md`: **coarse F1 0.894**（janome 0.865、Sudachi C 0.875 — gold が KotobaCore の意味単位なので短単位側は R 1.0 / P 0.76〜0.78）、
+  速度 KotobaCore 0.27 ms/文（janome 0.71、Sudachi 0.04 = Rust）、辞書 0.3 MB（janome 211 MB、SudachiDict 218 MB）。感情・極性のベースライン（oseti 等）は MeCab の Windows DLL が使えず未実施
+
+## [0.6.3] - 2026-09-09
+
+v1.0 項目 **N4 語形正規化（FR-002 N4 / FR-010 活用情報）**。Token に `conjugation_type` / `conjugation_form` を追加（schema 0.4 の範囲、既存キー不変）。公開版は 0.2.7 のまま。
+
+### Added
+- **`core.token.conjugation`**（辞書なし・規則ベース）: `analyze_verb` / `analyze_adjective` / `analyze_conjugation(surface, pos)` → `ConjugationInfo(lemma, conjugation_type, conjugation_form)`
+  - 助動詞を右から最長一致で剥がし（食べ|させ|られ|なかった）、残った語幹末のかな行から活用型を決めて原形を組み直す。ます/ない/た/て/ば/う/よう/たい/られる/させる/ている/てくる/ちゃう/たら/たり…
+  - 活用型: 五段 / 一段 / カ変 / サ変 / 形容詞 / 形容動詞。辞書でしか決まらない曖昧（走った→走る／走つ／走う、読んだ→読む／読ぶ）は最頻パターンで解いて **`五段?`** と表示。頻出動詞は小さな語幹表で確定（待った→待つ、買った→買う、飛んだ→飛ぶ、起きます→起きる）
+  - 活用形ラベルは表層順に "-" 連結（使役-受身-否定-過去、進行-丁寧、過去-接続-理由）。ラティスが動詞に結合する接続助詞（走ったので）はラベル側に剥がす
+  - 形容詞は い-基本形（美味しかった→美味しい、高い は 2 字でも基本形）、形容動詞は コピュラ尾で検出（静かだった→静かだ）
+- **Token.dictionary_form が動詞でも原形に**（従来は表層のまま）。`core.lexicon` の dictionary_form パスが動詞にも効くようになり、人手 300 文の Emotion 正確度 24.7% → 26.9%。述語の lemma も原形（なった→なる）
+- **送り仮名揺れの N4 正規化**: 新辞書 `resources/dict/okurigana.csv`（82 グループ、本則形＝canonical と圧縮形: 申し込み／申込み／申込、見積もり／見積、引き落とし／引落し／引落、買い物／買物…）。`DictionaryBundle.okurigana_map()`。
+  変異形はラティスの名詞ノードとして登録され（従来は 見積|もり、引き落|とし と分割が壊れていた）、`Token.normalized` に本則形を保持。表層は不変（N3〜N5 の規則）。チャンクの keywords（normalized を使う）に本則形が乗る
+- 仮定形の動詞語尾（れば／けば／せば／てば／めば／べば／げば／えば／ねば）を `_VERB_TAILS` に追加し、走れば／書けば／食べれば が 1 語に
+
+### 計測
+- 317 テスト（N4 6 本追加）、ruff OK。6,500 文品質: 感情正確度 97.1% / 極性 97.0% / エラー 0 / 鳴き声カナリア 0%
+- 人手 300 文: 分割 F1 0.9077・Entity F1 0.6583 不変、Sentiment 62.3 → 62.0%（1 文）、Emotion 24.7 → 26.9%
+- RAG 語彙経路: 実務 0.720・自作 0.840 とも不変
+
+### Known limits
+- 話した／勉強した は サ変分割規則で 名詞＋した のまま（設計どおり）。行きます／書きます は「きます」が ひらがな動詞（来ます）に取られる既存の癖。命令形「ろ」は語尾表に入れていない
+
+## [0.6.2] - 2026-09-09
+
+v1.0 項目 **Entity 共参照（FR-034）**。IR schema 0.3 → **0.4**（Entity に `canonical_id` / `aliases` 追加、既存キーは不変）。公開版は 0.2.7 のまま。
+
+### Added
+- **`core.coreference.resolve_coreference`**（`analyze_document` で自動適用、`Analyzer(enable_coreference=False)` で無効化）
+  1. **クラスタ化**: 同じ normalized、同じ core 形（PERSON は敬称・役職を除いた形、ORGANIZATION は法人格を除いた形、LOCATION は都道府県を除いた形）、または core の前方一致（田中 / 田中太郎、北斗 / 北斗物流）で union-find。最長表層が代表、全員に `canonical_id`、代表に `aliases`。id は一意のまま（chunk / sentence の参照を壊さない）
+  2. **短縮形 mention の発見**: 代表・メンバーの core、PERSON の姓トークン、ORGANIZATION の「core − 業種語」（北斗物流 → 北斗）がトークン境界ぴったりで出現し Entity 未抽出なら `source="coreference"`（confidence 0.6）の mention を追加し同クラスタへ。`normalized` は代表の正規形なので、チャンクの entity_match は「北斗」を「北斗物流」として見る
+  3. **照応**: 同社 / 同行 / 同校 / 同氏 / 彼 / 彼女 / 同市 / 同県 / 同製品 / 同書 / 同大会 … → 直前の同型 mention（confidence 0.5）
+  - `coreference_clusters(entities)` で代表先頭のクラスタ一覧。DATE / TIME / MONEY / QUANTITY は対象外、`analyze()`（1 文）では走らない
+- パターン NER: 法人接頭辞がラティスで 1 トークンに結合した形（株式会社北斗物流）も ORGANIZATION に。組織接尾辞に 物流 / 運輸 / 建設 / 不動産 / 製作所 / 製薬 / 鉄道 / 商会
+- テスト 6 本（`tests/test_coreference.py`）、計 311。人手 300 文の Entity F1 0.6583 / 0.6458 は不変（文単位評価のため共参照は影響外、接尾辞追加の退行なし）
+
+### Changed
+- RAG 語彙経路: 実務 0.720 不変。自作 200 問 0.846 → 0.840 — 共参照は ±0（無効化して同値）、**「北斗物流」が ORGANIZATION になった副作用**: 文書全体の主題である組織 Entity が entity_match で全チャンクに等しく加点され、主題を含まない gold が 2 問下がった。
+  文書の主題 Entity をチャンク弁別に使わない再ランク（文書内出現率で減衰）は今後の課題
+
+## [0.6.1] - 2026-09-09
+
+v1.0 項目 **HTTP API（FR-092）**。Streamlit デモとは別プロセス。公開版は 0.2.7 のまま。
+
+### Added
+- **`kotobacore.api`**（extra `kotobacore[api]` = FastAPI + uvicorn。本体の実行時依存は PyYAML と typer のまま、NFR-006）
+  - `create_app(analyzer=None, *, api_token=None, rate_limit=None, max_chars=200_000)` → FastAPI アプリ
+  - `GET /health`・`GET /version`（kotobacore / schema / api 版、auth・rate limit の有効状態）、`POST /analyze`（`document` で文書モード、`reference_date`、`semantic_only`）、`POST /query`、`POST /chunk`（max_chars / min_chars）、`POST /tokenize`（coarse / fine）。`/docs` に OpenAPI
+  - **§10 セキュリティ**: Bearer トークン認証（`--token` / env `KOTOBACORE_API_TOKEN`、POST のみ・/health は開放）、クライアント別レート制限（`--rate-limit` / env `KOTOBACORE_RATE_LIMIT`、固定 60 秒窓）、入力長上限（413）、**アクセスログ無効・エラー応答に原文を含めない**
+  - **§9 エラー形**: `{"error": {"code": "E7xx …", "message": …}}`。E101 input_too_large / E102 empty_input / E103 invalid_reference_date / E700 api_error / E701 unauthorized / E702 rate_limited
+  - リクエスト単位の `reference_date` は共有 Analyzer に漏らさない（ロック＋復元）
+- CLI `kotobacore serve --host --port 8590 --token --rate-limit --max-chars --reference-date`（extra 未導入なら導入方法を案内して終了）
+- テスト 8 本（`tests/test_api.py`、fastapi / httpx が無ければ skip）、計 305
+
+## [0.6.0] - 2026-09-09
+
+要件定義書 v0.5 §12 の v1.0 項目のうち **Vocab モジュール（FR-070〜072）** を実装。Token 層の任意モジュールで、IR は vocab なしで完全（§3.3）。公開版は 0.2.7 のまま。
+
+### Added
+- **`kotobacore.vocab`**（`build` / `encode` / `evaluate`）
+  - `build_vocab(texts, granularity="fine", min_freq, max_size)` → `Vocabulary`（`version`=kotobacore-vocab-1.0、`granularity`、`normalization_version`、`kotobacore_version`、`entries[piece,id,freq,pos,flags]`）。
+    id 0〜9 は特殊トークン（`<pad> <unk> <bos> <eos> <sep> <mask> <cls> <nl> <sp> <reserved>`）、以降は頻度降順（同数は表層順）で決定的。**コーパスの全文字を必ず語彙に含める**（`char` フラグ、min_freq 対象外）ので未知語は文字へフォールバックし OOV で欠落しない
+  - `extend_vocab(vocab, texts)` は**追記のみ**（既存 id は不変、頻度メタデータだけ更新、新規は最大 id の次から）
+  - `VocabEncoder.encode/decode/pieces/annotate`: トークン間の改行・空白を `<nl>` / `<sp>` で保持、語彙に無い語は文字列→無い文字は `<unk>`。decode は正規化後テキストを返す（表層は正規化済みのため）。`annotate(tokens)` が §3.3 の任意フィールド `vocab_id` 相当を返す（IR 本体には埋めない）
+  - `vocab_report(vocab, texts)` / `report_markdown`: coverage（1 ピースで符号化できたトークン率）・OOV トークン率・`<unk>` 率・ids/token・上位 10 語の頻度シェア・単発語率・未使用語数・長さ/POS 分布・**汚染候補**（制御文字 / 半角カナ / 記号連結 / 同字反復 / 異常長 / かな＋英字＋数字混在 / 非 NFKC）と NFKC 重複
+  - CLI `kotobacore vocab build|encode|decode|report`（入力はファイルまたはディレクトリの *.txt / *.md、`--extend` で追記）
+  - 語彙データは同梱しない（FR-070）。テスト 8 本、計 297
+- 動作確認: 同梱 SNS 例文 2,000 句で build 0.5 秒・1,443 id（語 571）、保留 729 句で coverage 70.6% / OOV 29.4% / `<unk>` 9.2%、人手 300 文で 63.7% / 36.3% / 16.2%、学習内 93.7%。汚染候補 0
+
+### Notes
+- 要件定義書 付録 A の「Vocab | なし | v1.0」行は v0.6 で実装済みに更新が必要（要件書は版番号ルールで v0.6 として別ファイル化する）
+- FR-073（外部 LLM Token ID との対応）は要件どおり未実装
+
+## [0.5.4] - 2026-09-09
+
+実務コーパスの howto 質問を個別に追うと、原因は検索モデルではなく **チャンカーが Markdown の技術文書を壊していた** ことだった。公開版は 0.2.7 のまま。
+
+### Fixed
+- **コードフェンス内の見出し誤認**: ```` ``` ```` 内のシェルコメント `# フォントキャッシュを削除` が見出しとして段落を切り、コマンドが説明文・節見出しから分離されていた
+  （実務 howto の gold「rm -rf /root/.cache/matplotlib/」が見出し無しの裸チャンクに）。`core.syntax.split_paragraphs` がフェンスを追跡し、フェンス内は見出し判定・空行分割の対象外、
+  ブロック全体を 1 段落に（`is_fence_line` 新設）
+- **連続する見出しでテキストが消える**: `pending_heading` が上書きされ、見出し行が連続すると先の行がどのチャンクにも入らなかった。番号付きリスト「1. 50〜100発話を人手でラベル付け」
+  が見出し判定されて 4 項目中 3 項目が消失（実務 p113 が gold 欠落）。pending を list にして全件を次チャンクへ。加えて番号付きリスト項目（`1. ` + 空白）は見出し扱いしない
+- チャンク先頭の複数見出しは context から除外（本文に含まれるため）。既存テスト `test_document_chunk_heading_path_and_table_header` の期待値を「導入・前提とも本文に残る」に更新
+
+### Added
+- **コードブロックは導入文と同じチャンクに**: フェンス直前の段落境界ではチャンクを切らず、コード行では topic shift を判定しない。サイズ上限で分かれた場合は、
+  直前の説明文（80 字まで）を `DocumentChunk.context` に載せる（見出しパス・表ヘッダと同じ扱い）
+- `tools/rag_eval/run_rag_eval.py` の per_question に条件別 gold 順位・gold チャンク id・top1 を追加（版間の質問単位 diff 用）
+
+### 計測（MRR@10、v0.5.3 → v0.5.4）
+- 実務 120 問: チャンク 6,134 → 5,174、**gold 欠落 2 → 0**、語彙経路 **0.634 → 0.720 (+13.6%)**、BM25 素の土台 0.600 → 0.655、**howto R@3 65.0 → 85.0**、compare 80 → 90。value 62.5 → 50.0・definition 77.8 → 72.2 は語彙不一致（範囲 ↔ BETWEEN 1 AND 5 など）で残課題
+- 自作 200 問: 変化なし（コードフェンス・番号リストを含まないため 447 チャンク・0.846 / ハイブリッド 0.868 のまま）
+- ハイブリッド（実務、e5-base、再埋め込み 18 分）: e5 単体 0.595 → 0.683、ハイブリッド(α=0.3) 0.693 → 0.774、**ハイブリッド+フィルタ+再ランク 0.695 → 0.777 (+11.8%)**、**howto R@3 60.0 → 95.0**、
+  synonym 70 → 75、value 75 → 75、definition 94.4 → 83.3（結果 md のヘッダ版表記は 0.5.3 = 計測プロセスが版上げ前に起動したため）
+- 教訓: 「howto は Embedding が苦手」は誤診で、**技術文書のチャンク境界（フェンス内コメント・番号リスト）が壊れていた**。検索モデル側の α 切替では救えない種類の劣化
+
+## [0.5.3] - 2026-09-09
+
+実務コーパスで howto 質問が Embedding に弱い（R@3: BM25 65 / e5 45 / ハイブリッド 55）問題への対処。公開版は 0.2.7 のまま。
+
+### Added
+- **回答の形 (answer form) による intent_match** `rag.features.answer_form_match(intent, text)`: how_to / procedure（コードブロック・番号手順・→・してください・コマンド…）、reason（ため・原因・背景…）、compare、definition、condition、specification の手がかり語で
+  「チャンクがその種類の答えの形をしているか」を 0 / 0.5 / 1 で返す。`rerank_features` の intent_match は、回答型が MONEY/DATE 等の実体型なら従来どおり実体の有無、TEXT 型意図ならこの形一致に切り替わる。
+  **実務 howto 質問で gold チャンクの intent_match が全件 None だった**（チェックリストや仕様表がコマンド 1 行のチャンクを押し出していた）のが動機
+- Query 意図分類の how_to / procedure 再現率向上: 名詞句型の how-to（〜の書き方 / 〜するコマンド / 〜に必要な操作 / どう保管する）と障害対応（〜になる時の対処 / 〜エラーの解決策 / 〜の対策 / 〜への対応）、ルール・規定・禁止 → condition。
+  howto 質問の how_to/procedure 判定: 実務 10/20 → 15/20、自作 11/25 → 16/25。「どう違う」「どうなる」は compare / reason に留めるため規則順を compare → reason → how_to に変更
+- `rag.features.HYBRID_ALPHA`（=0.3）と `hybrid_alpha(query)`・`query_lexical_anchors(query)`（識別子 / 製品コード / なし の診断ラベル）。評価スクリプト `run_embed_eval.py` の α は本体定数を参照
+- `tools/rag_eval/analyze_alpha_by_query.py`: 質問ごとの α–RR 曲線を gold 型・予測意図・ASCII 識別子・同義語展開有無・スコアのピーク度で集計し、α 切替ポリシーを 自作 1-80 → 81-200 → 実務 の順で比較
+- `tools/rag_eval/rerank_ablation.py`: tune_hybrid_rerank のキャッシュ候補に対し、キャッシュ時の特徴量と現行コードの特徴量で再ランクを比較（旧版との A/B を git stash なしで実施）、intent_match 重みグリッド付き
+
+### Changed
+- **ハイブリッド α は固定 0.3 と結論**: 意図別（how_to → 語彙寄り）・識別子有無・同義語展開有無・スコアのピーク度、いずれの query-time ポリシーも 自作 train / val / 実務 の 3 つを同時には超えない
+  （実務 howto だけ見れば α=0.8 で +0.11 だが自作 howto は α=0.0 が最良で真逆。gold 型オラクルでも上積み +0.03）。howto の弱点は融合重みでなく再ランク側（上記 answer form）で救う
+- intent_match の重み（HYBRID 0.05 / DEFAULT 0.10）は据え置き。グリッドでは自作 train が 0.15 で最良だが val は単調悪化、実務は 0.05 が最良
+
+### 計測（MRR@10、v0.5.2 → v0.5.3）
+- 実務 120 問: 語彙経路 0.631 → 0.634、ハイブリッド+フィルタ+再ランク 0.689 → 0.695、**howto R@3 55.0 → 60.0（full 経路 65.0）**、procedure 意図の質問 0.708 → 0.833。reason の語彙経路は 85.7 → 78.6（1 問）
+- 自作 200 問（妨害あり）: 語彙経路 0.833 → 0.846、ハイブリッド+フィルタ+再ランク 0.872 → 0.868（差分は α 0.4 → 0.3 の分。同 α では ±0）
+- 再ランク特徴量だけの A/B（rerank_ablation、α=0.3）: 自作 1-80 0.854 → 0.862、81-200 0.878 → 0.878、実務 0.728 → 0.732。壊さずに howto を拾う水準
+
+## [0.5.2] - 2026-09-08
+
+実務コーパス（社内業務文書 30 件・6,134 チャンク・120 問、リポジトリ外）での再計測に基づく改善。公開版は 0.2.7 のまま。
+
+### Added
+- **チャンク文脈 (FR-082 拡張)**: `DocumentChunk.heading_path`（囲む Markdown 見出しの階層）と `context`（見出しパス、表の行なら表ヘッダ行）、`text_with_context`。
+  再ランクの `ChunkView` と評価ハーネスは文脈込みの本文を索引。**実務コーパスで土台 MRR 0.570 → 0.600、再ランク込み 0.592 → 0.630**（R@3 60.0 → 70.8）
+- synonym.csv に IT / 開発 / クラウド / セキュリティ / オフィス / データ / 業務 のドメイン同義語 260 グループ（計 478）
+- Query 意図体系に業務文書向けの回答型・意図を追加: 改訂日・施行日 → DATE、行数・上限・範囲・ポート番号 → NUMBER、担当・作成者 → PERSON、
+  パス・ディレクトリ・保存先 → LOCATION、condition / procedure / specification。実務 120 問で lookup 80 → 51
+- `rag.features.rrf_fuse`（順位融合）、`EXPANSION_WEIGHT`（展開語の重み 0.15）
+- **ハイブリッド用の再ランク重み `rag.features.HYBRID_WEIGHTS`**（検索融合スコア 0.35 / Embedding 類似度 0.10 / キーワード 0.15 / 回答型 0.05、他 0）。`rerank_score(..., retrieval_score=, lexical_similarity=)` に融合後スコアが渡されると自動で切り替わる（語彙経路の `DEFAULT_WEIGHTS` は不変）。`tools/rag_eval/tune_hybrid_rerank.py` で自作 1-80 問で選び 81-200 問で検証、実務 120 問は最後に 1 回: 旧重みはハイブリッド検索を 0.03〜0.05 悪化させていたが新重みで解消（検証 0.838→0.874、実務 0.682→0.717）。融合検索単体に対する上積みは 検証 +0.007・実務 ±0（+0.004 / 製品経路 −0.003）で、ハイブリッド後の再ランクは「壊さない」水準
+- `tools/rag_eval/run_embed_eval.py`: 外部 Embedding（sentence-transformers、既定 intfloat/multilingual-e5-base、専用 venv）と KotobaCore 検索の合成評価。条件 = BM25 / KotobaCore 語彙経路 / Embedding / Embedding+再ランク / RRF / 重み付きハイブリッド(α) / ハイブリッド+フィルタ+再ランク / 全部。**実務コーパス: BM25 0.600 → ハイブリッド(α=0.3) 0.693、同義語質問 R@3 35 → 80（全部）**、自作: 0.766 → 0.845。本体に依存は追加しない（FR-085 どおり Embedding は外部注入）
+
+### Changed
+- 再ランクの keyword_overlap は質問語を 1.0、同義語展開を 0.15 で重み付け（展開が外れても一致チャンクを薄めない）
+- 評価ハーネスは 生の質問 1.0 ＋ Query IR 語 0.25 ＋ 展開語 0.15 の重み付き BM25。実務文書では語彙展開はどの重みでも土台を超えず、
+  自作コーパスでは +0.03。**語彙展開の効果はコーパスの書き方に依存し、同義語質問（R@3 30%）は Embedding の領域**
+
+### 実務コーパスの最終値（MRR@10 / R@1 / R@3 / R@5）
+- 文脈なし土台 0.570 / 48.3 / 60.0 / 68.3 → 文脈込み土台 0.600 / 51.7 / 65.8 / 71.7 → 再ランク込み **0.631 / 53.3 / 70.8 / 75.0**（+10.7%）
+- 自作コーパス（200 問・妨害あり）: 0.769 → 0.833
+
+## [0.5.1] - 2026-09-08
+
+v0.5.0 のデモ運用と RAG 検索評価（tools/rag_eval、200 問）の結果に基づく改善。公開版（PyPI/GitHub）は 0.2.7 のまま。
+
+### Changed
+- 辞書 NER をテキスト一致（トークン境界整合）にも拡張: 「東京だ」のように語尾と融合したトークン、分割されたトークンにまたがる辞書語も取れる
+- デモの固定コーパスに Entity / Event 向けの例文 4 件を追加
+- **評価の重ね合わせ (overlay)**: 感情語・スラングの表現が sentiment.csv の語を含むとき（最高 / 高すぎ / 課金高すぎ ⊃ 高すぎ）、
+  感情はそのままに評価表現も同じ位置に出す。接尾一致では直前部分を宛先にする（課金高すぎ → 課金）。
+  これにより「怖かったけど面白かった」= 感情 anxiety・評価 positive のように、感情と評価の食い違いが IR に残る
+- sentiment.csv に 28 語追加（面白い / すごい / かわいい / かっこいい / つまらない / ありえない / 気持ち悪い / 難しい / 神対応 / 神回 …）。
+  楽しい・安心・残念・後悔・やばい・尊い・エモい は感情語のまま（評価語にするかは要判断、レビュー用一覧参照）
+- デモの固定コーパスに Sentiment（評価語）セクション 3 文を追加
+- `analyze_document`: 文書レベルの主要感情を文ごとの主要感情の確信度加重投票に変更（1 文なら analyze() と完全一致）。デモの文書モードを既定オンに
+- テスト 274 → 280。6500 文評価は全指標不変
+
+## [0.5.0] - 2026-09-08
+
+要件定義書 v0.4 §12 の v0.5 マイルストーン: 述語項構造 / Relation / Event / Topic モジュール / Retrieval・Reranking 特徴量 / 参照アダプタ。
+IR schema_version 0.2 → **0.3**（フィールド追加のみ）。
+
+### Added — 述語項構造・Relation・Event (FR-023 / 040 / 041) `core/predicate.py`
+
+- `AnalysisResult.predicates`: 節ごとの末尾述語（動詞・形容詞、または だ/し/される/になった 等の語尾を伴う名詞述語、文末の「ケーキは神」）と
+  格助詞による項（が=subject、は/も=topic→subject 昇格、を=object、に/へ=goal、で=location/means、から=source、まで=until、と=with、より=than、
+  日時エンティティ=time）。否定・受身/使役・名詞述語フラグ付き
+- `events`: 述語ごとに type（動詞辞書 行く→GO / 設立→FOUND / 発表→ANNOUNCE …、形容詞・名詞述語は STATE、未分類は原形）と agent / object / goal / location / time
+- `relations`: 主語 → 述語 → 各項 の三つ組（Entity id 付き）
+- 節分割 (core.syntax) に連用形＋読点（設立し、／行って、／いまいちで、）の弱境界を追加し、1 節 1 述語に
+- 係り受け解析器は持たない（設計原則 2）
+
+### Added — Topic モジュール (FR-063) `modules/topic.py`
+
+- `AnalysisResult.topics`: TOPIC 辞書エンティティ 1.0 → その他エンティティ 0.8 → 頻出名詞（頻度×長さ）。文書では文ごとの結果を合算
+- 文書チャンクの話題境界と Reranking の topic_match が参照
+
+### Added — Retrieval / Reranking 特徴量と参照アダプタ (FR-083 / 084) `rag/features.py`, `rag/retriever.py`
+
+- `retrieval_features(query_ir)`: search_terms（同義語展開込み）、entities、intent / answer_type、filters（time / location / quantity …）
+- `rerank_features(query_ir, chunk_view)`: entity_match / keyword_overlap / intent_match（回答型と内容の一致）/ time_match / topic_match / sentiment_match。
+  `rerank_score()` は重み設定可能・欠損信号は重みを再正規化、Embedding 類似度は外部から受け取る
+- `InMemoryRetriever`: 外部 embed 関数注入 → cos 類似で候補 → KotobaCore 再ランク（純 Python、テスト済み）
+- `PgVectorRetriever`: pgvector + 外部 Embedding（Spark RAG 書庫の構成）向け DDL / INSERT / 検索 SQL 生成のみ（実行は呼び出し側、依存追加なし）
+- **効果測定 (tools/rag_eval/)**: 自作コーパス 24 文書 + 質問 200 問 (type 10 種 / lexical 5 種)、妨害チャンク 300 文込み 447 チャンク、
+  土台 = 文字 bigram BM25。MRR@10: 土台 0.769 → Query IR 検索語 0.792 → 制約フィルタ 0.799 → 再ランク 0.830 (R@1 68.5→75.5, R@3 82.0→89.5)。
+  言い換え質問で最大効果 (R@3 76.9→92.3)、同義語 69.2→79.5。再ランク重みは質問 1-80 で選び 81-200 で検証して既定値を更新
+  (語彙スコア 0.4 / Entity 0.1 / 回答型 0.1 / キーワード 0.2 / 時間 0.1 / トピック 0.05)
+- Query IR 検索語: 質問語の名詞 (場所 / 人 / 何キロ) を除外、同義語展開は複合語の主要部 (無ければ修飾部) に限り 2 語まで
+- 時間制約の粒度互換 `rag.features.time_compatible`: FY2026 ⟷ 2026-04〜2027-03 の日付 / 2026、2026 ⟷ 2026-xx、2026-10 ⟷ 2026-10-05。
+  再ランクの time_match と評価ハーネスのフィルタが共用。相対日付質問の R@3 78.9 → 94.7
+- 製品・型番コード (MX-500 / X200 / TN-X200 / E-52) をパターン Entity (PRODUCT) に。トークナイザが英字・記号・数字に分けても 1 エンティティ
+
+### Changed
+
+- 否定スコープに動詞否定を追加: 感動しない / できません / されない（core.syntax）
+- 評価語 (sentiment.csv) をトークナイザのラティス辞書ノードに登録（いまいち が「いまいちで」に吸収されなくなった）。ひらがな評価語は 形状詞
+- Query IR: 1 文字名詞（犬 / 車）も検索語に残す
+- テスト 259 → 274。6500 文評価は全指標不変
+
+## [0.4.0] - 2026-09-08
+
+要件定義書 v0.4 §12 の v0.4 マイルストーン: Entity / IR 階層化 / 宛先付き評価・感情 / Query IR / 文書チャンク / 評価 CLI。
+IR schema_version 0.1 → **0.2**（フィールド追加のみ、既存キーは維持）。
+
+### Added — Entity 層 (FR-030〜034) `core/ner.py`
+
+- `AnalysisResult.entities` (`Entity`: id / type / surface / normalized / begin / end / token_ids / source / value / unit / currency)
+- **Time**: 絶対 (2025年10月5日・10月5日・2025年度・令和7年・月曜・午前10時・10:30) と相対 (今日・昨日・来週・昨年度・3日前・2年後)。
+  `Analyzer(reference_date=)` を与えると ISO 日付に解決 (`value`)。年度は `FY2025`
+- **Quantity / Money**: 数値 (5,000・1万・45億・百万・三千五百・約200) × 単位 (円/ドル/人/件/台/%/kg/時間/日/年 …)。
+  期間 (3年・1週間) は QUANTITY、前後付き (3日前) は DATE
+- **パターン NER**: 接尾辞テーブルで 組織 (株式会社X・X支社・X銀行・X大学 …)、地名 (X市・X駅・X公園 …)、人名 (Xさん・X氏・X部長・X先生 …、
+  敬称込み表層＋敬称なし正規化、お客様/皆さん等はブロック)、イベント (X会議・説明会・Xフェア2026 …)
+- 辞書 NER (entity.csv) と統合し、重なりは長い span → time > quantity > dictionary > pattern の順で解決
+- トークナイザ: 繰り返し記号「々」を漢字扱い (代々木公園 / 様々 / 人々 が 1 語に)
+
+### Changed — 極性の定義: 感情語は評価極性に含めない (2026-09-08 決定)
+
+- `SentimentResult.polarity` / `expressions` は **評価語 (sentiment.csv) のみ** から算出。感情語だけの文
+  (「わくわくが止まらない」) は polarity=None
+- 感情語由来の極性は `SentimentResult.affect_polarity` に分離 (`EmotionResult.polarity` と同値)。
+  「怖かった」(恐れ) が映画の肯定評価でありうる、という評価と感情のずれを IR に残す
+- 意図分類の feedback 連動は 評価極性 → 感情極性 の順で読む
+
+### Added — 宛先付き評価・感情 (FR-052) `core/attribution.py`
+
+- `SentimentExpression.target / target_text`、`EmotionExpression.holder / holder_text / about / about_text`
+- 宛先は同一節内で直前の主題語 (X は / が / も / って …)、無ければ節内の直近名詞、無ければ前の節の主題を継承
+  (「コーヒーはいまいちだけどケーキは神」→ いまいち←コーヒー、神←ケーキ)。主体は節内で主語標示された PERSON、既定は speaker
+- 係り受け解析器は持たない (設計原則 2)。浅い規則のみ
+
+### Added — 文書階層 (FR-050) と文境界 (FR-020)
+
+- `Analyzer.analyze_document(text)`: `paragraphs` (空行区切り・見出し行は単独段落) / `sentences` (文ごとの emotion / sentiment / intent を保持) /
+  文書全体の tokens・entities・chunks を通し id で統合。文書レベルの感情・極性・意図は文の集約
+- `core.syntax.split_sentences`: 「」『』（）内の句点で切らない、閉じ括弧は前文に付く、改行は常に境界、半角ピリオドは空白/末尾の前のみ (3.5 は保持)
+- `core.syntax.split_paragraphs` / `is_heading_line` (#・【・■・第N章・N. など)
+
+### Added — Query IR (FR-080) `rag/query.py`, `Analyzer.analyze_query()`
+
+- `QueryIR`: intent / answer_type / target / entities / constraints (time・location・quantity・organization・person …) / keywords / expanded_terms / sentiment
+- Query 向け意図体系 `modules.intent.classify_query_intent`: definition / how_to / reason / compare / search_value (MONEY・DATE・LOCATION・PERSON・NUMBER) / list / yes_no / lookup
+- 対象 (target) は質問語の前の主題句、同義語展開は synonym.csv (複合語の構成トークンも展開)
+
+### Added — Semantic Chunking (FR-081/082) `rag/chunk.py`, `Analyzer.chunk()`
+
+- 見出し → 段落境界 (min_chars 以降) → 話題転換 (名詞集合の Jaccard とエンティティ継続) → サイズ上限 (max_chars、文の途中では切らない) の順で境界決定
+- `DocumentChunk`: paragraph_ids / sentence_ids / entity_ids / keywords / topics / summary_hint / 原文 span
+
+### Added — CLI / 評価
+
+- `kotobacore query TEXT`、`kotobacore chunk FILE --max-chars`、`kotobacore analyze --document --file --reference-date`、`kotobacore eval annotated|quality`
+- 人手評価ランナー: Entity 評価を `entities` 基準に、宛先 (sentiment target) 一致率を追加。
+  下書き 300 文で **Entity F1 0.075 → 0.658** (再現率 4% → 60%)、宛先一致 51.7% (n=60)
+- テスト 240 → 259
+
+### Changed
+
+- `enable_entities=` / `reference_date=` を Analyzer に追加。`semantic_tokens` は semantic 層無効時は従来どおり空
+
+## [0.3.0] - 2026-09-08
+
+要件定義書 v0.4 (Core + 4 モジュール + vocab + rag 構成) の v0.3 マイルストーン。
+
+### Changed — パッケージ再配置 (旧 import パスは compat シムで v1.0 まで維持)
+
+- `kotobacore.core/` — text (N1/N2 正規化), token/ (Karuizawa), syntax (節・否定),
+  entity, chunker (句チャンク), lexicon (感情/評価語マッチ), ir (スキーマ), matching
+- `kotobacore.modules/` — emotion / sentiment / intent (Semantic IR 上のモジュール。
+  モジュール同士は import しない。唯一の例外は Sentiment → Intent で Analyzer が明示的に渡す)
+- 旧パス (`kotobacore.normalizer` / `tokenizer` / `semantic` / `emotion` / `intent` /
+  `schema` / `clause` / `matching`) はそのまま import 可能
+
+### Added — 位置写像 (FR-002 Traceability)
+
+- `Analyzer.normalize_with_map()` / `core.text.normalize_with_map()` が
+  正規化後→原文の文字位置写像 (`NormalizedText.origin`) を返す
+- **`Token.begin/end` と感情・評価表現の `begin/end` は原文基準に統一**
+  (㈱ → 株式会社 の 1→3 文字展開、半角カナ濁点の 2→1 文字縮約でもずれない)。
+  `TextInfo.offset_map` に写像を同梱
+- N1 文脈ルール: カタカナ間のハイフン類 (コ-ヒ-) を長音「ー」に統一
+
+### Added — Sentiment モジュール (FR-062)
+
+- `AnalysisResult.sentiment` (`SentimentResult`: polarity / intensity / confidence /
+  expressions[text, polarity, intensity, confidence, begin, end, negated, target])。
+  `EmotionResult.polarity` は互換のため残し、Sentiment と同じ値
+- 評価語辞書 **`sentiment.csv` 215 語** (いまいち / 微妙 / 使いやすい / 高すぎる 等、
+  感情カテゴリを持たない極性語)。否定で反転: 良くない → negative、悪くない → 弱い positive
+- 意図分類の feedback 連動は Sentiment の極性を読む (`classify_intent(..., sentiment=)`)
+- CLI `--no-sentiment`、`Analyzer(enable_sentiment=)`
+
+### Changed — 否定スコープ・逆接重みを Core (syntax) へ移設 (FR-021/022)
+
+- `core.syntax.negation_after()` / `is_negated_surface()`。感情検出器の内部にあった
+  否定処理を Core に置き、Emotion / Sentiment が同じ判定を共有
+
+### Added — 辞書
+
+- **`synonym.csv` 218 グループ** (顧客|クライアント|お客様 等、business/it/general/daily/sns)。
+  `Analyzer.canonical(word)` / `Analyzer.synonyms(word)`、`bundle.synonym_map()`
+- `normalization.csv` 21 → **182 行**: 法人略号 18、記号 13、引用符 8 (旧版は
+  CSV の引用符エスケープ崩れで無効だった行を修正)、旧字体→新字体 97、カタカナ長音 46
+  (サーバ→サーバー等。語末のみ適用: ユーザビリティ は変えない)、ヴ→バ行。
+  N2 は最長一致・冪等 (既に目標形ならそのまま)
+
+### Added — 評価
+
+- `tools/quality_test/run_annotated_eval.py`: 人手アノテーション実文セット (JSONL) で
+  分割境界 P/R/F1・Entity P/R/F1・極性/感情/意図の正解率・鳴き声カナリア誤検出率を算出。
+  `annotated/annotated_v1_draft.jsonl` (300 文・AI 下書き・要レビュー) を同梱
+- テスト 210 → 240 (位置写像 / Sentiment / synonym / syntax 否定 / 配置ルール)
+- 6500 文品質テスト: 感情正確度 変化なし、極性正確度 97.2→97.4%、意図検出率 70.1→71.1%、エラー 0
+
+### 要件定義書との差分メモ
+
+- 送り仮名揺れ (引き落とし/引落) はテキスト段 (N2) では扱わない — 動詞活用中の置換
+  (受け付けます→受付ます) を避けるため、トークン段 (N4) の課題として v0.4 へ
+- 評価語は emotion.csv の極性列分離ではなく独立辞書 `sentiment.csv` とした
+
 ## [0.2.7] - 2026-08-31
 
 ### Added — オノマトペ対応の強化

@@ -1,0 +1,1208 @@
+{
+  "meta": {
+    "kotobacore_version": "0.6.2",
+    "date": "2026-09-09T11:37:32.799937",
+    "python_version": "3.13.3",
+    "seed": 20260518,
+    "total": 6500,
+    "categories": 13,
+    "per_category": 500
+  },
+  "summary": {
+    "emotion_detection_rate": 0.5854,
+    "intent_detection_rate": 0.7148,
+    "chunk_generation_rate": 0.8995,
+    "rag_generation_rate": 0.9763,
+    "emotion_accuracy": 0.9711,
+    "polarity_accuracy": 0.9703,
+    "intent_accuracy": 0.681,
+    "errors": 0
+  },
+  "summary_legacy10": {
+    "total": 5000,
+    "emotion_detection_rate": 0.561,
+    "intent_detection_rate": 0.7268,
+    "chunk_generation_rate": 0.925,
+    "rag_generation_rate": 0.9974,
+    "emotion_accuracy": 0.9495,
+    "polarity_accuracy": 0.9565,
+    "intent_accuracy": 0.681,
+    "errors": 0
+  },
+  "timing": {
+    "count": 6500,
+    "mean_ms": 1.661,
+    "median_ms": 1.605,
+    "p95_ms": 2.354,
+    "p99_ms": 3.633,
+    "min_ms": 0.837,
+    "max_ms": 5.98,
+    "total_s": 10.8
+  },
+  "categories": [
+    {
+      "name": "喜び・ポジティブ",
+      "total": 500,
+      "emotion_detection_rate": 1.0,
+      "intent_detection_rate": 1.0,
+      "chunk_generation_rate": 1.0,
+      "rag_generation_rate": 1.0,
+      "emotion_accuracy": 1.0,
+      "polarity_accuracy": 1.0,
+      "intent_accuracy": 0.0,
+      "avg_chunks": 1.63,
+      "avg_keywords": 3.05,
+      "mean_time_ms": 1.645,
+      "errors": 0,
+      "samples": [
+        {
+          "text": "上司と一緒に成功を祝えて、とても幸せだ。",
+          "emotion": "joy",
+          "polarity": "positive",
+          "intent": "positive_feedback",
+          "chunks": [
+            "幸せだ"
+          ],
+          "keywords": [
+            "一緒",
+            "上司",
+            "成功",
+            "幸せだ"
+          ],
+          "time_ms": 2.95
+        },
+        {
+          "text": "研究発表を完成させて、本当に嬉しい。",
+          "emotion": "joy",
+          "polarity": "positive",
+          "intent": "positive_feedback",
+          "chunks": [
+            "研究発表",
+            "嬉しい"
+          ],
+          "keywords": [
+            "研究発表",
+            "本当",
+            "嬉しい"
+          ],
+          "time_ms": 2.19
+        },
+        {
+          "text": "卒業制作が認められて心から満足している。",
+          "emotion": "joy",
+          "polarity": "positive",
+          "intent": "positive_feedback",
+          "chunks": [
+            "卒業制作",
+            "満足"
+          ],
+          "keywords": [
+            "卒業制作",
+            "満足"
+          ],
+          "time_ms": 2.27
+        },
+        {
+          "text": "家族と楽しい時間を過ごせて、誇らしい気持ちだ。",
+          "emotion": "admiration",
+          "polarity": "positive",
+          "intent": "positive_feedback",
+          "chunks": [
+            "楽しい",
+            "誇らしい"
+          ],
+          "keywords": [
+            "家族",
+            "時間",
+            "楽しい時間",
+            "誇らしい",
+            "楽しい"
+          ],
+          "time_ms": 2.22
+        },
+        {
+          "text": "プロジェクトを最後までやりきって、感動した。",
+          "emotion": "moved",
+          "polarity": "positive",
+          "intent": "positive_feedback",
+          "chunks": [
+            "プロジェクト",
+            "感動した"
+          ],
+          "keywords": [
+            "プロジェクト",
+            "感動した"
+          ],
+          "time_ms": 1.87
+        }
+      ]
+    },
+    {
+      "name": "怒り・不満",
+      "total": 500,
+      "emotion_detection_rate": 1.0,
+      "intent_detection_rate": 0.986,
+      "chunk_generation_rate": 1.0,
+      "rag_generation_rate": 1.0,
+      "emotion_accuracy": 1.0,
+      "polarity_accuracy": 1.0,
+      "intent_accuracy": 0.0,
+      "avg_chunks": 1.62,
+      "avg_keywords": 3.1,
+      "mean_time_ms": 1.968,
+      "errors": 0,
+      "samples": [
+        {
+          "text": "また話を最後まで聞いてもらえなく、許せない。",
+          "emotion": "anger",
+          "polarity": "negative",
+          "intent": "negative_feedback",
+          "chunks": [
+            "許せない"
+          ],
+          "keywords": [
+            "最後",
+            "許せない"
+          ],
+          "time_ms": 1.77
+        },
+        {
+          "text": "成果を横取りされて不満でいっぱいだ。",
+          "emotion": "anger",
+          "polarity": "negative",
+          "intent": "negative_feedback",
+          "chunks": [
+            "不満"
+          ],
+          "keywords": [
+            "成果",
+            "不満"
+          ],
+          "time_ms": 1.75
+        },
+        {
+          "text": "なんで約束を破られんだ、理不尽だと感じる。",
+          "emotion": "anger",
+          "polarity": "negative",
+          "intent": "negative_feedback",
+          "chunks": [
+            "理不尽"
+          ],
+          "keywords": [
+            "約束",
+            "なんで",
+            "理不尽"
+          ],
+          "time_ms": 1.83
+        },
+        {
+          "text": "管理会社が責任を押し付けて、理不尽だと感じる。",
+          "emotion": "anger",
+          "polarity": "negative",
+          "intent": "negative_feedback",
+          "chunks": [
+            "管理会社",
+            "理不尽"
+          ],
+          "keywords": [
+            "管理会社",
+            "責任",
+            "理不尽"
+          ],
+          "time_ms": 2.13
+        },
+        {
+          "text": "また勝手に予定を変更され、許せない。",
+          "emotion": "anger",
+          "polarity": "negative",
+          "intent": "negative_feedback",
+          "chunks": [
+            "許せない"
+          ],
+          "keywords": [
+            "予定",
+            "勝手",
+            "変更",
+            "許せない"
+          ],
+          "time_ms": 1.58
+        }
+      ]
+    },
+    {
+      "name": "悲しみ・憂鬱",
+      "total": 500,
+      "emotion_detection_rate": 0.938,
+      "intent_detection_rate": 0.93,
+      "chunk_generation_rate": 0.882,
+      "rag_generation_rate": 0.988,
+      "emotion_accuracy": 0.838,
+      "polarity_accuracy": 0.848,
+      "intent_accuracy": 0.0,
+      "avg_chunks": 1.18,
+      "avg_keywords": 2.05,
+      "mean_time_ms": 1.638,
+      "errors": 0,
+      "samples": [
+        {
+          "text": "実家を失って悲しくて言葉が出ない。",
+          "emotion": "sadness",
+          "polarity": "negative",
+          "intent": "negative_feedback",
+          "chunks": [
+            "悲しくて"
+          ],
+          "keywords": [
+            "実家",
+            "言葉",
+            "悲しくて"
+          ],
+          "time_ms": 2.23
+        },
+        {
+          "text": "居場所をなくして切なくなる。",
+          "emotion": "sadness",
+          "polarity": "negative",
+          "intent": "negative_feedback",
+          "chunks": [
+            "居場所",
+            "切なくなる"
+          ],
+          "keywords": [
+            "居場所",
+            "切なくなる"
+          ],
+          "time_ms": 1.99
+        },
+        {
+          "text": "戻らない日々のことを思い出すとつらくてたまらない。",
+          "emotion": "sadness",
+          "polarity": "negative",
+          "intent": "negative_feedback",
+          "chunks": [
+            "つらくて"
+          ],
+          "keywords": [
+            "日々",
+            "つらくて"
+          ],
+          "time_ms": 2.42
+        },
+        {
+          "text": "幼い頃の友人を失って涙が止まらない。",
+          "emotion": "sadness",
+          "polarity": "negative",
+          "intent": "unknown",
+          "chunks": [],
+          "keywords": [
+            "友人",
+            "涙が止まらない"
+          ],
+          "time_ms": 2.36
+        },
+        {
+          "text": "誰にも理解されなく、気力が湧かない。",
+          "emotion": "sadness",
+          "polarity": "negative",
+          "intent": "negative_feedback",
+          "chunks": [
+            "気力が湧かない"
+          ],
+          "keywords": [
+            "理解",
+            "気力が湧かない"
+          ],
+          "time_ms": 2.05
+        }
+      ]
+    },
+    {
+      "name": "不安・恐れ",
+      "total": 500,
+      "emotion_detection_rate": 1.0,
+      "intent_detection_rate": 1.0,
+      "chunk_generation_rate": 1.0,
+      "rag_generation_rate": 1.0,
+      "emotion_accuracy": 0.96,
+      "polarity_accuracy": 0.978,
+      "intent_accuracy": 0.0,
+      "avg_chunks": 1.32,
+      "avg_keywords": 2.21,
+      "mean_time_ms": 1.586,
+      "errors": 0,
+      "samples": [
+        {
+          "text": "大事な決断を迫られて不安でたまらない。",
+          "emotion": "anxiety",
+          "polarity": "negative",
+          "intent": "negative_feedback",
+          "chunks": [
+            "不安"
+          ],
+          "keywords": [
+            "大事",
+            "決断",
+            "不安"
+          ],
+          "time_ms": 1.2
+        },
+        {
+          "text": "責任の重さを感じてから夜も眠れない。",
+          "emotion": "anxiety",
+          "polarity": "negative",
+          "intent": "negative_feedback",
+          "chunks": [
+            "眠れない"
+          ],
+          "keywords": [
+            "責任",
+            "眠れない"
+          ],
+          "time_ms": 1.15
+        },
+        {
+          "text": "大事な会議が近づくにつれて不安でたまらない。",
+          "emotion": "anxiety",
+          "polarity": "negative",
+          "intent": "negative_feedback",
+          "chunks": [
+            "不安"
+          ],
+          "keywords": [
+            "会議",
+            "大事",
+            "不安"
+          ],
+          "time_ms": 1.3
+        },
+        {
+          "text": "結果が分からなくて気が気でない。",
+          "emotion": "anxiety",
+          "polarity": "negative",
+          "intent": "negative_feedback",
+          "chunks": [
+            "気が気でない"
+          ],
+          "keywords": [
+            "結果",
+            "気が気でない"
+          ],
+          "time_ms": 1.08
+        },
+        {
+          "text": "うまく説明できる気がしなくて焦りを感じる。",
+          "emotion": "anxiety",
+          "polarity": "negative",
+          "intent": "negative_feedback",
+          "chunks": [
+            "焦り"
+          ],
+          "keywords": [
+            "説明",
+            "焦り"
+          ],
+          "time_ms": 1.3
+        }
+      ]
+    },
+    {
+      "name": "SNS・スラング",
+      "total": 500,
+      "emotion_detection_rate": 1.0,
+      "intent_detection_rate": 0.862,
+      "chunk_generation_rate": 1.0,
+      "rag_generation_rate": 1.0,
+      "emotion_accuracy": 0.0,
+      "polarity_accuracy": 0.0,
+      "intent_accuracy": 0.0,
+      "avg_chunks": 2.17,
+      "avg_keywords": 2.94,
+      "mean_time_ms": 1.529,
+      "errors": 0,
+      "samples": [
+        {
+          "text": "この曲やばい、しぬw",
+          "emotion": "exaggeration",
+          "polarity": "mixed",
+          "intent": "unknown",
+          "chunks": [
+            "やばい",
+            "しぬw"
+          ],
+          "keywords": [
+            "しぬw",
+            "やばい"
+          ],
+          "time_ms": 1.46
+        },
+        {
+          "text": "今日の先輩の対応、神",
+          "emotion": "admiration",
+          "polarity": "positive",
+          "intent": "positive_feedback",
+          "chunks": [
+            "神"
+          ],
+          "keywords": [
+            "今日",
+            "先輩",
+            "対応",
+            "神"
+          ],
+          "time_ms": 1.55
+        },
+        {
+          "text": "新作アニメまじでえぐい",
+          "emotion": "mixed",
+          "polarity": "mixed",
+          "intent": "unknown",
+          "chunks": [
+            "新作アニメ",
+            "まじで",
+            "えぐい"
+          ],
+          "keywords": [
+            "新作アニメ",
+            "えぐい",
+            "まじで"
+          ],
+          "time_ms": 1.32
+        },
+        {
+          "text": "神回きてやばい",
+          "emotion": "admiration",
+          "polarity": "positive",
+          "intent": "positive_feedback",
+          "chunks": [
+            "神回",
+            "やばい"
+          ],
+          "keywords": [
+            "やばい",
+            "神回"
+          ],
+          "time_ms": 1.36
+        },
+        {
+          "text": "あのドラマがしんどいんだけど",
+          "emotion": "sadness",
+          "polarity": "negative",
+          "intent": "negative_feedback",
+          "chunks": [
+            "ドラマ",
+            "しんどい"
+          ],
+          "keywords": [
+            "ドラマ",
+            "しんどい"
+          ],
+          "time_ms": 1.4
+        }
+      ]
+    },
+    {
+      "name": "ビジネス・業務",
+      "total": 500,
+      "emotion_detection_rate": 0.126,
+      "intent_detection_rate": 0.35,
+      "chunk_generation_rate": 0.988,
+      "rag_generation_rate": 1.0,
+      "emotion_accuracy": 0.0,
+      "polarity_accuracy": 0.0,
+      "intent_accuracy": 0.0,
+      "avg_chunks": 2.02,
+      "avg_keywords": 3.13,
+      "mean_time_ms": 1.662,
+      "errors": 0,
+      "samples": [
+        {
+          "text": "販売戦略についてレビュー会を実施します。",
+          "emotion": null,
+          "polarity": null,
+          "intent": "unknown",
+          "chunks": [
+            "販売戦略",
+            "レビュー会"
+          ],
+          "keywords": [
+            "レビュー会",
+            "販売戦略",
+            "実施"
+          ],
+          "time_ms": 1.74
+        },
+        {
+          "text": "第二四半期予算について進捗会議を実施します。",
+          "emotion": null,
+          "polarity": null,
+          "intent": "unknown",
+          "chunks": [
+            "第二四半期予算",
+            "進捗会議"
+          ],
+          "keywords": [
+            "第二四半期予算",
+            "進捗会議",
+            "実施"
+          ],
+          "time_ms": 1.63
+        },
+        {
+          "text": "来週火曜までにコスト削減施策の議事録を更新します。",
+          "emotion": null,
+          "polarity": null,
+          "intent": "unknown",
+          "chunks": [
+            "来週火曜",
+            "コスト削減施策",
+            "議事録"
+          ],
+          "keywords": [
+            "コスト削減施策",
+            "来週火曜",
+            "議事録",
+            "更新"
+          ],
+          "time_ms": 1.81
+        },
+        {
+          "text": "本日中までにシステム移行の仕様書を修正します。",
+          "emotion": null,
+          "polarity": null,
+          "intent": "unknown",
+          "chunks": [
+            "本日中",
+            "システム移行",
+            "仕様書"
+          ],
+          "keywords": [
+            "システム移行",
+            "仕様書",
+            "本日中",
+            "修正"
+          ],
+          "time_ms": 1.75
+        },
+        {
+          "text": "業務フロー改善の議事録を確認してください。",
+          "emotion": null,
+          "polarity": null,
+          "intent": "support_request",
+          "chunks": [
+            "業務フロー改善",
+            "議事録"
+          ],
+          "keywords": [
+            "業務フロー改善",
+            "議事録"
+          ],
+          "time_ms": 1.76
+        }
+      ]
+    },
+    {
+      "name": "技術・AI",
+      "total": 500,
+      "emotion_detection_rate": 0.206,
+      "intent_detection_rate": 0.206,
+      "chunk_generation_rate": 1.0,
+      "rag_generation_rate": 1.0,
+      "emotion_accuracy": 0.0,
+      "polarity_accuracy": 0.0,
+      "intent_accuracy": 0.0,
+      "avg_chunks": 2.93,
+      "avg_keywords": 4.58,
+      "mean_time_ms": 1.668,
+      "errors": 0,
+      "samples": [
+        {
+          "text": "社内文書検索にファインチューニングを導入する。",
+          "emotion": null,
+          "polarity": null,
+          "intent": "unknown",
+          "chunks": [
+            "社内文書検索",
+            "ファインチューニング"
+          ],
+          "keywords": [
+            "ファインチューニング",
+            "社内文書検索",
+            "導入"
+          ],
+          "time_ms": 1.53
+        },
+        {
+          "text": "ベクトル検索のスケーラビリティに課題がある。",
+          "emotion": null,
+          "polarity": null,
+          "intent": "unknown",
+          "chunks": [
+            "ベクトル検索",
+            "スケーラビリティ"
+          ],
+          "keywords": [
+            "ベクトル検索",
+            "スケーラビリティ",
+            "課題"
+          ],
+          "time_ms": 1.55
+        },
+        {
+          "text": "レコメンド機能のために埋め込みモデルを検証中だ。",
+          "emotion": null,
+          "polarity": null,
+          "intent": "unknown",
+          "chunks": [
+            "レコメンド機能",
+            "埋め込みモデル",
+            "検証中"
+          ],
+          "keywords": [
+            "レコメンド機能",
+            "埋め込みモデル",
+            "検証中"
+          ],
+          "time_ms": 1.6
+        },
+        {
+          "text": "コード補完のためにTransformerを検証中だ。",
+          "emotion": null,
+          "polarity": null,
+          "intent": "unknown",
+          "chunks": [
+            "コード補完",
+            "Transformer",
+            "検証中"
+          ],
+          "keywords": [
+            "コード補完",
+            "Transformer",
+            "検証中"
+          ],
+          "time_ms": 1.51
+        },
+        {
+          "text": "意図分類のためにClaudeを検証中だ。",
+          "emotion": null,
+          "polarity": null,
+          "intent": "unknown",
+          "chunks": [
+            "意図分類",
+            "Claude",
+            "検証中"
+          ],
+          "keywords": [
+            "Claude",
+            "claude",
+            "クロード",
+            "意図分類",
+            "検証中"
+          ],
+          "time_ms": 1.43
+        }
+      ]
+    },
+    {
+      "name": "質問・疑問",
+      "total": 500,
+      "emotion_detection_rate": 0.004,
+      "intent_detection_rate": 0.762,
+      "chunk_generation_rate": 0.904,
+      "rag_generation_rate": 1.0,
+      "emotion_accuracy": 0.0,
+      "polarity_accuracy": 0.0,
+      "intent_accuracy": 0.67,
+      "avg_chunks": 1.05,
+      "avg_keywords": 1.71,
+      "mean_time_ms": 1.531,
+      "errors": 0,
+      "samples": [
+        {
+          "text": "言語設定を変更にはどうしたらいいですか？",
+          "emotion": null,
+          "polarity": null,
+          "intent": "question",
+          "chunks": [
+            "言語設定"
+          ],
+          "keywords": [
+            "言語設定",
+            "変更"
+          ],
+          "time_ms": 1.99
+        },
+        {
+          "text": "対応OSの設定が分かりません。",
+          "emotion": null,
+          "polarity": null,
+          "intent": "unknown",
+          "chunks": [
+            "対応OS"
+          ],
+          "keywords": [
+            "対応OS",
+            "設定"
+          ],
+          "time_ms": 1.45
+        },
+        {
+          "text": "サポート時間はどれでしょうか？",
+          "emotion": null,
+          "polarity": null,
+          "intent": "question",
+          "chunks": [
+            "サポート時間"
+          ],
+          "keywords": [
+            "サポート時間"
+          ],
+          "time_ms": 1.43
+        },
+        {
+          "text": "対応OSはどれでしょうか？",
+          "emotion": null,
+          "polarity": null,
+          "intent": "question",
+          "chunks": [
+            "対応OS"
+          ],
+          "keywords": [
+            "対応OS"
+          ],
+          "time_ms": 1.44
+        },
+        {
+          "text": "キャンセル料の期限が分かりません。",
+          "emotion": null,
+          "polarity": null,
+          "intent": "unknown",
+          "chunks": [
+            "キャンセル料"
+          ],
+          "keywords": [
+            "キャンセル料",
+            "期限"
+          ],
+          "time_ms": 1.44
+        }
+      ]
+    },
+    {
+      "name": "要望・依頼",
+      "total": 500,
+      "emotion_detection_rate": 0.128,
+      "intent_detection_rate": 1.0,
+      "chunk_generation_rate": 0.88,
+      "rag_generation_rate": 1.0,
+      "emotion_accuracy": 0.0,
+      "polarity_accuracy": 0.0,
+      "intent_accuracy": 0.692,
+      "avg_chunks": 1.16,
+      "avg_keywords": 1.66,
+      "mean_time_ms": 1.615,
+      "errors": 0,
+      "samples": [
+        {
+          "text": "スケジュールを再検討してもらえると助かります。",
+          "emotion": null,
+          "polarity": null,
+          "intent": "positive_feedback",
+          "chunks": [
+            "スケジュール",
+            "再検討"
+          ],
+          "keywords": [
+            "スケジュール",
+            "再検討"
+          ],
+          "time_ms": 1.83
+        },
+        {
+          "text": "できれば契約条件を修正してください。",
+          "emotion": null,
+          "polarity": null,
+          "intent": "request",
+          "chunks": [
+            "契約条件"
+          ],
+          "keywords": [
+            "契約条件"
+          ],
+          "time_ms": 1.61
+        },
+        {
+          "text": "納期を検討したいです。",
+          "emotion": "anticipation",
+          "polarity": "positive",
+          "intent": "desire",
+          "chunks": [
+            "検討したい"
+          ],
+          "keywords": [
+            "納期",
+            "検討したい"
+          ],
+          "time_ms": 1.33
+        },
+        {
+          "text": "できればスケジュールを簡略化してください。",
+          "emotion": null,
+          "polarity": null,
+          "intent": "request",
+          "chunks": [
+            "スケジュール",
+            "簡略化"
+          ],
+          "keywords": [
+            "スケジュール",
+            "簡略化"
+          ],
+          "time_ms": 1.63
+        },
+        {
+          "text": "できれば操作手順を対応してください。",
+          "emotion": null,
+          "polarity": null,
+          "intent": "support_request",
+          "chunks": [
+            "操作手順"
+          ],
+          "keywords": [
+            "操作手順"
+          ],
+          "time_ms": 1.58
+        }
+      ]
+    },
+    {
+      "name": "日常会話",
+      "total": 500,
+      "emotion_detection_rate": 0.208,
+      "intent_detection_rate": 0.172,
+      "chunk_generation_rate": 0.596,
+      "rag_generation_rate": 0.986,
+      "emotion_accuracy": 0.0,
+      "polarity_accuracy": 0.0,
+      "intent_accuracy": 0.0,
+      "avg_chunks": 0.66,
+      "avg_keywords": 2.23,
+      "mean_time_ms": 1.545,
+      "errors": 0,
+      "samples": [
+        {
+          "text": "商店街まで散歩したつもりだ。",
+          "emotion": null,
+          "polarity": null,
+          "intent": "unknown",
+          "chunks": [
+            "商店街"
+          ],
+          "keywords": [
+            "商店街"
+          ],
+          "time_ms": 1.5
+        },
+        {
+          "text": "兄と図書館に行ってきた。",
+          "emotion": null,
+          "polarity": null,
+          "intent": "unknown",
+          "chunks": [
+            "図書館"
+          ],
+          "keywords": [
+            "図書館"
+          ],
+          "time_ms": 1.49
+        },
+        {
+          "text": "午後サンドイッチを食べた。",
+          "emotion": null,
+          "polarity": null,
+          "intent": "unknown",
+          "chunks": [
+            "午後サンドイッチ"
+          ],
+          "keywords": [
+            "午後サンドイッチ"
+          ],
+          "time_ms": 1.48
+        },
+        {
+          "text": "週末パスタを食べた。",
+          "emotion": null,
+          "polarity": null,
+          "intent": "unknown",
+          "chunks": [
+            "週末パスタ"
+          ],
+          "keywords": [
+            "週末パスタ"
+          ],
+          "time_ms": 1.45
+        },
+        {
+          "text": "今日は近所の公園で散歩した。",
+          "emotion": null,
+          "polarity": null,
+          "intent": "unknown",
+          "chunks": [],
+          "keywords": [
+            "今日",
+            "公園",
+            "散歩",
+            "近所"
+          ],
+          "time_ms": 1.58
+        }
+      ]
+    },
+    {
+      "name": "オノマトペ・ポジ",
+      "total": 500,
+      "emotion_detection_rate": 1.0,
+      "intent_detection_rate": 0.996,
+      "chunk_generation_rate": 1.0,
+      "rag_generation_rate": 1.0,
+      "emotion_accuracy": 1.0,
+      "polarity_accuracy": 0.996,
+      "intent_accuracy": 0.0,
+      "avg_chunks": 1.68,
+      "avg_keywords": 2.18,
+      "mean_time_ms": 1.683,
+      "errors": 0,
+      "samples": [
+        {
+          "text": "ワックワクしながら旅行を待っている。",
+          "emotion": "joy",
+          "polarity": "positive",
+          "intent": "positive_feedback",
+          "chunks": [
+            "ワックワク"
+          ],
+          "keywords": [
+            "旅行",
+            "ワックワク"
+          ],
+          "time_ms": 1.43
+        },
+        {
+          "text": "週末の予定が立ってからずっとワックワクしている。",
+          "emotion": "joy",
+          "polarity": "positive",
+          "intent": "positive_feedback",
+          "chunks": [
+            "ワックワク"
+          ],
+          "keywords": [
+            "予定",
+            "週末",
+            "ワックワク"
+          ],
+          "time_ms": 1.48
+        },
+        {
+          "text": "きゅんきゅんしながら引っ越しを待っている。",
+          "emotion": "moved",
+          "polarity": "positive",
+          "intent": "positive_feedback",
+          "chunks": [
+            "きゅんきゅん",
+            "引っ越し"
+          ],
+          "keywords": [
+            "引っ越し",
+            "きゅんきゅん"
+          ],
+          "time_ms": 1.25
+        },
+        {
+          "text": "新しいプロジェクトが始まって、きゅんきゅんする。",
+          "emotion": "moved",
+          "polarity": "positive",
+          "intent": "positive_feedback",
+          "chunks": [
+            "プロジェクト",
+            "きゅんきゅん"
+          ],
+          "keywords": [
+            "プロジェクト",
+            "きゅんきゅん"
+          ],
+          "time_ms": 1.17
+        },
+        {
+          "text": "発売日が近づいてきてうきうきする。",
+          "emotion": "joy",
+          "polarity": "positive",
+          "intent": "positive_feedback",
+          "chunks": [
+            "発売日",
+            "うきうき"
+          ],
+          "keywords": [
+            "発売日",
+            "うきうき"
+          ],
+          "time_ms": 1.01
+        }
+      ]
+    },
+    {
+      "name": "オノマトペ・ネガ",
+      "total": 500,
+      "emotion_detection_rate": 1.0,
+      "intent_detection_rate": 1.0,
+      "chunk_generation_rate": 1.0,
+      "rag_generation_rate": 1.0,
+      "emotion_accuracy": 1.0,
+      "polarity_accuracy": 1.0,
+      "intent_accuracy": 0.0,
+      "avg_chunks": 1.17,
+      "avg_keywords": 1.99,
+      "mean_time_ms": 1.777,
+      "errors": 0,
+      "samples": [
+        {
+          "text": "朝からそわそわしっぱなしだ。",
+          "emotion": "anxiety",
+          "polarity": "negative",
+          "intent": "negative_feedback",
+          "chunks": [
+            "そわそわ"
+          ],
+          "keywords": [
+            "そわそわ"
+          ],
+          "time_ms": 1.01
+        },
+        {
+          "text": "月末が来るたびにびくびくする。",
+          "emotion": "anxiety",
+          "polarity": "negative",
+          "intent": "negative_feedback",
+          "chunks": [
+            "びくびく"
+          ],
+          "keywords": [
+            "月末",
+            "びくびく"
+          ],
+          "time_ms": 1.0
+        },
+        {
+          "text": "ぴりぴりして眠れない。",
+          "emotion": "anxiety",
+          "polarity": "negative",
+          "intent": "negative_feedback",
+          "chunks": [
+            "ぴりぴり",
+            "眠れない"
+          ],
+          "keywords": [
+            "ぴりぴり",
+            "眠れない"
+          ],
+          "time_ms": 0.84
+        },
+        {
+          "text": "物価が上がってからメソメソが止まらない。",
+          "emotion": "sadness",
+          "polarity": "negative",
+          "intent": "negative_feedback",
+          "chunks": [
+            "メソメソ"
+          ],
+          "keywords": [
+            "物価",
+            "メソメソ"
+          ],
+          "time_ms": 1.07
+        },
+        {
+          "text": "朝からはらはらしっぱなしだ。",
+          "emotion": "anxiety",
+          "polarity": "negative",
+          "intent": "negative_feedback",
+          "chunks": [
+            "はらはら"
+          ],
+          "keywords": [
+            "はらはら"
+          ],
+          "time_ms": 0.93
+        }
+      ]
+    },
+    {
+      "name": "鳴き声・環境音",
+      "total": 500,
+      "emotion_detection_rate": 0.0,
+      "intent_detection_rate": 0.028,
+      "chunk_generation_rate": 0.444,
+      "rag_generation_rate": 0.718,
+      "emotion_accuracy": 1.0,
+      "polarity_accuracy": 0.0,
+      "intent_accuracy": 0.0,
+      "avg_chunks": 0.47,
+      "avg_keywords": 0.85,
+      "mean_time_ms": 1.746,
+      "errors": 0,
+      "samples": [
+        {
+          "text": "外でひよこがチュンチュン鳴いていた。",
+          "emotion": null,
+          "polarity": null,
+          "intent": "unknown",
+          "chunks": [],
+          "keywords": [],
+          "time_ms": 1.61
+        },
+        {
+          "text": "どこかからけろけろという鳴き声が聞こえる。",
+          "emotion": null,
+          "polarity": null,
+          "intent": "question",
+          "chunks": [
+            "鳴き声"
+          ],
+          "keywords": [
+            "鳴き声"
+          ],
+          "time_ms": 1.82
+        },
+        {
+          "text": "猫がけろけろ鳴いている。",
+          "emotion": null,
+          "polarity": null,
+          "intent": "unknown",
+          "chunks": [],
+          "keywords": [],
+          "time_ms": 1.45
+        },
+        {
+          "text": "牛がもーもーと鳴いた。",
+          "emotion": null,
+          "polarity": null,
+          "intent": "unknown",
+          "chunks": [],
+          "keywords": [],
+          "time_ms": 3.4
+        },
+        {
+          "text": "どこかからニャーニャーという鳴き声が聞こえる。",
+          "emotion": null,
+          "polarity": null,
+          "intent": "question",
+          "chunks": [
+            "鳴き声"
+          ],
+          "keywords": [
+            "鳴き声"
+          ],
+          "time_ms": 2.12
+        }
+      ]
+    }
+  ]
+}

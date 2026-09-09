@@ -1,11 +1,11 @@
 import json
 
 from kotobacore import Analyzer
-from kotobacore.schema import SCHEMA_VERSION
+from kotobacore.core.ir import SCHEMA_VERSION
 
 
 def test_schema_version():
-    assert SCHEMA_VERSION == "0.1"
+    assert SCHEMA_VERSION == "1.0"
 
 
 def test_analyze_returns_result():
@@ -15,7 +15,7 @@ def test_analyze_returns_result():
     result = analyzer.analyze("最高")
 
     assert result.meta.version == kotobacore.__version__
-    assert result.meta.schema_version == "0.1"
+    assert result.meta.schema_version == "1.0"
     assert result.text.original == "最高"
     assert isinstance(result.tokens, list)
     assert isinstance(result.semantic_tokens, list)
@@ -52,7 +52,7 @@ def test_analysis_result_to_json_parses():
 
     assert "meta" in parsed
     assert "text" in parsed
-    assert parsed["meta"]["schema_version"] == "0.1"
+    assert parsed["meta"]["schema_version"] == "1.0"
 
 
 def test_analysis_result_to_json_pretty():

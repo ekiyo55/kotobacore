@@ -12,9 +12,8 @@ Per 06_API仕様書 §16.
 
 from __future__ import annotations
 
-from kotobacore.dictionary import DictionaryBundle, load_default_bundle
-from kotobacore.tokenizer.karuizawa_backend import KaruizawaBackend
-from kotobacore.tokenizer.token_normalizer import (
+from kotobacore.core.token.karuizawa_backend import KaruizawaBackend
+from kotobacore.core.token.token_normalizer import (
     fold_emphatic_reduplication,
     heuristic_proper_noun_merge,
     merge_keep_as_unit,
@@ -22,6 +21,7 @@ from kotobacore.tokenizer.token_normalizer import (
     refine_verb_adjective_pos,
     split_hiragana_tokens,
 )
+from kotobacore.dictionary import DictionaryBundle, load_default_bundle
 
 
 class TokenMode:

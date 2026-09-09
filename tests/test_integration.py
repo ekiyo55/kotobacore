@@ -74,8 +74,8 @@ def test_full_pipeline_returns_valid_json():
     parsed = json.loads(payload)
 
     # Top-level keys per 06_API §6.1
-    for key in {"meta", "text", "tokens", "semantic_tokens", "chunks",
-                "emotion", "intent", "rag", "errors"}:
+    for key in ("meta", "text", "tokens", "semantic_tokens", "chunks",
+                "emotion", "intent", "rag", "errors"):
         assert key in parsed
 
 
@@ -151,4 +151,4 @@ def test_fixed_corpus_analyzes_without_error():
         json.loads(r.to_json())
         # Each must have meta
         assert r.meta.version == kotobacore.__version__
-        assert r.meta.schema_version == "0.1"
+        assert r.meta.schema_version == "1.0"

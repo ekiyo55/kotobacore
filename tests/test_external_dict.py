@@ -34,7 +34,7 @@ skip_if_no_dic = pytest.mark.skipif(
 # KotobaCore emotion taxonomy (05_辞書設計書 §6.2 + anticipation)
 VALID_BASE_EMOTIONS = {
     "joy", "admiration", "moved", "anger", "irritation", "sadness",
-    "anxiety", "refusal", "agreement", "exaggeration", "anticipation", "mixed",
+    "anxiety", "refusal", "agreement", "exaggeration", "anticipation", "mixed", "surprise", "trust", "disgust",
 }
 
 
