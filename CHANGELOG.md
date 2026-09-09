@@ -2,6 +2,12 @@
 
 All notable changes to KotobaCore will be documented in this file.
 
+## [Unreleased]
+
+### 追加 — 感情辞書ライブラリとのベースライン比較（v1.0 完成条件の最後の 1 項目）
+- `tools/benchmark/compare_sentiment_baselines.py`: 人手評価セット v1（300 文）で oseti（評価極性辞書 + MeCab）/ pymlask（ML-Ask 感情辞書 + MeCab）/ asari（TF-IDF 二値）と比較。採点は run_annotated_eval と同じ（極性 = 表現の多数決、感情 = gold ラベルのいずれかに一致）。MeCab は Windows で DLL が使えないため mooma（Linux）の使い捨て venv で実行（mecab-python3 + ipadic wheel、bunkai のため emoji<2）
+- 結果（`tools/benchmark/sentiment_baselines.md`）: 極性 accuracy（300 文）KotobaCore **83.0%** / pymlask 61.0% / oseti 47.7% / asari 26.3%（確信度 <0.75 を neutral 扱いで 46.3%）。極性のある 102 文だけなら asari 77.5% / KotobaCore 71.6% / asari(閾値) 62.7% / oseti 48.0% / pymlask 23.5%。感情 accuracy（182 文）KotobaCore **83.5%**（+NRC 84.1%）/ pymlask 23.1%（多対多写像で有利にしても）、カナリア誤検出 KotobaCore 0% / pymlask 27.3%
+- 判明した注記: README の人手評価値（感情 84.1% / 分割 F1 0.9008 / 意図 70.0%）はローカルと mooma デモが読む外部 NRC 辞書（`dic/`、ライセンス上非同梱、939 語）込みの値。**pip install だけの構成では感情 83.5% / 分割 F1 0.8992 / 意図 69.7%**（極性 83.0%・Entity F1 0.86 は同じ）。比較表は両方の行を掲載
 ## [1.0.0] - 2026-09-09
 
 **Semantic IR Schema を凍結し、全構成要素の版を 1.0 に統一**（ユーザー決定「凍結、全部 1.0.0 に統一」）。公開版（PyPI / GitHub）は 0.2.7 のまま＝公開は別判断。

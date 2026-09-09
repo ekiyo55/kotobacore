@@ -22,7 +22,20 @@ gold: 人手アノテーション 100 文の分割 (KotobaCore coarse 基準)、
 
 ## not run
 
-- sentiment/emotion baselines (oseti, asari…): MeCab の Windows DLL がロードできず未実施 (mecab-python3 ImportError)
+- (解消 2026-09-09) sentiment / emotion baselines は mooma (Linux) の使い捨て venv で実施 → `sentiment_baselines.md` (`compare_sentiment_baselines.py`)
 
 注: gold は KotobaCore の粗い意味単位 (行った / 美味しかった = 1 語) なので、短単位の形態素解析器は再現率が高く精度が低く出る。
 境界再現率 (R) は「その道具の出力に gold の境界が含まれているか」で、細かく切る道具ほど有利。F1 は基準の差を含んだ比較。
+
+## sentiment / emotion (2026-09-09, KotobaCore 1.0.0, mooma で実施)
+
+| tool | polarity acc (all) | polarity acc (polarized only) | emotion acc | canary FP | ms/sentence | note |
+|---|---|---|---|---|---|---|
+| KotobaCore 1.0.0 (同梱辞書のみ = pip install の状態、mooma で実行) | 83.0% (n=300) | 71.6% (n=102) | 83.5% (n=182) | 0.0% (n=22) | 2.109 | 辞書同梱 CSV、依存ゼロ。宛先付き (target / holder / about) だが本表は文単位のみ |
+| KotobaCore 1.0.0 (+NRC 939 語、ローカル dic/ 併用) | 83.0% (n=300) | 71.6% (n=102) | 84.1% (n=182) | 0.0% (n=22) | 1.324 | NRC Emotion Intensity Lexicon はライセンス上非同梱。README の人手評価値 (感情 84.1%) はこの構成 |
+| oseti 0.4 (評価極性辞書 + MeCab/ipadic) | 47.7% (n=300) | 48.0% (n=102) | — | — | 2.021 | 文ごとのスコア [-1, 1] の平均符号。0 / 該当なし = neutral |
+| pymlask 0.3 (ML-Ask 感情辞書 + MeCab/ipadic) | 61.0% (n=300) | 23.5% (n=102) | 23.1% (n=182) | 27.3% (n=22) | 0.938 | orientation → 極性、representative 感情を ML_ASK_MAP で gold 体系に写像 |
+| asari 0.2 (TF-IDF + 線形分類、二値) | 26.3% (n=300) | 77.5% (n=102) | — | — | 3.517 | positive / negative しか返さない |
+| asari 0.2 (TF-IDF + 線形分類、二値) / 確信度 < 0.75 → neutral | 46.3% (n=300) | 62.7% (n=102) | — | — | 3.505 | positive / negative しか返さないので確信度で neutral を補う |
+
+詳細と注記は `sentiment_baselines.md` / `sentiment_baselines.json`。

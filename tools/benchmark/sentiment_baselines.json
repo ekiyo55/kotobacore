@@ -1,0 +1,1550 @@
+{
+  "kotobacore": "1.0.0",
+  "items": 300,
+  "results": [
+    {
+      "tool": "KotobaCore 1.0.0 (同梱辞書のみ = pip install の状態、mooma で実行)",
+      "note": "辞書同梱 CSV、依存ゼロ。宛先付き (target / holder / about) だが本表は文単位のみ",
+      "polarity_acc_all": 83.0,
+      "polarity_n": 300,
+      "polarity_acc_polarized": 71.6,
+      "polarized_n": 102,
+      "emotion_acc": 83.5,
+      "emotion_n": 182,
+      "canary_fp": 0.0,
+      "canary_n": 22,
+      "ms_per_sentence": 2.109,
+      "confusion": {
+        "positive->positive": 45,
+        "negative->None": 15,
+        "None->None": 176,
+        "None->negative": 6,
+        "negative->positive": 5,
+        "None->positive": 16,
+        "negative->negative": 28,
+        "positive->None": 8,
+        "positive->negative": 1
+      },
+      "failures": [
+        {
+          "id": "sns-002",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": null,
+          "text": "新しいiPhone買ったけど正直そこまで感動しない。"
+        },
+        {
+          "id": "sns-006",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "渋谷のスクランブル交差点、人多すぎて疲れた😩"
+        },
+        {
+          "id": "sns-007",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "positive",
+          "text": "このカフェ、コーヒーは微妙だけどケーキは神。"
+        },
+        {
+          "id": "sns-008",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "誰か新宿でおすすめのラーメン屋教えて！"
+        },
+        {
+          "id": "sns-013",
+          "kind": "polarity",
+          "gold": "positive",
+          "sys": null,
+          "text": "田中さんの新曲、何回聴いても飽きない✨"
+        },
+        {
+          "id": "sns-015",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "positive",
+          "text": "悪くないんだけど、リピートはしないかな。"
+        },
+        {
+          "id": "sns-019",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "なんで月曜って来るの早いんだろ😇"
+        },
+        {
+          "id": "sns-037",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "いいね押しすぎて指が疲れた笑"
+        },
+        {
+          "id": "sns-039",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "なんか今日はモヤモヤする。理由はわからない。"
+        },
+        {
+          "id": "sns-041",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "来週の花火大会、雨降らないといいな🎆"
+        },
+        {
+          "id": "sns-044",
+          "kind": "polarity",
+          "gold": "positive",
+          "sys": null,
+          "text": "京都の紅葉、写真じゃ伝わらない美しさだった。"
+        },
+        {
+          "id": "sns-046",
+          "kind": "polarity",
+          "gold": "positive",
+          "sys": "negative",
+          "text": "バイト先の店長、口は悪いけど面倒見はいい。"
+        },
+        {
+          "id": "business-009",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": null,
+          "text": "単価5,000円は予算を大きく超えており、再検討をお願いします。"
+        },
+        {
+          "id": "business-014",
+          "kind": "polarity",
+          "gold": "positive",
+          "sys": null,
+          "text": "品質に問題はないものの、コスト面で採用は見送ります。"
+        },
+        {
+          "id": "business-022",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": null,
+          "text": "正直なところ、今回の提案には期待しておりません。"
+        },
+        {
+          "id": "business-023",
+          "kind": "polarity",
+          "gold": "positive",
+          "sys": null,
+          "text": "山本様のご尽力には深く感謝しております。"
+        },
+        {
+          "id": "business-027",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": null,
+          "text": "会場の音響が悪く、後方の席では聞き取れませんでした。"
+        },
+        {
+          "id": "business-037",
+          "kind": "polarity",
+          "gold": "positive",
+          "sys": null,
+          "text": "決して安くはありませんが、投資に見合う効果が期待できます。"
+        },
+        {
+          "id": "business-040",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": null,
+          "text": "上司はこの企画にまったく乗り気ではないようです。"
+        },
+        {
+          "id": "business-043",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "弊社の売上高は3年連続で過去最高を更新しました。"
+        },
+        {
+          "id": "tech-013",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": null,
+          "text": "新しいエディタに乗り換えたけど、結局元に戻した。"
+        },
+        {
+          "id": "tech-029",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "positive",
+          "text": "このエラーメッセージ、何を直せばいいのか全然わからない。"
+        },
+        {
+          "id": "tech-032",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "SDKのv3は破壊的変更が多くて移行が辛い。"
+        },
+        {
+          "id": "tech-033",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": null,
+          "text": "３２ＧＢのメモリを積んだのにまだスワップが発生する。"
+        },
+        {
+          "id": "tech-038",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "新入社員がGitの使い方を1日で覚えて感心した。"
+        },
+        {
+          "id": "tech-041",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "質問です。Pythonで日本語の文字数を正確に数える方法はありますか？"
+        },
+        {
+          "id": "tech-042",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": null,
+          "text": "ライセンス費が年間120万円は中小企業には厳しい。"
+        },
+        {
+          "id": "tech-048",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": null,
+          "text": "AIチャットに聞いたら堂々と間違ったコードを出してきて笑った。"
+        },
+        {
+          "id": "tech-050",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "エラーが再現しないんですが、どう調べればいいですか？"
+        },
+        {
+          "id": "literary-003",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "春の光が、古い縁側にやわらかく落ちていた。"
+        },
+        {
+          "id": "literary-018",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "娘が生まれた日、男は初めて神に感謝した。"
+        },
+        {
+          "id": "literary-023",
+          "kind": "polarity",
+          "gold": "positive",
+          "sys": null,
+          "text": "彼は約束を破らなかった。ただ一度も、だ。"
+        },
+        {
+          "id": "literary-026",
+          "kind": "polarity",
+          "gold": "positive",
+          "sys": null,
+          "text": "彼女の声は震えていたが、瞳は少しも揺らがなかった。"
+        },
+        {
+          "id": "literary-032",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "「もう少しだけ、ここにいてもいい？」と彼女は小さく言った。"
+        },
+        {
+          "id": "literary-038",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": null,
+          "text": "彼の作った料理は、正直に言えば、うまくはなかった。"
+        },
+        {
+          "id": "literary-049",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": null,
+          "text": "新しい家は広くて明るかったが、どこか落ち着かなかった。"
+        },
+        {
+          "id": "conversation-001",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "ねえ、今日の夕飯何がいい？"
+        },
+        {
+          "id": "conversation-002",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": null,
+          "text": "えー、またカレー？昨日も食べたじゃん。"
+        },
+        {
+          "id": "conversation-003",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "別に怒ってないよ。ただちょっと疲れてるだけ。"
+        },
+        {
+          "id": "conversation-009",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "positive",
+          "text": "うーん、悪くはないけど、もう少し安いと嬉しいな。"
+        }
+      ]
+    },
+    {
+      "tool": "KotobaCore 1.0.0 (+NRC 939 語、ローカル dic/ 併用)",
+      "polarity_acc_all": 83.0,
+      "polarity_n": 300,
+      "polarity_acc_polarized": 71.6,
+      "polarized_n": 102,
+      "emotion_acc": 84.1,
+      "emotion_n": 182,
+      "canary_fp": 0.0,
+      "canary_n": 22,
+      "ms_per_sentence": 1.324,
+      "note": "measured locally with the external NRC lexicon"
+    },
+    {
+      "tool": "oseti 0.4 (評価極性辞書 + MeCab/ipadic)",
+      "note": "文ごとのスコア [-1, 1] の平均符号。0 / 該当なし = neutral",
+      "polarity_acc_all": 47.7,
+      "polarity_n": 300,
+      "polarity_acc_polarized": 48.0,
+      "polarized_n": 102,
+      "emotion_acc": null,
+      "emotion_n": null,
+      "canary_fp": null,
+      "canary_n": null,
+      "ms_per_sentence": 2.021,
+      "confusion": {
+        "positive->positive": 36,
+        "negative->neutral": 25,
+        "None->neutral": 94,
+        "None->negative": 48,
+        "None->positive": 56,
+        "negative->negative": 13,
+        "negative->positive": 10,
+        "positive->neutral": 15,
+        "positive->negative": 3
+      },
+      "failures": [
+        {
+          "id": "sns-002",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "neutral",
+          "text": "新しいiPhone買ったけど正直そこまで感動しない。"
+        },
+        {
+          "id": "sns-004",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "電車遅延でイライラする…また遅刻だよ。"
+        },
+        {
+          "id": "sns-006",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "渋谷のスクランブル交差点、人多すぎて疲れた😩"
+        },
+        {
+          "id": "sns-007",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "neutral",
+          "text": "このカフェ、コーヒーは微妙だけどケーキは神。"
+        },
+        {
+          "id": "sns-008",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "誰か新宿でおすすめのラーメン屋教えて！"
+        },
+        {
+          "id": "sns-011",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "neutral",
+          "text": "正直、今回のアップデートは改悪だと思う。"
+        },
+        {
+          "id": "sns-016",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "【拡散希望】10月5日に代々木公園で保護猫譲渡会やります！"
+        },
+        {
+          "id": "sns-018",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "ＡＢＣストア１２３号店限定のスニーカー、ゲットしたぜ😎"
+        },
+        {
+          "id": "sns-020",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "映画『夜明けの列車』、泣きすぎて目が腫れた。"
+        },
+        {
+          "id": "sns-021",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "今日はぽかぽか陽気で散歩日和🌸"
+        },
+        {
+          "id": "sns-023",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "誰かこのバグの直し方知ってる人いない？"
+        },
+        {
+          "id": "sns-025",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "嬉しくないと言えば嘘になるけど、素直に喜べない。"
+        },
+        {
+          "id": "sns-028",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "遠くでゴロゴロ雷が鳴っている。"
+        },
+        {
+          "id": "sns-030",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "この写真、加工なしでこれ？信じられない😳"
+        },
+        {
+          "id": "sns-034",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "positive",
+          "text": "値上げばっかりで、もう外食できないよ…"
+        },
+        {
+          "id": "sns-035",
+          "kind": "polarity",
+          "gold": "positive",
+          "sys": "neutral",
+          "text": "佐藤先生の講演、聞けて本当によかった。"
+        },
+        {
+          "id": "sns-040",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "「感動」って名前のパン屋、駅前にできてた。"
+        },
+        {
+          "id": "sns-041",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "来週の花火大会、雨降らないといいな🎆"
+        },
+        {
+          "id": "sns-042",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "neutral",
+          "text": "ぶっちゃけ値段の割に量が少なすぎ。"
+        },
+        {
+          "id": "sns-043",
+          "kind": "polarity",
+          "gold": "positive",
+          "sys": "neutral",
+          "text": "母の手作り弁当、毎日ありがたい。"
+        },
+        {
+          "id": "sns-046",
+          "kind": "polarity",
+          "gold": "positive",
+          "sys": "negative",
+          "text": "バイト先の店長、口は悪いけど面倒見はいい。"
+        },
+        {
+          "id": "sns-047",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "リプ欄が荒れてて見るのがしんどい。"
+        },
+        {
+          "id": "sns-049",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "ぐっすり寝たのに、まだだるい。"
+        },
+        {
+          "id": "sns-050",
+          "kind": "polarity",
+          "gold": "positive",
+          "sys": "negative",
+          "text": "2万円のイヤホン、音は最高だけど耳が痛くなる。"
+        },
+        {
+          "id": "sns-052",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "誰か一緒にマラソン出ない？12月の湘南のやつ。"
+        },
+        {
+          "id": "sns-053",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "neutral",
+          "text": "昨日のドラマの最終回、納得いかない。"
+        },
+        {
+          "id": "sns-054",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "やばい、財布落とした。誰か見てない？"
+        },
+        {
+          "id": "sns-056",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "neutral",
+          "text": "通知がピロピロうるさすぎてミュートした。"
+        },
+        {
+          "id": "sns-058",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "neutral",
+          "text": "今年の夏は暑すぎて外出する気にならない。"
+        },
+        {
+          "id": "business-002",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "2025年度の売上は前年比12％増の45億円となりました。"
+        },
+        {
+          "id": "business-006",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "neutral",
+          "text": "納期が遅れているのに連絡がないのは困ります。"
+        },
+        {
+          "id": "business-009",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "neutral",
+          "text": "単価5,000円は予算を大きく超えており、再検討をお願いします。"
+        },
+        {
+          "id": "business-010",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "neutral",
+          "text": "会議室の空調がガンガン効きすぎて寒いです。"
+        },
+        {
+          "id": "business-011",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "新サービス「Kanso」は6月1日より提供開始いたします。"
+        },
+        {
+          "id": "business-013",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "先日の説明会には約200名の方にご参加いただきました。"
+        },
+        {
+          "id": "business-014",
+          "kind": "polarity",
+          "gold": "positive",
+          "sys": "neutral",
+          "text": "品質に問題はないものの、コスト面で採用は見送ります。"
+        },
+        {
+          "id": "business-016",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "今期の目標未達は非常に残念ですが、原因は明確です。"
+        },
+        {
+          "id": "business-018",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "ご返信が遅くなり、大変申し訳ございません。"
+        },
+        {
+          "id": "business-019",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "「感動」は当社の新型加湿器のブランド名です。"
+        },
+        {
+          "id": "business-022",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "positive",
+          "text": "正直なところ、今回の提案には期待しておりません。"
+        }
+      ]
+    },
+    {
+      "tool": "pymlask 0.3 (ML-Ask 感情辞書 + MeCab/ipadic)",
+      "note": "orientation → 極性、representative 感情を ML_ASK_MAP で gold 体系に写像",
+      "polarity_acc_all": 61.0,
+      "polarity_n": 300,
+      "polarity_acc_polarized": 23.5,
+      "polarized_n": 102,
+      "emotion_acc": 23.1,
+      "emotion_n": 182,
+      "canary_fp": 27.3,
+      "canary_n": 22,
+      "ms_per_sentence": 0.938,
+      "confusion": {
+        "positive->positive": 20,
+        "negative->neutral": 40,
+        "None->positive": 13,
+        "None->neutral": 159,
+        "None->negative": 26,
+        "negative->positive": 4,
+        "positive->neutral": 30,
+        "positive->negative": 4,
+        "negative->negative": 4
+      },
+      "failures": [
+        {
+          "id": "sns-002",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "neutral",
+          "text": "新しいiPhone買ったけど正直そこまで感動しない。"
+        },
+        {
+          "id": "sns-003",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "明日のライブ、わくわくが止まらない！"
+        },
+        {
+          "id": "sns-006",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "渋谷のスクランブル交差点、人多すぎて疲れた😩"
+        },
+        {
+          "id": "sns-007",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "neutral",
+          "text": "このカフェ、コーヒーは微妙だけどケーキは神。"
+        },
+        {
+          "id": "sns-011",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "neutral",
+          "text": "正直、今回のアップデートは改悪だと思う。"
+        },
+        {
+          "id": "sns-015",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "positive",
+          "text": "悪くないんだけど、リピートはしないかな。"
+        },
+        {
+          "id": "sns-021",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "今日はぽかぽか陽気で散歩日和🌸"
+        },
+        {
+          "id": "sns-022",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "neutral",
+          "text": "楽しみにしてたのに雨で中止とか、ほんと最悪。"
+        },
+        {
+          "id": "sns-024",
+          "kind": "polarity",
+          "gold": "positive",
+          "sys": "neutral",
+          "text": "マルコ堂の新作プリン、350円でこの味はすごい。"
+        },
+        {
+          "id": "sns-025",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "嬉しくないと言えば嘘になるけど、素直に喜べない。"
+        },
+        {
+          "id": "sns-029",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "neutral",
+          "text": "3日連続で残業とかブラックすぎん？"
+        },
+        {
+          "id": "sns-034",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "neutral",
+          "text": "値上げばっかりで、もう外食できないよ…"
+        },
+        {
+          "id": "sns-035",
+          "kind": "polarity",
+          "gold": "positive",
+          "sys": "neutral",
+          "text": "佐藤先生の講演、聞けて本当によかった。"
+        },
+        {
+          "id": "sns-037",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "いいね押しすぎて指が疲れた笑"
+        },
+        {
+          "id": "sns-042",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "neutral",
+          "text": "ぶっちゃけ値段の割に量が少なすぎ。"
+        },
+        {
+          "id": "sns-044",
+          "kind": "polarity",
+          "gold": "positive",
+          "sys": "neutral",
+          "text": "京都の紅葉、写真じゃ伝わらない美しさだった。"
+        },
+        {
+          "id": "sns-045",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "え、待って、無理、可愛すぎる🫠"
+        },
+        {
+          "id": "sns-046",
+          "kind": "polarity",
+          "gold": "positive",
+          "sys": "negative",
+          "text": "バイト先の店長、口は悪いけど面倒見はいい。"
+        },
+        {
+          "id": "sns-049",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "ぐっすり寝たのに、まだだるい。"
+        },
+        {
+          "id": "sns-050",
+          "kind": "polarity",
+          "gold": "positive",
+          "sys": "negative",
+          "text": "2万円のイヤホン、音は最高だけど耳が痛くなる。"
+        },
+        {
+          "id": "sns-051",
+          "kind": "polarity",
+          "gold": "positive",
+          "sys": "neutral",
+          "text": "ねこがすやすや寝てる。平和。"
+        },
+        {
+          "id": "sns-053",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "neutral",
+          "text": "昨日のドラマの最終回、納得いかない。"
+        },
+        {
+          "id": "sns-056",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "neutral",
+          "text": "通知がピロピロうるさすぎてミュートした。"
+        },
+        {
+          "id": "sns-058",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "positive",
+          "text": "今年の夏は暑すぎて外出する気にならない。"
+        },
+        {
+          "id": "business-004",
+          "kind": "polarity",
+          "gold": "positive",
+          "sys": "negative",
+          "text": "貴社のご提案、大変魅力的に感じております。"
+        },
+        {
+          "id": "business-008",
+          "kind": "polarity",
+          "gold": "positive",
+          "sys": "neutral",
+          "text": "田中部長は今回の結果に大変満足されていました。"
+        },
+        {
+          "id": "business-009",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "neutral",
+          "text": "単価5,000円は予算を大きく超えており、再検討をお願いします。"
+        },
+        {
+          "id": "business-010",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "neutral",
+          "text": "会議室の空調がガンガン効きすぎて寒いです。"
+        },
+        {
+          "id": "business-012",
+          "kind": "polarity",
+          "gold": "positive",
+          "sys": "negative",
+          "text": "御社の対応は迅速で、大変助かりました。"
+        },
+        {
+          "id": "business-014",
+          "kind": "polarity",
+          "gold": "positive",
+          "sys": "neutral",
+          "text": "品質に問題はないものの、コスト面で採用は見送ります。"
+        },
+        {
+          "id": "business-016",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "今期の目標未達は非常に残念ですが、原因は明確です。"
+        },
+        {
+          "id": "business-018",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "ご返信が遅くなり、大変申し訳ございません。"
+        },
+        {
+          "id": "business-022",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "neutral",
+          "text": "正直なところ、今回の提案には期待しておりません。"
+        },
+        {
+          "id": "business-024",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "昨年の売上減は想定内であり、特に懸念しておりません。"
+        },
+        {
+          "id": "business-027",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "neutral",
+          "text": "会場の音響が悪く、後方の席では聞き取れませんでした。"
+        },
+        {
+          "id": "business-030",
+          "kind": "polarity",
+          "gold": "positive",
+          "sys": "neutral",
+          "text": "若手社員の成長ぶりには目を見張るものがあります。"
+        },
+        {
+          "id": "business-031",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "neutral",
+          "text": "この価格では利益が出ないため、契約は見送らせていただきます。"
+        },
+        {
+          "id": "business-033",
+          "kind": "polarity",
+          "gold": "positive",
+          "sys": "neutral",
+          "text": "御社の新オフィス、とても素敵ですね。"
+        },
+        {
+          "id": "business-037",
+          "kind": "polarity",
+          "gold": "positive",
+          "sys": "neutral",
+          "text": "決して安くはありませんが、投資に見合う効果が期待できます。"
+        },
+        {
+          "id": "business-038",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "neutral",
+          "text": "御社サーバーの応答が遅く、業務に支障が出ております。"
+        }
+      ]
+    },
+    {
+      "tool": "asari 0.2 (TF-IDF + 線形分類、二値)",
+      "note": "positive / negative しか返さない",
+      "polarity_acc_all": 26.3,
+      "polarity_n": 300,
+      "polarity_acc_polarized": 77.5,
+      "polarized_n": 102,
+      "emotion_acc": null,
+      "emotion_n": null,
+      "canary_fp": null,
+      "canary_n": null,
+      "ms_per_sentence": 3.517,
+      "confusion": {
+        "positive->positive": 49,
+        "negative->positive": 18,
+        "None->positive": 143,
+        "None->negative": 55,
+        "negative->negative": 30,
+        "positive->negative": 5
+      },
+      "failures": [
+        {
+          "id": "sns-002",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "positive",
+          "text": "新しいiPhone買ったけど正直そこまで感動しない。"
+        },
+        {
+          "id": "sns-003",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "明日のライブ、わくわくが止まらない！"
+        },
+        {
+          "id": "sns-004",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "電車遅延でイライラする…また遅刻だよ。"
+        },
+        {
+          "id": "sns-005",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "隣の猫がにゃーにゃー鳴いてる。"
+        },
+        {
+          "id": "sns-006",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "渋谷のスクランブル交差点、人多すぎて疲れた😩"
+        },
+        {
+          "id": "sns-007",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "positive",
+          "text": "このカフェ、コーヒーは微妙だけどケーキは神。"
+        },
+        {
+          "id": "sns-008",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "誰か新宿でおすすめのラーメン屋教えて！"
+        },
+        {
+          "id": "sns-009",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "え、ブルースカイズ再結成ってマジ？？"
+        },
+        {
+          "id": "sns-010",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "3年ぶりに実家帰ったら犬が覚えててくれて泣いた🥲"
+        },
+        {
+          "id": "sns-012",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "外はざあざあ雨が降っている。"
+        },
+        {
+          "id": "sns-014",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "フォロワー1万人突破！！みんなありがとう🙏"
+        },
+        {
+          "id": "sns-016",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "【拡散希望】10月5日に代々木公園で保護猫譲渡会やります！"
+        },
+        {
+          "id": "sns-017",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "ぴえん🥺推しのグッズ売り切れてた…"
+        },
+        {
+          "id": "sns-018",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "ＡＢＣストア１２３号店限定のスニーカー、ゲットしたぜ😎"
+        },
+        {
+          "id": "sns-019",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "なんで月曜って来るの早いんだろ😇"
+        },
+        {
+          "id": "sns-020",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "映画『夜明けの列車』、泣きすぎて目が腫れた。"
+        },
+        {
+          "id": "sns-021",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "今日はぽかぽか陽気で散歩日和🌸"
+        },
+        {
+          "id": "sns-023",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "誰かこのバグの直し方知ってる人いない？"
+        },
+        {
+          "id": "sns-025",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "嬉しくないと言えば嘘になるけど、素直に喜べない。"
+        },
+        {
+          "id": "sns-026",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "大阪万博の跡地ってどうなったんだろう。"
+        },
+        {
+          "id": "sns-028",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "遠くでゴロゴロ雷が鳴っている。"
+        },
+        {
+          "id": "sns-030",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "この写真、加工なしでこれ？信じられない😳"
+        },
+        {
+          "id": "sns-031",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "ちょっと待って、これ2019年の投稿じゃん。"
+        },
+        {
+          "id": "sns-032",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "眠い。とにかく眠い。"
+        },
+        {
+          "id": "sns-037",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "いいね押しすぎて指が疲れた笑"
+        },
+        {
+          "id": "sns-038",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "これは同意しかない。ほんとそれ。"
+        },
+        {
+          "id": "sns-039",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "なんか今日はモヤモヤする。理由はわからない。"
+        },
+        {
+          "id": "sns-040",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "「感動」って名前のパン屋、駅前にできてた。"
+        },
+        {
+          "id": "sns-041",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "来週の花火大会、雨降らないといいな🎆"
+        },
+        {
+          "id": "sns-044",
+          "kind": "polarity",
+          "gold": "positive",
+          "sys": "negative",
+          "text": "京都の紅葉、写真じゃ伝わらない美しさだった。"
+        },
+        {
+          "id": "sns-045",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "え、待って、無理、可愛すぎる🫠"
+        },
+        {
+          "id": "sns-047",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "リプ欄が荒れてて見るのがしんどい。"
+        },
+        {
+          "id": "sns-048",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "フォロバありがとうございます！これからよろしくお願いします🙇"
+        },
+        {
+          "id": "sns-049",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "ぐっすり寝たのに、まだだるい。"
+        },
+        {
+          "id": "sns-052",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "誰か一緒にマラソン出ない？12月の湘南のやつ。"
+        },
+        {
+          "id": "sns-054",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "やばい、財布落とした。誰か見てない？"
+        },
+        {
+          "id": "sns-059",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "弟が第一志望に受かった！家族全員で泣いた😭"
+        },
+        {
+          "id": "sns-060",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "川の水がさらさら流れている。"
+        },
+        {
+          "id": "business-001",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "お世話になっております。株式会社山田商事の鈴木です。"
+        },
+        {
+          "id": "business-002",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "2025年度の売上は前年比12％増の45億円となりました。"
+        }
+      ]
+    },
+    {
+      "tool": "asari 0.2 (TF-IDF + 線形分類、二値) / 確信度 < 0.75 → neutral",
+      "note": "positive / negative しか返さないので確信度で neutral を補う",
+      "polarity_acc_all": 46.3,
+      "polarity_n": 300,
+      "polarity_acc_polarized": 62.7,
+      "polarized_n": 102,
+      "emotion_acc": null,
+      "emotion_n": null,
+      "canary_fp": null,
+      "canary_n": null,
+      "ms_per_sentence": 3.505,
+      "confusion": {
+        "positive->positive": 42,
+        "negative->positive": 9,
+        "None->positive": 93,
+        "None->negative": 30,
+        "None->neutral": 75,
+        "negative->neutral": 17,
+        "negative->negative": 22,
+        "positive->neutral": 11,
+        "positive->negative": 1
+      },
+      "failures": [
+        {
+          "id": "sns-002",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "positive",
+          "text": "新しいiPhone買ったけど正直そこまで感動しない。"
+        },
+        {
+          "id": "sns-003",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "明日のライブ、わくわくが止まらない！"
+        },
+        {
+          "id": "sns-004",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "電車遅延でイライラする…また遅刻だよ。"
+        },
+        {
+          "id": "sns-005",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "隣の猫がにゃーにゃー鳴いてる。"
+        },
+        {
+          "id": "sns-007",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "neutral",
+          "text": "このカフェ、コーヒーは微妙だけどケーキは神。"
+        },
+        {
+          "id": "sns-008",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "誰か新宿でおすすめのラーメン屋教えて！"
+        },
+        {
+          "id": "sns-010",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "3年ぶりに実家帰ったら犬が覚えててくれて泣いた🥲"
+        },
+        {
+          "id": "sns-014",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "フォロワー1万人突破！！みんなありがとう🙏"
+        },
+        {
+          "id": "sns-016",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "【拡散希望】10月5日に代々木公園で保護猫譲渡会やります！"
+        },
+        {
+          "id": "sns-017",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "ぴえん🥺推しのグッズ売り切れてた…"
+        },
+        {
+          "id": "sns-020",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "映画『夜明けの列車』、泣きすぎて目が腫れた。"
+        },
+        {
+          "id": "sns-021",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "今日はぽかぽか陽気で散歩日和🌸"
+        },
+        {
+          "id": "sns-023",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "誰かこのバグの直し方知ってる人いない？"
+        },
+        {
+          "id": "sns-025",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "嬉しくないと言えば嘘になるけど、素直に喜べない。"
+        },
+        {
+          "id": "sns-026",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "大阪万博の跡地ってどうなったんだろう。"
+        },
+        {
+          "id": "sns-027",
+          "kind": "polarity",
+          "gold": "positive",
+          "sys": "neutral",
+          "text": "推しが尊すぎて生きるのが辛い（良い意味で）"
+        },
+        {
+          "id": "sns-032",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "眠い。とにかく眠い。"
+        },
+        {
+          "id": "sns-038",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "これは同意しかない。ほんとそれ。"
+        },
+        {
+          "id": "sns-042",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "neutral",
+          "text": "ぶっちゃけ値段の割に量が少なすぎ。"
+        },
+        {
+          "id": "sns-044",
+          "kind": "polarity",
+          "gold": "positive",
+          "sys": "neutral",
+          "text": "京都の紅葉、写真じゃ伝わらない美しさだった。"
+        },
+        {
+          "id": "sns-045",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "え、待って、無理、可愛すぎる🫠"
+        },
+        {
+          "id": "sns-046",
+          "kind": "polarity",
+          "gold": "positive",
+          "sys": "neutral",
+          "text": "バイト先の店長、口は悪いけど面倒見はいい。"
+        },
+        {
+          "id": "sns-047",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "リプ欄が荒れてて見るのがしんどい。"
+        },
+        {
+          "id": "sns-048",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "フォロバありがとうございます！これからよろしくお願いします🙇"
+        },
+        {
+          "id": "sns-049",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "ぐっすり寝たのに、まだだるい。"
+        },
+        {
+          "id": "sns-053",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "neutral",
+          "text": "昨日のドラマの最終回、納得いかない。"
+        },
+        {
+          "id": "sns-057",
+          "kind": "polarity",
+          "gold": "positive",
+          "sys": "neutral",
+          "text": "ここのタピオカ、正直ブームの時より美味しくなってる。"
+        },
+        {
+          "id": "sns-059",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "弟が第一志望に受かった！家族全員で泣いた😭"
+        },
+        {
+          "id": "business-001",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "お世話になっております。株式会社山田商事の鈴木です。"
+        },
+        {
+          "id": "business-003",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "来週の定例会議は水曜10時に変更いたします。"
+        },
+        {
+          "id": "business-005",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "恐れ入りますが、見積書を再送いただけますでしょうか。"
+        },
+        {
+          "id": "business-009",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "positive",
+          "text": "単価5,000円は予算を大きく超えており、再検討をお願いします。"
+        },
+        {
+          "id": "business-010",
+          "kind": "polarity",
+          "gold": "negative",
+          "sys": "neutral",
+          "text": "会議室の空調がガンガン効きすぎて寒いです。"
+        },
+        {
+          "id": "business-013",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "先日の説明会には約200名の方にご参加いただきました。"
+        },
+        {
+          "id": "business-014",
+          "kind": "polarity",
+          "gold": "positive",
+          "sys": "neutral",
+          "text": "品質に問題はないものの、コスト面で採用は見送ります。"
+        },
+        {
+          "id": "business-015",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "本件、佐藤様にもＣＣでご共有いただけますか。"
+        },
+        {
+          "id": "business-016",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "今期の目標未達は非常に残念ですが、原因は明確です。"
+        },
+        {
+          "id": "business-017",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "弊社は2026年4月に大阪支社を開設いたしました。"
+        },
+        {
+          "id": "business-018",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "negative",
+          "text": "ご返信が遅くなり、大変申し訳ございません。"
+        },
+        {
+          "id": "business-019",
+          "kind": "polarity",
+          "gold": null,
+          "sys": "positive",
+          "text": "「感動」は当社の新型加湿器のブランド名です。"
+        }
+      ]
+    }
+  ],
+  "not_run": [],
+  "environment": {
+    "baselines": "mooma (Ubuntu, Python 3.13.3, venv /opt/kotobacore_baseline: mecab-python3 1.0.12 + ipadic 1.0.0, oseti 0.4.3.1, pymlask 0.3.3, asari 0.2.0, emoji<2 for bunkai)"
+  }
+}

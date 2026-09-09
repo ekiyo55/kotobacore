@@ -343,7 +343,7 @@ Measured (`tools/benchmark/compare_baselines.py`, boundary F1 on 100 human-annot
 **v1.0.0** (2026-09-09) — the Semantic IR schema is frozen at **1.0** and every component (tokenizer, dictionary set, modules, HTTP API) is versioned 1.0. Published on PyPI (`pip install kotobacore`) and GitHub (tag v1.0.0); the live demo runs the same build.
 
 - 6,500-sentence template evaluation: emotion accuracy 96.8% / polarity 96.7% / intent 75.1%, 0 processing errors, 0% false positives on the animal-sound canary set.
-- 300 human-annotated sentences (v1, five genres): segmentation F1 0.90 / entity F1 0.86 / sentiment 83.0% / emotion 84.1% / intent 70.0%.
+- 300 human-annotated sentences (v1, five genres): segmentation F1 0.90 / entity F1 0.86 / sentiment 83.0% / emotion 84.1% / intent 70.0%. With the bundled dictionaries alone (plain `pip install`, no external NRC lexicon): emotion 83.5% / intent 69.7%, the rest unchanged. Against MeCab-based baselines on the same set: polarity 83.0% vs pymlask 61.0% / oseti 47.7%, emotion 83.5% vs pymlask 23.1% (`tools/benchmark/sentiment_baselines.md`).
 - Retrieval: MRR 0.846 (synthetic 200 q) / 0.720 (30 real business documents, 120 q); hybrid with an external e5-base embedding 0.868 / 0.777.
 - Performance (NFR-001, single core, all four modules): 100,000 sentences in 98 s (1,021 sentences/s), 1.0 ms mean per sentence, a 10,000-character document in 0.63 s.
 - **352 tests pass** (incl. the 36-sentence golden set, error-handling E1xx–E7xx, vocabulary contamination). Zero runtime dependencies beyond PyYAML and typer.
