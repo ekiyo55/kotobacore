@@ -340,7 +340,7 @@ Measured (`tools/benchmark/compare_baselines.py`, boundary F1 on 100 human-annot
 
 ## Status
 
-**v1.0.0** (2026-09-09) — the Semantic IR schema is frozen at **1.0** and every component (tokenizer, dictionary set, modules, HTTP API) is versioned 1.0. The published PyPI release is still 0.2.7; 1.0.0 is on the live demo and awaits a release decision.
+**v1.0.0** (2026-09-09) — the Semantic IR schema is frozen at **1.0** and every component (tokenizer, dictionary set, modules, HTTP API) is versioned 1.0. Published on PyPI (`pip install kotobacore`) and GitHub (tag v1.0.0); the live demo runs the same build.
 
 - 6,500-sentence template evaluation: emotion accuracy 96.8% / polarity 96.7% / intent 75.1%, 0 processing errors, 0% false positives on the animal-sound canary set.
 - 300 human-annotated sentences (v1, five genres): segmentation F1 0.90 / entity F1 0.86 / sentiment 83.0% / emotion 84.1% / intent 70.0%.
