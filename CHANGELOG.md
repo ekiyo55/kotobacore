@@ -4,6 +4,11 @@ All notable changes to KotobaCore will be documented in this file.
 
 ## [Unreleased]
 
+### Fixed — RAG 層のチャンカーと再ランキング（2026-09-14、ローカルRAGアプリ本の実地検証で発見）
+- **`rag/chunk.py`: 「（1）」形式の列挙項目が見出しに誤判定される**。`_NUMBERED_ITEM` は「1. 」「1）」（数字が先頭・記号の後に空白）しか除外しておらず、日本語の規程・契約書で一般的な **全角括弧＋数字＋空白なし**（「（2）次のいずれかの事情があること」）が見出し扱いになり、`heading_path` から親見出し（「第１条（育児休業）」）が消えていた（厚労省モデル 育児介護休業規程 で確認）。正規表現を `^[（(]?[0-9０-９]{1,2}[.．)）]\s*\S` に変更。実資料 8 件で 883→853 チャンク、既存の「ただし」節・コードフェンス・番号リストの挙動は不変
+- **`rag/features.py`: `keyword_overlap` / `entity_match` の本文フォールバックが語境界を無視**。`t in text` の素朴な部分文字列判定のため、質問語「AP」がチャンク内の「API」に一致し `keyword_overlap=1.0` になっていた。英数字のみの語（製品コード・API 名等）は前後が英数字でない場合だけ一致とみなす `_contains_term()` を追加（日本語の語は従来どおり部分文字列。CJK に信頼できる語境界が無いため意図的に対象外）
+- `tests/test_v05_predicates_topics_rerank.py` に回帰テスト 2 本を追加（計 354）
+
 ### 追加 — 感情辞書ライブラリとのベースライン比較（v1.0 完成条件の最後の 1 項目）
 - `tools/benchmark/compare_sentiment_baselines.py`: 人手評価セット v1（300 文）で oseti（評価極性辞書 + MeCab）/ pymlask（ML-Ask 感情辞書 + MeCab）/ asari（TF-IDF 二値）と比較。採点は run_annotated_eval と同じ（極性 = 表現の多数決、感情 = gold ラベルのいずれかに一致）。MeCab は Windows で DLL が使えないため mooma（Linux）の使い捨て venv で実行（mecab-python3 + ipadic wheel、bunkai のため emoji<2）
 - 結果（`tools/benchmark/sentiment_baselines.md`）: 極性 accuracy（300 文）KotobaCore **83.0%** / pymlask 61.0% / oseti 47.7% / asari 26.3%（確信度 <0.75 を neutral 扱いで 46.3%）。極性のある 102 文だけなら asari 77.5% / KotobaCore 71.6% / asari(閾値) 62.7% / oseti 48.0% / pymlask 23.5%。感情 accuracy（182 文）KotobaCore **83.5%**（+NRC 84.1%）/ pymlask 23.1%（多対多写像で有利にしても）、カナリア誤検出 KotobaCore 0% / pymlask 27.3%

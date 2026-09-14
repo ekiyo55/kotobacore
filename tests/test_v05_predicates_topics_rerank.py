@@ -306,6 +306,46 @@ def test_chunker_keeps_every_numbered_list_item():
     assert not any("50〜100発話" in h for c in d.document_chunks for h in c.heading_path)  # list items are not section headings
 
 
+def test_chunker_parenthesized_numbered_items_are_not_headings():
+    """1.0.1: 「（1）…」 (full-width parens, no following space) is a list item — the usual
+    enumeration style in Japanese regulations — not a section heading. Found on the
+    MHLW model 育児介護休業規程: the sub-items replaced 「第１条」 in heading_path."""
+    doc = chr(10).join([
+        "第１条（育児休業）",
+        "１　育児のために休業することを希望する従業員は、申出により育児休業をすることができる。",
+        "３　次のいずれにも該当する従業員は、子が１歳６か月に達するまでの間で育児休業をすることができる。",
+        "（1）従業員又は配偶者が子の１歳の誕生日の前日に育児休業をしていること",
+        "（2）次のいずれかの事情があること",
+        "（3）子の１歳の誕生日以降に本項の休業をしたことがないこと",
+        "４　３にかかわらず、産前・産後休業等が始まったことにより育児休業が終了した従業員は、再度育児休業をすることができる。",
+    ])
+    d = _a().analyze_document(doc)
+    assert d.document_chunks
+    for c in d.document_chunks:
+        assert not any(h.startswith(("（", "(")) for h in c.heading_path), c.heading_path
+    sub = next(c for c in d.document_chunks if "（2）次のいずれかの事情" in c.text)
+    assert sub.heading_path == ["第１条（育児休業）"]
+
+
+def test_rerank_keyword_and_entity_match_respect_ascii_token_boundaries():
+    """1.0.1: an ASCII query term must not match inside a longer identifier ("AP" ⊄ "API").
+    Japanese terms keep plain substring containment (CJK has no reliable word boundary)."""
+    from kotobacore.rag.features import _contains_term
+
+    assert not _contains_term("AP", "クラウドAPIの料金")
+    assert _contains_term("API", "クラウドAPIの料金")
+    assert _contains_term("AP", "AP と API の違い")  # a standalone AP still matches
+    assert _contains_term("案内", "旅費案内")  # unchanged for Japanese
+
+    a = _a()
+    view = ChunkView(text="クラウドAPIの利用料金についてのお問い合わせです。", keywords=["クラウド", "API", "利用料金"])
+    f_ap = rerank_features(a.analyze_query("APについて教えてください"), view)
+    assert f_ap["keyword_overlap"] == 0.0
+    assert f_ap["entity_match"] in (None, 0.0)
+    f_api = rerank_features(a.analyze_query("APIについて教えてください"), view)
+    assert f_api["keyword_overlap"] > 0
+
+
 def test_hybrid_alpha_is_fixed_and_anchors_are_diagnostic():
     from kotobacore.rag.features import HYBRID_ALPHA, hybrid_alpha, query_lexical_anchors
 

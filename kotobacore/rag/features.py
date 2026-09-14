@@ -231,6 +231,34 @@ def _jaccard(a: set[str], b: set[str]) -> float:
     return len(a & b) / len(a | b)
 
 
+_ASCII_WORD = re.compile(r"^[A-Za-z0-9_]+$")
+_ASCII_WORD_CHAR = re.compile(r"[A-Za-z0-9_]")
+
+
+def _contains_term(term: str, text: str) -> bool:
+    """Substring containment, but boundary-safe for ASCII identifier-like terms
+    (e.g. product codes, API names): "AP" must not match inside "API". Plain
+    Japanese terms fall back to raw substring containment — CJK text has no
+    reliable word-boundary marker, so this only guards the case that actually
+    produced false positives (Zenn#4: keyword/entity overlap on a dictionary
+    fragment like "AP" ⊂ "API")."""
+    if not term:
+        return False
+    if not _ASCII_WORD.match(term):
+        return term in text
+    start = 0
+    while True:
+        idx = text.find(term, start)
+        if idx == -1:
+            return False
+        before = text[idx - 1] if idx > 0 else ""
+        after_pos = idx + len(term)
+        after = text[after_pos] if after_pos < len(text) else ""
+        if not _ASCII_WORD_CHAR.match(before) and not _ASCII_WORD_CHAR.match(after):
+            return True
+        start = idx + 1
+
+
 def rerank_features(query: QueryIR, chunk: ChunkView) -> dict[str, float | None]:
     """Per-signal match scores in [0, 1]; None when the query carries no such signal."""
     text = chunk.text
@@ -242,7 +270,7 @@ def rerank_features(query: QueryIR, chunk: ChunkView) -> dict[str, float | None]
             chunk_keys.update({surf, norm or "", str(value) if value is not None else ""})
         for qe in query.entities:
             keys = {qe.surface, qe.normalized or "", str(qe.value) if qe.value is not None else ""} - {""}
-            if keys & chunk_keys or any(k and k in text for k in keys):
+            if keys & chunk_keys or any(k and _contains_term(k, text) for k in keys):
                 hits += 1
         entity_match: float | None = hits / len(query.entities)
     else:
@@ -257,8 +285,8 @@ def rerank_features(query: QueryIR, chunk: ChunkView) -> dict[str, float | None]
         own.add(query.target)
     exp = set(query.expanded_terms) - own
     if own or exp:
-        hit_own = sum(1 for t in own if t in chunk.keywords or t in text)
-        hit_exp = sum(1 for t in exp if t in chunk.keywords or t in text)
+        hit_own = sum(1 for t in own if t in chunk.keywords or _contains_term(t, text))
+        hit_exp = sum(1 for t in exp if t in chunk.keywords or _contains_term(t, text))
         denom = len(own) + EXPANSION_WEIGHT * len(exp)
         keyword_overlap: float | None = (hit_own + EXPANSION_WEIGHT * hit_exp) / denom if denom else None
     else:

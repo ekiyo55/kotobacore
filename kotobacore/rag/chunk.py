@@ -27,8 +27,11 @@ from kotobacore.core.syntax import is_fence_line
 from kotobacore.dictionary import DictionaryBundle
 
 _MD_HEADING = re.compile(r"^(#{1,6})\s*(.+?)\s*#*\s*$")
-# "1. 50〜100発話を人手でラベル付け" — a Markdown ordered-list item, not a section label
-_NUMBERED_ITEM = re.compile(r"^[0-9０-９]{1,2}[.．)）]\s+\S")
+# "1. 50〜100発話を人手でラベル付け" — a Markdown ordered-list item, not a section label.
+# Also matches the parenthesized form common in Japanese regulations/contracts,
+# e.g. "（2）次のいずれかの事情があること" — no space follows the closing paren there,
+# unlike the "1. " form, so the trailing whitespace is optional for this variant.
+_NUMBERED_ITEM = re.compile(r"^[（(]?[0-9０-９]{1,2}[.．)）]\s*\S")
 _CODE_LEAD_MAX = 80  # chars of the sentence introducing a code block carried as chunk context
 
 
