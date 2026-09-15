@@ -340,6 +340,8 @@ Measured (`tools/benchmark/compare_baselines.py`, boundary F1 on 100 human-annot
 
 ## Status
 
+**v1.0.1** (2026-09-15) — patch release. Fixes two RAG-layer bugs found while building the local RAG app for the book *AIに機密情報を持たせる方法*: parenthesized list items such as 「（1）」 were mis-detected as headings (dropping the parent from `heading_path`), and the plain-text fallback of `keyword_overlap` / `entity_match` ignored token boundaries ("AP" matched inside "API"). Adds the sentiment-dictionary baseline comparison tool. IR schema, dictionaries and modules stay at 1.0.
+
 **v1.0.0** (2026-09-09) — the Semantic IR schema is frozen at **1.0** and every component (tokenizer, dictionary set, modules, HTTP API) is versioned 1.0. Published on PyPI (`pip install kotobacore`) and GitHub (tag v1.0.0); the live demo runs the same build.
 
 - 6,500-sentence template evaluation: emotion accuracy 96.8% / polarity 96.7% / intent 75.1%, 0 processing errors, 0% false positives on the animal-sound canary set.
@@ -360,13 +362,13 @@ Highlights since 0.2: Karuizawa lattice tokenizer with N4 lemmatization and okur
 - `docs/TOKENIZATION.md` — segmentation criteria (coarse = semantic units / fine = stem, okurigana, inflection) and known quirks
 - `CHANGELOG.md` — changes and measurements per release
 
-## Compatibility matrix (v1.0.0, output of `kotobacore version --matrix`)
+## Compatibility matrix (v1.0.1, output of `kotobacore version --matrix`)
 
 1.0.0 unifies every component at 1.0 (the IR schema is frozen; the old numbering lineage is kept in module comments and in the `history` field of `resources/dict/versions.json`).
 
 | Target | Version | Compatibility policy |
 |---|---|---|
-| KotobaCore package | 1.0.0 | SemVer. From 1.0 on, breaking changes only in a major release |
+| KotobaCore package | 1.0.1 | SemVer. From 1.0 on, breaking changes only in a major release |
 | IR schema | 1.0 (frozen) | Adding fields is backward compatible; removing or retyping is a major change |
 | Tokenizer (Karuizawa) | 1.0 | Bumped whenever segmentation results change |
 | Dictionary set | 1.0 | Additions are patch, meaning changes are minor. Per-CSV versions in resources/dict/versions.json |

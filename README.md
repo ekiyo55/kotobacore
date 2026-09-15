@@ -344,6 +344,8 @@ KotobaCoreが埋めているのは「感情・意図・RAGキーワードを一�
 
 ## ステータス
 
+**v1.0.1**（2026-09-15、パッチ。書籍『AIに機密情報を持たせる方法』のローカルRAGアプリでの実地検証で見つかった RAG 層の不具合 2 件を修正: 「（1）」形式の列挙項目が見出しに誤判定され `heading_path` が親見出しを失う／`keyword_overlap`・`entity_match` の本文フォールバックが語境界を無視し「AP」が「API」に一致する。感情辞書ライブラリとのベースライン比較ツールを同梱。IR schema・辞書・モジュールは 1.0 のまま）。
+
 **v1.0.0**（2026-09-09、**IR schema 1.0 凍結・全構成要素の版を 1.0 に統一**。Vocab モジュール・HTTP API・Entity 共参照・N4 語形正規化〈動詞原形＋活用型/活用形、送り仮名揺れ〉・互換性マトリクス／旧 import 非推奨化・感情体系 surprise/trust/disgust と意図 inform/share_experience・括弧内固有名・人手評価セット由来の辞書拡充・§9 エラー処理〈回復可能エラーは IR.errors に積んで継続〉）。人手アノテーション 300 文（確定版 annotated_v1）で Sentiment 83% / Emotion 84% / Intent 70% / Entity F1 0.86。同梱辞書のみ（pip install の状態、外部 NRC 辞書なし）では Emotion 83.5% / Intent 69.7%（他は同じ）。MeCab 系ベースラインとの同一セット比較: 極性 83.0% vs pymlask 61.0% / oseti 47.7%、感情 83.5% vs pymlask 23.1%（`tools/benchmark/sentiment_baselines.md`）。NFR-001: 10 万文 110 秒（908 文/s）、1 文平均 1.1 ms、1 万字文書 0.72 秒。6500例文の品質評価で 極性正確度 97% 台 / 処理エラー 0件。人手アノテーション実文 300 文 (下書き) で
 Entity F1 0.66・分割境界 F1 0.91・評価極性 63%。RAG 検索評価: 自作 24 文書・200 問 (妨害込み 447 チャンク) で MRR 0.769 → 0.846、実務文書 30 件 (5,174 チャンク・120 問) で 0.570 → 0.720
 (コードフェンス・番号リストを壊さないチャンク + 見出しパス/導入文の文脈 + Query IR + 制約フィルタ + 再ランク〈回答の形一致を含む〉)。外部 Embedding (e5-base) とのハイブリッドでは 実務 0.777 / 自作 0.868。処理速度は 1文あたり平均 1〜3ms（外部依存ゼロ）。**352 テスト全 PASS**。
@@ -371,13 +373,13 @@ v0.2 の主な変更: Karuizawa の格子+Viterbi 一発分割（bigram 接続�
 - `docs/TOKENIZATION.md` — 分割基準（coarse = 意味単位 / fine = 語幹・送り仮名・活用語尾）と既知の癖
 - `CHANGELOG.md` — 版ごとの変更と計測値
 
-## 互換性マトリクス (v1.0.0、`kotobacore version --matrix` の出力)
+## 互換性マトリクス (v1.0.1、`kotobacore version --matrix` の出力)
 
 1.0.0 で全構成要素を 1.0 に統一しました（IR schema は凍結。旧番号の系譜は各モジュールのコメントと `resources/dict/versions.json` の `history` に残しています）。
 
 | 対象 | 版 | 互換ポリシー |
 |---|---|---|
-| KotobaCore 本体 | 1.0.0 | SemVer。1.0 以降、破壊変更はメジャーのみ |
+| KotobaCore 本体 | 1.0.1 | SemVer。1.0 以降、破壊変更はメジャーのみ |
 | IR Schema | 1.0（凍結） | フィールド追加は後方互換、削除・型変更はメジャー |
 | Tokenizer (Karuizawa) | 1.0 | 分割結果が変わる変更で上げる |
 | 辞書セット | 1.0 | 追加はパッチ、意味変更はマイナー。各 CSV の版は resources/dict/versions.json |
