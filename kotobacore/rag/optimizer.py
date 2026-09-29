@@ -90,7 +90,7 @@ def optimize_rag(
     covered_token_ids = {tid for c in chunks for tid in c.token_ids}
     # Pre-build 2-char+ stopwords for prefix matching (catches KANJI adverb+verb fusions
     # e.g. 全然使 from 全然使えない where Karuizawa groups all KANJI into one token)
-    sw_prefixes = {sw for sw in stopwords if len(sw) >= 2}
+    sw_prefixes = tuple(sw for sw in stopwords if len(sw) >= 2)
     for tok in tokens:
         if tok.id in covered_token_ids:
             continue
@@ -100,7 +100,7 @@ def optimize_rag(
             continue
         if len(surface.strip()) < 2:
             continue
-        if any(surface.startswith(sw) for sw in sw_prefixes):
+        if sw_prefixes and surface.startswith(sw_prefixes):  # one C-level call (v1.1 speed-up)
             continue
         pos = tok.pos
         if "固有名詞" in pos:
@@ -109,7 +109,10 @@ def optimize_rag(
             candidates.append((_PRIORITY_NOUN, -len(surface), surface))
 
     # ---------------------------- entity aliases for matched entity surfaces
-    entity_map = {e.surface: e for e in bundle.entity}
+    entity_map = bundle._cache.get("rag_entity_by_surface")
+    if entity_map is None:  # built once per bundle (was rebuilt on every analyze(), v1.1)
+        entity_map = {e.surface: e for e in bundle.entity}
+        bundle._cache["rag_entity_by_surface"] = entity_map
     for c in chunks:
         if c.text in entity_map:
             ent = entity_map[c.text]

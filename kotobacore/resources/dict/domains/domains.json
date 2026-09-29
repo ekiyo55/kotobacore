@@ -1,0 +1,11 @@
+{
+  "note": "業種別辞書（ユーザー辞書と同じ entity.csv 形式）。設定ファイルの dictionaries に builtin:<name> と書くか、Analyzer(user_dict_path=...) に渡すと読み込まれる。自社・業界の辞書を作るときのサンプルも兼ねる。",
+  "domains": {
+    "dd": {
+      "file": "dd.csv",
+      "version": "1.0",
+      "rows": 409,
+      "description": "M&A デューデリジェンス（M&A 手続・ストラクチャー / 財務・会計 / 税務 / 法務・契約・規制 / 人事労務 / 事業・IT・ESG）。略語・英語表記・言い換えを aliases に持ち、Token.normalized が見出し語にそろう"
+    }
+  }
+}

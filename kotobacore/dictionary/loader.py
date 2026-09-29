@@ -168,6 +168,28 @@ class DictionaryBundle:
             self._cache["entity_by_surface"] = c
         return c
 
+    def entity_normalized_map(self) -> dict[str, str]:
+        """Map entity surface / alias → the entry's ``normalized`` (canonical) form.
+
+        Only pairs whose canonical form differs from the key are kept. Used to
+        write the canonical name into ``Token.normalized`` (D&O保険 →
+        役員賠償責任保険) so search indexes can match aliases (v1.1).
+        Primary surfaces win over colliding aliases, earlier entries over later
+        ones (user dictionary entries come first).
+        """
+        c = self._cache.get("entity_normalized_map")
+        if c is None:
+            c = {}
+            for e in reversed(self.entity):
+                for alias in e.aliases:
+                    if alias:
+                        c[alias] = e.normalized
+            for e in reversed(self.entity):
+                c[e.surface] = e.normalized
+            c = {k: v for k, v in c.items() if v and v != k}
+            self._cache["entity_normalized_map"] = c
+        return c
+
     def emotion_examples_by_surface(self) -> dict[str, list[EmotionExampleEntry]]:
         """Map surface → list of example entries (for example-based matching)."""
         c = self._cache.get("emotion_examples_by_surface")
@@ -203,6 +225,27 @@ class DictionaryBundle:
         if c is None:
             c = {e.source: e.target for e in self.normalization}
             self._cache["normalization_map"] = c
+        return c
+
+    def okurigana_compact_map(self) -> dict[str, str]:
+        """{okurigana spelling: all-kanji spelling} applied in the TEXT when a kanji follows (v1.1).
+
+        引き当て金 / 引当て金 → 引当金, 売り上げ高 → 売上高, 取り引き先 → 取引先: in a
+        compound the okurigana is dropped, so every spelling tokenizes the same way as
+        the compact one. Only groups with an all-kanji variant take part.
+        """
+        c = self._cache.get("okurigana_compact_map")
+        if c is None:
+            c = {}
+            for e in self.okurigana:
+                forms = [e.canonical, *e.variants]
+                compact = next((f for f in forms if f and all(not ("ぁ" <= ch <= "ゖ") for ch in f)), None)
+                if compact is None:
+                    continue
+                for f in forms:
+                    if f and f != compact:
+                        c[f] = compact
+            self._cache["okurigana_compact_map"] = c
         return c
 
     def synonym_map(self) -> dict[str, str]:
@@ -585,6 +628,88 @@ def load_dictionary_bundle(dict_dir: Path | str) -> DictionaryBundle:
 
     _expand_kana_variants(bundle)
     return bundle
+
+
+def load_user_entities(path: Path | str) -> list[EntityEntry]:
+    """Load a user dictionary CSV in ``entity.csv`` format (v1.1, FR-051).
+
+    Only ``surface`` is required. Missing columns default to type=TERM,
+    normalized=surface, aliases="", priority=100, keep_as_unit=true — a user
+    term is kept as one token unless the file says otherwise.
+    """
+    p = Path(path)
+    rows = _open_csv(p)
+    _require_columns(rows, {"surface"}, file=p.name)
+    out: list[EntityEntry] = []
+    for i, row in enumerate(rows, start=2):
+        surface = (row.get("surface") or "").strip()
+        if not surface:
+            continue
+        aliases = [a.strip() for a in (row.get("aliases") or "").split("|") if a.strip()]
+        prio = (row.get("priority") or "").strip()
+        kau = (row.get("keep_as_unit") or "").strip()
+        out.append(
+            EntityEntry(
+                surface=surface,
+                type=(row.get("type") or "").strip() or "TERM",
+                normalized=(row.get("normalized") or "").strip() or surface,
+                aliases=aliases,
+                priority=_to_int(prio, field=f"{p.name}:row{i}:priority") if prio else 100,
+                keep_as_unit=_to_bool(kau) if kau else True,
+            )
+        )
+    return out
+
+
+_USER_DICT_FILES = [
+    ("slang.csv", "slang", load_slang),
+    ("emotion.csv", "emotion", load_emotion),
+    ("entity.csv", "entity", load_user_entities),
+    ("stopwords.csv", "stopwords", load_stopwords),
+    ("normalization.csv", "normalization", load_normalization),
+    ("synonym.csv", "synonym", load_synonym),
+    ("sentiment.csv", "sentiment", load_sentiment),
+    ("okurigana.csv", "okurigana", load_okurigana),
+]
+
+
+def _surface_key(entry) -> str | None:
+    for attr in ("surface", "source", "canonical"):
+        v = getattr(entry, attr, None)
+        if isinstance(v, str):
+            return v
+    return None
+
+
+def apply_user_dictionary(bundle: DictionaryBundle, path: Path | str) -> DictionaryBundle:
+    """Return a NEW bundle with a user dictionary merged in front (v1.1, FR-051).
+
+    ``path`` is either one CSV in ``entity.csv`` format (the common case — a
+    domain / project term list) or a directory holding any of slang / emotion /
+    entity / stopwords / normalization / synonym / sentiment / okurigana CSVs
+    in the bundled formats. User entries take precedence: a bundled entry with
+    the same surface is dropped. The input bundle is not modified.
+    """
+    p = Path(path)
+    if not p.exists():
+        raise DictionaryLoadError(f"User dictionary not found: {p}")
+    user: dict[str, list] = {}
+    if p.is_dir():
+        for filename, attr, loader in _USER_DICT_FILES:
+            f = p / filename
+            if f.exists():
+                user[attr] = loader(f)
+        if not user:
+            raise DictionaryLoadError(f"No dictionary CSV found in user dictionary directory: {p}")
+    else:
+        user["entity"] = load_user_entities(p)
+    merged: dict[str, list] = {}
+    for attr, entries in user.items():
+        keys = {_surface_key(e) for e in entries}
+        base = [e for e in getattr(bundle, attr) if _surface_key(e) not in keys]
+        merged[attr] = list(entries) + base
+    # replace() copies the dataclass; _cache gets a fresh dict (default_factory)
+    return replace(bundle, **merged, _cache={})
 
 
 def load_default_bundle() -> DictionaryBundle:

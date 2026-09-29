@@ -1,0 +1,7 @@
+# KotobaCore 設定ファイルの見本（docs/USER_DICTIONARY.md）
+# カレントディレクトリに kotobacore.yaml として置くか、環境変数 KOTOBACORE_CONFIG でこのファイルを指すと、
+# Analyzer() / CLI / HTTP API / デモ UI がここに並べた辞書を読み込みます。
+# 相対パスはこのファイルのあるフォルダから解決。先に書いたものほど優先。
+dictionaries:
+  - ./dictionaries/my_terms.csv   # 自社用語（entity.csv 形式、必須列は surface のみ）
+  - builtin:dd                    # 同梱の業種別辞書（M&A デューデリジェンス、409 見出し）

@@ -31,7 +31,8 @@ from kotobacore.core.token import TOKENIZER_VERSION
 # Unified to 1.0 at KotobaCore 1.0.0 (2026-09-09). Pre-1.0 lineage: intent 1.2 (query intents 0.5.2,
 # noun-phrase how-to 0.5.3, inform / share_experience 0.6.5), emotion 1.1 (holder / about 0.4.0,
 # surprise / trust / disgust 0.6.5), sentiment 1.1 (split 0.3.0, overlay 0.5.1), topic 1.0 (0.5.0).
-MODULE_VERSIONS: dict[str, str] = {"intent": "1.0", "emotion": "1.0", "sentiment": "1.0", "topic": "1.0"}
+# 1.1.0: intent 1.1 (intent.axes, request + negative evaluation = complaint, rule words inside longer words).
+MODULE_VERSIONS: dict[str, str] = {"intent": "1.1", "emotion": "1.0", "sentiment": "1.0", "topic": "1.0"}
 DICT_DIR = Path(__file__).resolve().parent / "resources" / "dict"
 MANIFEST = DICT_DIR / "versions.json"
 

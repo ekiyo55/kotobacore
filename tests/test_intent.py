@@ -145,3 +145,41 @@ def test_rule_hits_beat_emotion_fallback():
     from kotobacore import Analyzer
     r = Analyzer().analyze("もう無理。請求まわりを確認して")
     assert r.intent.label == "support_request"
+
+
+def test_intent_axes_v11():
+    # schema 1.1: the intent label is backed by independent axes
+    from kotobacore import Analyzer
+
+    a = Analyzer(use_external_dictionaries=False, use_config=False)
+    ax = a.analyze("管理画面でパスワードを変更する方法が分かりません。どこから変更できますか？").intent.axes
+    assert ax.speech_act == "question" and ax.holder == "speaker"
+    ax = a.analyze("先週届いた商品が破損していました。至急返金してください。").intent.axes
+    assert (ax.speech_act, ax.evaluation) == ("request", "negative")
+    ax = a.analyze("このカメラは軽くて使いやすい。").intent.axes
+    assert (ax.speech_act, ax.evaluation) == ("statement", "positive")
+    ax = a.analyze("会議は10時から第2会議室で行います。").intent.axes
+    assert (ax.evaluation, ax.target) == ("none", "none")
+    ax = a.analyze("部長は新しいシステムに満足されていました。").intent.axes
+    assert ax.holder == "third_party"
+    # serialised with the result
+    import json
+
+    d = json.loads(a.analyze("このカメラは軽くて使いやすい。").to_json())
+    assert d["intent"]["axes"]["evaluation"] == "positive"
+
+
+def test_document_level_complaint_and_axes_v11():
+    # analyze_document: the complaint rule and the axes work across sentences (a mail is several sentences)
+    from kotobacore import Analyzer
+
+    a = Analyzer(use_external_dictionaries=False, use_config=False)
+    r = a.analyze_document("先週届いた商品が破損していました。至急返金してください。")
+    assert r.intent.label == "negative_feedback"
+    assert [c.label for c in r.intent.candidates][:2] == ["negative_feedback", "request"]
+    assert (r.intent.axes.speech_act, r.intent.axes.evaluation) == ("request", "negative")
+    r = a.analyze_document("9月分のご請求書を添付にてお送りいたします。ご確認のほどよろしくお願いいたします。")
+    assert r.intent.label == "request" and r.intent.axes.evaluation == "none"
+    r = a.analyze_document("管理画面の設定が分かりません。どこから変更できますか？")
+    assert r.intent.axes.speech_act == "question"
+

@@ -352,6 +352,8 @@ def score_affect_expressions(
             df = tok.dictionary_form
             if not df or df == tok.surface or df not in lex_by_surface:
                 continue
+            if tok.conjugation_form == "連用" and any("一" <= c <= "鿿" for c in tok.surface):
+                continue  # kanji adjective in adverbial く (遅く / 誇らしく思う): its lemma is new in v1.1 and is for search; the semantic layer keeps the pre-1.1 surface reading
             base_emotion, polarity, intensity, lex_weight = lex_by_surface[df]
             # an emotion reading may sit on top of an evaluation claim (美味しかった: EVALUATION by
             # surface + joy by lemma); an evaluation reading never duplicates any claim

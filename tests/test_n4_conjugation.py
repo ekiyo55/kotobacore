@@ -77,3 +77,116 @@ def test_okurigana_normalized_reaches_chunk_keywords():
     d = _A.analyze_document("# 申込\n\n申込の受付は締切まで。\n\n引落は毎月27日。")
     kws = {k for c in d.document_chunks for k in c.keywords}
     assert "申し込み" in kws and "引き落とし" in kws
+
+
+def test_lemma_through_passive_and_negated_progressive():
+    # v1.1 (DD evaluation report §7-6): 払われていない → 払う (was 払われている)
+    from kotobacore.core.token.conjugation import analyze_conjugation
+
+    cases = {
+        "払われていない": "払う", "織り込まれていない": "織り込む", "扱われている": "扱う",
+        "採用していない": "採用する", "言われていた": "言う", "読んでいない": "読む",
+        "行った": "行く", "忘れていない": "忘れる", "晴れている": "晴れる", "茹でた": "茹でる",
+    }
+    for surface, lemma in cases.items():
+        assert analyze_conjugation(surface, "動詞-一般").lemma == lemma, surface
+
+
+def test_lemma_rules_v11_sudachi_agreement():
+    # v1.1: long-standing lemma errors found by comparing with Sudachi's dictionary_form
+    from kotobacore.core.token.conjugation import analyze_conjugation
+
+    verb = {
+        "捨てた": "捨てる", "見捨てられる": "見捨てる", "申し立てる": "申し立てる",  # 一段 て-stem (was 捨る)
+        "泣きそう": "泣く", "昇天しそう": "昇天する", "美味しそう": "美味しい",  # そう (was 泣きす)
+        "面白すぎて": "面白い", "楽しみすぎて": "楽しむ", "押しすぎて": "押す", "疲れすぎてる": "疲れる",
+        "出てしまった": "出る", "助けてくれて": "助ける", "感じております": "感じる", "止まらなくなった": "止まる",
+        "落ちるんだ": "落ちる", "転職したんだ": "転職する", "冷えるよう": "冷える",  # was 落ちるむ / 冷えるる
+        "情けない": "情けない", "仕方ない": "仕方ない", "冷たい": "冷たい", "必要ない": "必要ない",  # was 情ける / 冷る
+        "激しく": "激しい", "間違った": "間違う", "傘持った": "傘持つ", "生まれた": "生まれる",
+        "満たせない": "満たせる", "報われない": "報う", "存在しない": "存在する", "勉強させる": "勉強する",
+        "聞い": "聞く", "思い": "思う", "見た": "見る", "来た": "来る",
+    }
+    for surface, lemma in verb.items():
+        assert analyze_conjugation(surface, "動詞-一般").lemma == lemma, surface
+    # 若しく(は) is the conjunction もしくは, not an adjective 若しい (regression fixed in 1.1.0a13)
+    assert analyze_conjugation("若しく", "形容詞-一般") is None
+    assert analyze_conjugation("若しく", "動詞-一般") is None
+    adj = {"やばい": "やばい", "すごく": "すごい", "誇らしく": "誇らしい", "厚く": "厚い", "高かった": "高い",
+           "思い": "思う", "受かった": "受かる", "関わりたくない": "関わる"}
+    for surface, lemma in adj.items():
+        assert analyze_conjugation(surface, "形容詞-一般").lemma == lemma, surface
+
+
+def test_adverbial_kanji_adjective_lemma_does_not_feed_emotion():
+    # 遅くなって: lemma 遅い is for search; the emotion / evaluation layer keeps the pre-1.1 reading
+    from kotobacore import Analyzer
+
+    r = Analyzer().analyze("ごめんね、遅くなって。")
+    tok = next(t for t in r.tokens if t.surface == "遅く")
+    assert tok.dictionary_form == "遅い"
+    assert r.intent.label != "negative_feedback"
+
+
+def test_notation_variants_share_tokens_v11():
+    # v1.1 (DD evaluation report §7-7): katakana and okurigana variants tokenize alike
+    from kotobacore import Analyzer
+
+    a = Analyzer()
+
+    def norm(s):
+        return [t.normalized for t in a.tokenize(s) if not t.pos.startswith(("助詞", "記号"))]
+
+    for x, y in [
+        ("ランサムウエア", "ランサムウェア"), ("ウィルス対策", "ウイルス対策"), ("ルータ交換", "ルーター交換"),
+        ("退職給付引き当て金", "退職給付引当金"), ("売り上げ高", "売上高"), ("取り引き先", "取引先"),
+        ("繰り越し欠損金", "繰越欠損金"), ("未払い残業代", "未払残業代"), ("申し込み", "申込み"),
+    ]:
+        assert norm(x) == norm(y), (x, y)
+    # okurigana stays when no kanji follows
+    assert a.tokenize("引き当てを行う")[0].surface == "引き当て"
+    # a dictionary word with okurigana inside a kanji run
+    assert [t.surface for t in a.tokenize("偽装請け負い")] == ["偽装", "請け負い"]
+
+
+def test_length_changing_normalization_keeps_original_span():
+    # v1.1: サーバ→サーバー used to map the token to a 1-char original span
+    from kotobacore import Analyzer
+
+    for s, first in [("サーバの設定", "サーバ"), ("ルータの設定", "ルータ"), ("退職給付引き当て金", "退職給付引き当て金"),
+                     ("(株)山田商事", "(株)山田商事")]:
+        t = Analyzer().tokenize(s)[0]
+        assert s[t.begin:t.end] == first, s
+
+
+def test_complaint_vocabulary_and_polite_adjectives_v11():
+    # v1.1: 遅いです (adjective + polite copula) keeps the adjective lemma, complaint words are negative
+    from kotobacore import Analyzer
+    from kotobacore.core.token.conjugation import analyze_conjugation
+
+    assert analyze_conjugation("遅いです", "動詞-一般").lemma == "遅い"
+    assert analyze_conjugation("美味しかったです", "動詞-一般").lemma == "美味しい"
+    a = Analyzer(use_external_dictionaries=False, use_config=False)
+    r = a.analyze("先週届いた商品が破損していました。電話しても全くつながらず、対応があまりにも遅いです。")
+    assert r.sentiment.polarity == "negative"
+    assert {"破損", "つながらず", "遅いです"} <= {e.text for e in r.sentiment.expressions}
+    assert a.analyze("今月の請求書が二重請求になっていて、非常に不愉快です。").sentiment.polarity == "negative"
+    # words used neutrally in reports, laws and apologies are not in the lexicon
+    assert a.analyze("弊社の手違いでご迷惑をおかけし、誠に申し訳ございません。").sentiment.polarity is None
+    assert a.analyze("心身の故障により職務を執行できない者").sentiment.polarity is None
+
+
+def test_request_with_negative_evaluation_is_a_complaint_v11():
+    # v1.1: 否定の評価を伴う依頼は苦情 (negative_feedback); the request stays as the next candidate
+    from kotobacore import Analyzer
+
+    a = Analyzer(use_external_dictionaries=False, use_config=False)
+    r = a.analyze("先週届いた商品が破損していました。電話しても全くつながらず、対応があまりにも遅いです。至急返金してください。")
+    assert r.intent.label == "negative_feedback"
+    assert [c.label for c in r.intent.candidates][:2] == ["negative_feedback", "request"]
+    # a plain request, a notice, a negated evaluation and someone else's complaint stay as they were
+    assert a.analyze("来月導入予定のプリンター20台について、お見積りをお願いできますでしょうか。").intent.label == "request"
+    assert a.analyze("9月分のご請求書を添付にてお送りいたします。ご確認のほどよろしくお願いいたします。").intent.label == "request"
+    assert a.analyze("対応は遅くないので、引き続きよろしくお願いします。").intent.label == "request"
+    assert a.analyze("部長は対応が遅いと不満でした。至急ご確認ください。").intent.label != "negative_feedback"
+

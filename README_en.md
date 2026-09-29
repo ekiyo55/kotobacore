@@ -7,8 +7,9 @@
 
 **English** | [日本語](README.md)
 
-A semantic engine that turns Japanese text into structured data.
-Built for LLM preprocessing, RAG, social-media analysis, and AI-agent input.
+A semantic engine that **cleans up and structures Japanese text before it goes to an LLM or a search engine**.
+It strips mail boilerplate, signatures and quoted replies, unifies spelling variants, extracts dates, amounts and company names, and builds search terms, with zero external dependencies and nothing leaving your machine.
+Built for LLM preprocessing, RAG, mail / inquiry analysis, social-media analysis, and AI-agent input.
 
 ---
 
@@ -28,6 +29,55 @@ keywords : ["クラウドAPI", "課金"]
 ```
 
 It's not just a tokenizer — it returns **emotion, intent, and RAG keywords in a single pass**.
+
+---
+
+## Preprocessing for LLMs and search (the focus of v1.1)
+
+Let the LLM make the judgment calls and let KotobaCore do the prep work. An LLM is smart, but every call costs money and time, and its answers vary.
+KotobaCore is **free, fast (median 51 ms per real mail), deterministic (same input, same output) and runs locally**, which makes it a good fit for producing clean input for an LLM or a search engine.
+
+| What it does | Example | Measured |
+|---|---|---|
+| Removes noise | Drops the salutation, greeting, closing, signature and quoted reply of a mail and keeps the body | Evaluated on 261 real mails. Keywords taken from boilerplate: 8.6% → 0% |
+| Unifies spelling | Okurigana variants (申込み / 申し込み), full / half width, alias → canonical name (MNT → みなと精機) | User and domain dictionaries added through a config file |
+| Extracts key facts | Dates, amounts, quantities, article numbers (第N条), company and person names in a fixed form | e.g. 45億円 → 4500000000.0 |
+| Builds search terms | 損害賠償請求訴訟 → 損害賠償請求訴訟 / 損害 / 賠償 / 請求 / 訴訟 | BM25 search on due-diligence documents: MRR 0.59 → 0.95 |
+
+### Cleaning up a mail (`analyze_mail`)
+
+```python
+from kotobacore import Analyzer
+
+a = Analyzer()
+m = a.analyze_mail(mail_text)
+body = "".join(s.text for s in m.sentences if s.boilerplate is None)   # the body to send to an LLM
+```
+
+For a mail with a salutation, greeting, self-introduction, a two-sentence complaint, a closing and a signature (see the Japanese README for the full example):
+
+```
+boilerplate : salutation ×2 / greeting / self_intro / closing / signature ×3 (Sentence.boilerplate)
+body        : 158 → 52 characters in this example
+keywords    : プリンター20台 / 3台 / 先週納品 / 破損 / 10月3日
+              (analyze_document puts the addressee first: 株式会社サンプル / 営業部 / 田中様 …)
+intent      : negative_feedback (axes: request + negative evaluation = complaint)
+```
+
+### Building search terms (`search_terms`)
+
+```python
+[(t.term, t.kind) for t in a.search_terms("損害賠償請求訴訟が提起された")]
+# [('損害賠償請求訴訟', 'token'), ('損害', 'part'), ('賠償', 'part'), ('請求', 'part'), ('訴訟', 'part'), ('提起', 'token')]
+```
+
+The terms go straight into a BM25-style index (`begin` / `end` point into the original text).
+
+### About classification accuracy
+
+Intent classification (is it a request, a complaint, …) is rule-based: on 300 human-annotated sentences, intent is 70% and speech act (question / request / statement) is 90%.
+Decisions that depend on context or on the sender, such as "does this mail need an action?", are best made by an LLM on the text KotobaCore has cleaned up.
+`intent.axes` (speech act, evaluation polarity, evaluation target, holder) lets you compose the categories your application needs.
 
 ---
 
@@ -92,6 +142,29 @@ vocabulary and rules (`resources/dict/`).
 (example matching works without any external dictionary). Each row's `examples` (multiple sentences
 separated by 「、」) is expanded and matched against the input via bigram Jaccard similarity to
 strengthen emotion confidence.
+
+### User and domain dictionaries (v1.1)
+
+Put in-house terms, product names, business partners and industry vocabulary in a **user dictionary**
+(a CSV in the `entity.csv` format; only `surface` is required) and list it under `dictionaries` in a
+`kotobacore.yaml` config file — `Analyzer()`, the CLI, the HTTP API and the demo UI then load it with no
+code change. A domain dictionary ships as a sample: **`builtin:dd`** (M&A due diligence, 409 headwords /
+615 aliases).
+
+```yaml
+# kotobacore.yaml (current directory, or point KOTOBACORE_CONFIG at it)
+dictionaries:
+  - ./dict/my_terms.csv   # earlier entries take precedence
+  - builtin:dd
+```
+
+```python
+Analyzer(user_dict_path=["my_terms.csv", "builtin:dd"])   # or pass them directly
+```
+
+How to write a good dictionary, where the config file is looked up and how to check what is loaded
+(`kotobacore config`) are in `docs/USER_DICTIONARY.md` (Japanese); samples: `examples/kotobacore.yaml`,
+`examples/dictionaries/my_terms.csv`.
 
 ### Optional external dictionary (NRC, not bundled)
 
@@ -340,6 +413,8 @@ Measured (`tools/benchmark/compare_baselines.py`, boundary F1 on 100 human-annot
 
 ## Status
 
+**v1.1.0** (2026-09-29, IR schema 1.1 — field additions only). **Focus on preprocessing for LLMs and search**: search terms `search_terms` (external evaluation kit — synthetic due-diligence documents, BM25 — MRR 0.59 → 0.95; on unseen statute data significantly better than character bigrams and not significantly different from Sudachi A/C), mail analysis `analyze_mail` (boilerplate, signatures and quoted replies, evaluated on 261 real mails), user and domain dictionaries (`builtin:dd`) with the `kotobacore.yaml` config file, better okurigana / spelling variants / kanji compounds / numbers, dates and article numbers, intent axes `intent.axes` and a complaint rule. analyze() is about 1.5× faster than 1.0.1. On 300 human-annotated sentences: polarity 82.3% / emotion 84.1% / intent 70.0% / speech act 90.0% / segmentation F1 0.909 / entity F1 0.862. Removal of the legacy import paths is postponed to 2.0. **All 388 tests pass**.
+
 **v1.0.1** (2026-09-15) — patch release. Fixes two RAG-layer bugs found while building the local RAG app for the book *AIに機密情報を持たせる方法*: parenthesized list items such as 「（1）」 were mis-detected as headings (dropping the parent from `heading_path`), and the plain-text fallback of `keyword_overlap` / `entity_match` ignored token boundaries ("AP" matched inside "API"). Adds the sentiment-dictionary baseline comparison tool. IR schema, dictionaries and modules stay at 1.0.
 
 **v1.0.0** (2026-09-09) — the Semantic IR schema is frozen at **1.0** and every component (tokenizer, dictionary set, modules, HTTP API) is versioned 1.0. Published on PyPI (`pip install kotobacore`) and GitHub (tag v1.0.0); the live demo runs the same build.
@@ -358,26 +433,28 @@ Highlights since 0.2: Karuizawa lattice tokenizer with N4 lemmatization and okur
 
 - `docs/API.md` — Python API / CLI / HTTP API (auth, rate limit, error shape)
 - `docs/openapi.json` — OpenAPI 3.1 for the HTTP API (generated by `tools/gen_openapi.py`, same as `/docs`)
-- `docs/IR_SCHEMA.md` — every field of the Semantic IR (generated from the dataclasses by `tools/gen_schema_doc.py`; schema 1.0)
+- `docs/IR_SCHEMA.md` — every field of the Semantic IR (generated from the dataclasses by `tools/gen_schema_doc.py`; schema 1.1)
 - `docs/TOKENIZATION.md` — segmentation criteria (coarse = semantic units / fine = stem, okurigana, inflection) and known quirks
+- `docs/USER_DICTIONARY.md` — writing user dictionaries, loading them from a config file (`kotobacore.yaml`), the `builtin:dd` domain dictionary (Japanese)
 - `CHANGELOG.md` — changes and measurements per release
 
-## Compatibility matrix (v1.0.1, output of `kotobacore version --matrix`)
+## Compatibility matrix (v1.1.0, output of `kotobacore version --matrix`)
 
-1.0.0 unifies every component at 1.0 (the IR schema is frozen; the old numbering lineage is kept in module comments and in the `history` field of `resources/dict/versions.json`).
+1.0.0 unifies every component at 1.0; 1.1.0 moves the IR schema (field additions only), tokenizer, dictionary set and intent module to 1.1 (the old numbering lineage is kept in module comments and in the `history` field of `resources/dict/versions.json`).
 
 | Target | Version | Compatibility policy |
 |---|---|---|
-| KotobaCore package | 1.0.1 | SemVer. From 1.0 on, breaking changes only in a major release |
-| IR schema | 1.0 (frozen) | Adding fields is backward compatible; removing or retyping is a major change |
-| Tokenizer (Karuizawa) | 1.0 | Bumped whenever segmentation results change |
-| Dictionary set | 1.0 | Additions are patch, meaning changes are minor. Per-CSV versions in resources/dict/versions.json |
-| Intent / Emotion / Sentiment / Topic modules | 1.0 | Versioned independently per module |
+| KotobaCore package | 1.1.0 | SemVer. From 1.0 on, breaking changes only in a major release |
+| IR schema | 1.1 | Adding fields is backward compatible; removing or retyping is a major change |
+| Tokenizer (Karuizawa) | 1.1 | Bumped whenever segmentation results change |
+| Dictionary set | 1.1 | Additions are patch, meaning changes are minor. Per-CSV versions in resources/dict/versions.json |
+| Intent module | 1.1 | Versioned independently per module |
+| Emotion / Sentiment / Topic modules | 1.0 | Versioned independently per module |
 | Vocabulary format | kotobacore-vocab-1.0 | Append-only within a major. Vocabulary data is not bundled; a reference vocabulary will be distributed from a separate repository |
 | HTTP API | 1.0 | Major on breaking changes to paths or response shapes |
-| Legacy import paths | deprecated 0.6.4 → removed 1.1 | kotobacore.schema / normalizer / tokenizer / semantic / emotion / intent / clause / matching |
+| Legacy import paths | deprecated 0.6.4 → removed 2.0 | kotobacore.schema / normalizer / tokenizer / semantic / emotion / intent / clause / matching |
 
-Every analysis result records the tokenizer / dictionary set / module versions in `meta.components` for reproducibility. The legacy import paths keep working with a `DeprecationWarning` through v1.0 and are removed in v1.1. `kotobacore.compat` (the Karuizawa-compatible API) stays.
+Every analysis result records the tokenizer / dictionary set / module versions in `meta.components` for reproducibility. The legacy import paths keep working with a `DeprecationWarning` throughout 1.x and are removed in 2.0 (postponed from the originally announced 1.1). `kotobacore.compat` (the Karuizawa-compatible API) stays.
 
 ## License
 

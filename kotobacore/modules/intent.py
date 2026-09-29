@@ -10,7 +10,13 @@ from __future__ import annotations
 import re
 from collections import defaultdict
 
-from kotobacore.core.ir import EmotionResult, IntentCandidate, IntentResult, SentimentResult
+from kotobacore.core.ir import (
+    EmotionResult,
+    IntentAxes,
+    IntentCandidate,
+    IntentResult,
+    SentimentResult,
+)
 from kotobacore.dictionary import DictionaryBundle
 
 # Sentence-final question mark → question intent boost. Weaker than a direct
@@ -60,9 +66,122 @@ def _is_declarative(text: str) -> bool:
     return bool(_DECLARATIVE_END_RE.search(t.rstrip("」』）)\"'")))
 
 
+# a rule word that is only the head of a longer, unrelated word does not count (1.1.0a17, real mails):
+# いつも / どうぞよろしく / 何卒 are not questions
+_PATTERN_INSIDE_WORD: dict[str, tuple[str, ...]] = {
+    "いつ": ("いつも", "いつか", "いつまでも"),
+    "どう": ("どうぞ", "どうか", "どうも", "どうしても"),
+    "何": ("何卒", "何とぞ", "何分", "何より", "何かと"),
+    "なに": ("なにとぞ", "なにより", "なにかと"),
+}
+
+
 def _patterns_for(rule_pattern: str) -> list[str]:
     """Split a rule's ``a|b|c`` pattern into alternatives."""
     return [p.strip() for p in rule_pattern.split("|") if p.strip()]
+
+
+_POSITIVE_INTENTS = frozenset({"positive_feedback", "admiration"})
+_NEGATIVE_INTENTS = frozenset({"negative_feedback", "pricing_complaint"})
+
+
+def _intent_axes(
+    text: str,
+    scores: dict[str, float],
+    label: str | None,
+    sentiment: SentimentResult | None,
+    emotion: EmotionResult | None,
+    entities: list | None,
+) -> IntentAxes:
+    """Independent axes behind the intent label (schema 1.1)."""
+    # speech act: the question / request rule scores (rhetorical questions were already removed)
+    q = scores.get("question", 0.0)
+    r = scores.get("request", 0.0) + scores.get("support_request", 0.0)
+    if q > 0 and q >= r:
+        speech_act = "question"
+    elif r > 0:
+        speech_act = "request"
+    else:
+        speech_act = "statement"
+    # evaluation: evaluation words only (sentiment.csv) — affect words alone are not an evaluation
+    # (2026-09-08 polarity definition). Using the classifier's affect-derived feedback here as a
+    # fallback cost 4 points on the human evaluation set (none → positive / negative).
+    if sentiment is not None and sentiment.polarity in ("positive", "negative") and sentiment.confidence >= _EMOTION_MIN_CONFIDENCE:
+        evaluation = sentiment.polarity
+    else:
+        evaluation = "none"
+    # target: a product / service / organization named → object; a personal post → the writer's own experience
+    if evaluation == "none":
+        target = "none"
+    elif any(getattr(e, "type", None) in _FEEDBACK_ENTITY_TYPES for e in entities or []):
+        target = "object"
+    elif label == "share_experience" or (_looks_personal(text) and label not in _POSITIVE_INTENTS | _NEGATIVE_INTENTS):
+        target = "self"
+    else:
+        target = "object"
+    # holder: someone else's feeling reported (部長は満足されていました) vs the writer's own
+    third = bool(_THIRD_PERSON_RE.search(text)) and not _FIRST_PERSON_RE.search(text)
+    if not third and emotion is not None and emotion.expressions:
+        third = all(getattr(e, "holder", "speaker") not in ("speaker", None) for e in emotion.expressions) and not _FIRST_PERSON_RE.search(text)
+    return IntentAxes(speech_act=speech_act, evaluation=evaluation, target=target, holder="third_party" if third else "speaker")
+
+
+def combine_document_intent(
+    intent_score: dict[str, float],
+    sentence_intents: list[IntentResult],
+    sentiment: SentimentResult | None,
+) -> IntentResult:
+    """Document-level intent from the per-sentence results (analyze_document, v1.1).
+
+    The sentence scores are summed as before; on top of that the two v1.1 rules
+    that need the whole message are applied across sentences — a request with a
+    negative evaluation anywhere in the document is a complaint (商品が破損して
+    いました。…返金してください。), and the axes are built for the document.
+    """
+    scores = dict(intent_score)
+    evaluated = [s.axes for s in sentence_intents if s is not None and s.axes is not None and s.axes.evaluation != "none"]
+    all_third = bool(evaluated) and all(a.holder == "third_party" for a in evaluated)
+    if (
+        scores
+        and max(scores, key=scores.get) == "request"
+        and sentiment is not None
+        and sentiment.polarity == "negative"
+        and sentiment.confidence >= _EMOTION_MIN_CONFIDENCE
+        and not all_third
+    ):
+        scores["negative_feedback"] = max(scores.get("negative_feedback", 0.0), scores["request"] + 0.01)
+    ranked = sorted(scores.items(), key=lambda kv: -kv[1])
+    # axes
+    # speech act from the per-sentence decisions (1.1.0a17): a small request score spread over a
+    # long mail no longer makes the whole document a request
+    acts = [s.axes.speech_act for s in sentence_intents if s is not None and s.axes is not None]
+    if acts:
+        nq, nr = acts.count("question"), acts.count("request")
+        speech_act = "question" if nq and nq >= nr else ("request" if nr else "statement")
+    else:
+        q = scores.get("question", 0.0)
+        r = scores.get("request", 0.0) + scores.get("support_request", 0.0)
+        speech_act = "question" if q > 0 and q >= r else ("request" if r > 0 else "statement")
+    if sentiment is not None and sentiment.polarity in ("positive", "negative") and sentiment.confidence >= _EMOTION_MIN_CONFIDENCE:
+        evaluation = sentiment.polarity
+    else:
+        evaluation = "none"
+    if evaluation == "none":
+        target = "none"
+    elif any(a.target == "object" for a in evaluated):
+        target = "object"
+    elif any(a.target == "self" for a in evaluated):
+        target = "self"
+    else:
+        target = "object"
+    axes = IntentAxes(speech_act=speech_act, evaluation=evaluation, target=target,
+                      holder="third_party" if all_third else "speaker")
+    return IntentResult(
+        label=ranked[0][0] if ranked else "unknown",
+        confidence=round(min(ranked[0][1], 1.0), 3) if ranked else 0.0,
+        candidates=[IntentCandidate(label=k, confidence=round(min(v, 1.0), 3)) for k, v in ranked],
+        axes=axes,
+    )
 
 
 def classify_intent(
@@ -106,7 +225,9 @@ def classify_intent(
                 k = text.find(p, start)
                 if k < 0:
                     break
-                if not text[k + len(p):].startswith(_NEGATION_TAILS):
+                if not text[k + len(p):].startswith(_NEGATION_TAILS) and not any(
+                    text.startswith(w, k) for w in _PATTERN_INSIDE_WORD.get(p, ())
+                ):
                     rule_hits += 1
                 start = k + len(p)
         if rule_hits > 0:
@@ -171,15 +292,31 @@ def classify_intent(
             # only affect-derived feedback moves; an explicit complaint / praise pattern (ばかりなのに / ワロタ) stays feedback
             scores["share_experience"] += max(scores.pop(k) for k in feedback_keys)
 
+    # v1.1: a request that comes with a negative evaluation is a complaint (商品が破損していました…
+    # 返金してください). The complaint wins the label; the request stays as the next candidate so a
+    # router sees both. Only evaluation polarity (sentiment.csv words) counts, not emotion words, and a
+    # report of someone else's feeling (部長は…) is left alone.
+    if (
+        scores
+        and max(scores, key=scores.get) == "request"
+        and sentiment is not None
+        and sentiment.polarity == "negative"
+        and sentiment.confidence >= _EMOTION_MIN_CONFIDENCE
+        and not (_THIRD_PERSON_RE.search(text) and not _FIRST_PERSON_RE.search(text))
+    ):
+        scores["negative_feedback"] = max(scores.get("negative_feedback", 0.0), scores["request"] + 0.01)
+
     if not scores:
         if _is_declarative(text):
             # a personal experience told without an affect word (週末に…作った / 先週末、軽井沢に行ってきたんだ) is still shared experience
             label = "share_experience" if (_looks_personal(text) and not _THIRD_PERSON_RE.search(text) and not _FORMAL_END_RE.search(text.strip())) else "inform"
-            return IntentResult(label=label, confidence=_INFORM_SCORE, candidates=[IntentCandidate(label=label, confidence=_INFORM_SCORE)])
+            return IntentResult(label=label, confidence=_INFORM_SCORE, candidates=[IntentCandidate(label=label, confidence=_INFORM_SCORE)],
+                                axes=_intent_axes(text, scores, label, sentiment, emotion, entities))
         return IntentResult(
             label="unknown",
             confidence=0.0,
             candidates=[IntentCandidate(label="unknown", confidence=0.0)],
+            axes=_intent_axes(text, scores, "unknown", sentiment, emotion, entities),
         )
 
     # Normalize: cap each intent's score at 1.0 for confidence reporting
@@ -193,7 +330,8 @@ def classify_intent(
         for label, score in ranked
     ]
 
-    return IntentResult(label=top_label, confidence=confidence, candidates=candidates)
+    return IntentResult(label=top_label, confidence=confidence, candidates=candidates,
+                        axes=_intent_axes(text, scores, top_label, sentiment, emotion, entities))
 
 
 # ---------------------------------------------------------------------------

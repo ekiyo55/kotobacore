@@ -11,6 +11,7 @@ import datetime as _dt
 import os
 
 from kotobacore._version import __version__
+from kotobacore.config import KotobaConfig, load_config, resolve_dictionary
 from kotobacore.core.attribution import attach_attribution
 from kotobacore.core.chunker import chunk as _chunk
 from kotobacore.core.coreference import resolve_coreference
@@ -21,7 +22,6 @@ from kotobacore.core.ir import (
     EmotionResult,
     Entity,
     Event,
-    IntentCandidate,
     IntentResult,
     KotobaError,
     MetaInfo,
@@ -54,6 +54,7 @@ from kotobacore.core.token import (
 from kotobacore.core.token.lattice import lattice_tokenize
 from kotobacore.dictionary import (
     DictionaryBundle,
+    apply_user_dictionary,
     load_default_bundle,
     load_user_bundle,
 )
@@ -68,7 +69,7 @@ from kotobacore.errors import (
     make_error,
 )
 from kotobacore.modules.emotion import detect_emotion
-from kotobacore.modules.intent import classify_intent
+from kotobacore.modules.intent import classify_intent, combine_document_intent
 from kotobacore.modules.sentiment import detect_sentiment
 from kotobacore.modules.topic import detect_topics, merge_topics
 from kotobacore.rag import optimize_rag
@@ -111,7 +112,7 @@ class Analyzer:
         enable_intent: bool = True,
         enable_rag: bool = True,
         config_path: str | None = None,
-        user_dict_path: str | None = None,
+        user_dict_path: str | list[str] | None = None,
         use_external_dictionaries: bool = True,
         pipeline: str | None = None,
         granularity: str = "coarse",
@@ -120,6 +121,7 @@ class Analyzer:
         enable_predicates: bool = True,
         enable_topics: bool = True,
         enable_coreference: bool = True,
+        use_config: bool = True,
     ) -> None:
         self.mode = mode
         self.backend = backend
@@ -148,6 +150,10 @@ class Analyzer:
         self.enable_rag = enable_rag
         self.config_path = config_path
         self.user_dict_path = user_dict_path
+        # v1.1: config file (kotobacore.yaml / KOTOBACORE_CONFIG / ~/.config/kotobacore/config.yaml)
+        # lists extra dictionaries; see kotobacore.config
+        self.use_config = use_config
+        self.config = load_config(config_path) if (use_config or config_path) else KotobaConfig()
         self.use_external_dictionaries = use_external_dictionaries
 
         self._backend: TokenizerBackend | None = None
@@ -164,6 +170,14 @@ class Analyzer:
                 raise ValueError(f"Unknown backend: {self.backend}")
         return self._backend
 
+    def dictionary_paths(self) -> list[str]:
+        """User dictionaries in effect, highest priority first (explicit, then config file)."""
+        explicit = self.user_dict_path
+        if isinstance(explicit, (str, os.PathLike)):
+            explicit = [explicit]
+        paths = [resolve_dictionary(str(p)) for p in (explicit or [])]
+        return paths + list(self.config.dictionaries)
+
     def _get_bundle(self) -> DictionaryBundle:
         if self._bundle is None:
             if self.use_external_dictionaries:
@@ -174,6 +188,10 @@ class Analyzer:
                     self._bundle = load_default_bundle()
             else:
                 self._bundle = load_default_bundle()
+            # v1.1: user dictionaries (FR-051) — explicit ones first, then the config
+            # file's; earlier entries win, so they are merged last-to-first
+            for path in reversed(self.dictionary_paths()):
+                self._bundle = apply_user_dictionary(self._bundle, path)
         return self._bundle
 
     # ------------------------------------------------------------------
@@ -185,7 +203,8 @@ class Analyzer:
 
     def normalize_with_map(self, text: str) -> NormalizedText:
         """N1 + N2 normalization keeping the map back to original offsets."""
-        return normalize_with_map(text, self._get_bundle().normalization_map())
+        b = self._get_bundle()
+        return normalize_with_map(text, b.normalization_map(), b.okurigana_compact_map())
 
     @staticmethod
     def _remap_tokens(tokens: list[Token], nt: NormalizedText) -> list[Token]:
@@ -207,6 +226,20 @@ class Analyzer:
         if canonical is None:
             return [word]
         return list(bundle.synonym_groups().get(canonical, [canonical]))
+
+    def search_terms(self, text: str, **options) -> list:
+        """Index terms for a keyword (BM25) search index (v1.1).
+
+        Each content token yields its normalized form, its written form when it
+        differs, the lemma of a verb / adjective and the parts of a compound
+        (損害賠償請求訴訟 → + 損害賠償 / 請求 / 訴訟, 連結EBITDA → + EBITDA). Returns
+        ``SearchTerm(term, kind, begin, end, token_id)`` with original-text offsets.
+        Options: ``lower`` (True), ``surface`` / ``lemma`` / ``parts`` (True),
+        ``synonyms`` (False). See ``kotobacore.core.search_terms``.
+        """
+        from kotobacore.core.search_terms import build_search_terms
+
+        return build_search_terms(self.tokenize(text, granularity="coarse"), self._get_bundle(), **options)
 
     def tokenize(self, text: str, granularity: str | None = None) -> list[Token]:
         if not text:
@@ -404,7 +437,18 @@ class Analyzer:
     # ------------------------------------------------------------------
     # Document hierarchy (FR-050) and Query IR (FR-080)
     # ------------------------------------------------------------------
-    def analyze_document(self, text: str, document_id: str | None = None) -> AnalysisResult:
+    def analyze_mail(self, text: str, document_id: str | None = None) -> AnalysisResult:
+        """Analyze a business mail (v1.1): ``analyze_document`` with boilerplate handling.
+
+        Salutation, greeting, self-introduction, closing, signature and quoted
+        replies are labelled on each sentence (``Sentence.boilerplate``) and left
+        out of the document-level intent / sentiment / emotion / keywords, so a
+        closing よろしくお願いいたします does not turn every mail into a request.
+        Tokens, entities and sentence positions still cover the whole text.
+        """
+        return self.analyze_document(text, document_id=document_id, mail=True)
+
+    def analyze_document(self, text: str, document_id: str | None = None, mail: bool = False) -> AnalysisResult:
         """Analyze a multi-sentence document.
 
         Sentences (core.syntax.split_sentences) are analyzed one by one with
@@ -420,6 +464,13 @@ class Analyzer:
 
         sent_spans = split_sentences(normalized)
         para_spans = split_paragraphs(normalized)
+        # v1.1: business-mail boilerplate (analyze_mail) — labelled per sentence, kept out of the aggregates
+        if mail:
+            from kotobacore.core.mail import boilerplate_kinds
+
+            bp_kinds = boilerplate_kinds([text[slice(*nt.to_original_span(nb, ne))] for nb, ne in sent_spans])
+        else:
+            bp_kinds = [None] * len(sent_spans)
 
         tokens: list[Token] = []
         entities: list[Entity] = []
@@ -506,28 +557,33 @@ class Analyzer:
                     if tp.entity_id:
                         tp.entity_id = id_map.get(tp.entity_id, tp.entity_id)
                 topic_results.append(r.topics)
+            bp = bp_kinds[sid]
             for exp in r.emotion.expressions if r.emotion else []:
                 exp.begin += ob
                 exp.end += ob
                 exp.about = id_map.get(exp.about or "", exp.about)
                 if exp.holder != "speaker":
                     exp.holder = id_map.get(exp.holder, exp.holder)
-                emo_expr.append(exp)
+                if bp is None:
+                    emo_expr.append(exp)
             for exp in r.sentiment.expressions if r.sentiment else []:
                 exp.begin += ob
                 exp.end += ob
                 exp.target = id_map.get(exp.target or "", exp.target)
-                sen_expr.append(exp)
-            if r.emotion:
+                if bp is None:
+                    sen_expr.append(exp)
+            if bp is not None:
+                pass  # boilerplate sentence: kept in the hierarchy, left out of the aggregates below
+            elif r.emotion:
                 for k, v in r.emotion.plutchik.items():
                     plutchik_sum[k] = plutchik_sum.get(k, 0.0) + v * max(r.emotion.confidence, 0.1)
-            if r.sentiment and r.sentiment.polarity:
+            if bp is None and r.sentiment and r.sentiment.polarity:
                 polarity_score[r.sentiment.polarity] = polarity_score.get(r.sentiment.polarity, 0.0) + max(r.sentiment.confidence, 0.1)
-            if r.emotion and r.emotion.polarity:
+            if bp is None and r.emotion and r.emotion.polarity:
                 affect_score[r.emotion.polarity] = affect_score.get(r.emotion.polarity, 0.0) + max(r.emotion.confidence, 0.1)
-            if r.intent and r.intent.label and r.intent.label != "unknown":
+            if bp is None and r.intent and r.intent.label and r.intent.label != "unknown":
                 intent_score[r.intent.label] = intent_score.get(r.intent.label, 0.0) + r.intent.confidence
-            if r.rag:
+            if bp is None and r.rag:
                 keywords += [k for k in r.rag.keywords if k not in keywords]
                 phrases += [k for k in r.rag.semantic_phrases if k not in phrases]
             sentences.append(
@@ -536,6 +592,7 @@ class Analyzer:
                     token_ids=[t.id for t in r.tokens],
                     entity_ids=[e.id for e in r.entities],
                     emotion=r.emotion, sentiment=r.sentiment, intent=r.intent,
+                    boilerplate=bp,
                 )
             )
 
@@ -556,7 +613,7 @@ class Analyzer:
         # gives exactly what analyze() gives.
         primary_votes: dict[str, float] = {}
         for sent in sentences:
-            if sent.emotion and sent.emotion.primary:
+            if sent.boilerplate is None and sent.emotion and sent.emotion.primary:
                 primary_votes[sent.emotion.primary] = primary_votes.get(sent.emotion.primary, 0.0) + max(sent.emotion.confidence, 0.1)
         primary = max(primary_votes, key=primary_votes.get) if primary_votes else None
         max_p = max(plutchik_sum.values()) if plutchik_sum else 0.0
@@ -576,22 +633,30 @@ class Analyzer:
             expressions=sen_expr,
             affect_polarity=affect_polarity,
         )
-        ranked = sorted(intent_score.items(), key=lambda kv: -kv[1])
-        intent_result = IntentResult(
-            label=ranked[0][0] if ranked else "unknown",
-            confidence=round(min(ranked[0][1], 1.0), 3) if ranked else 0.0,
-            candidates=[IntentCandidate(label=k, confidence=round(min(v, 1.0), 3)) for k, v in ranked],
-        )
+        # v1.1: document-level complaint rule and intent axes (combine_document_intent)
+        content = [s for s in sentences if s.boilerplate is None]
+        intent_result = combine_document_intent(intent_score, [s.intent for s in content], sentiment_result)
         rag_result = RagResult(keywords=keywords, search_query=" ".join(keywords[:8]), summary_hint=None, semantic_phrases=phrases)
 
-        if len(sentences) == 1 and sentences[0].emotion is not None:
-            # One sentence: reuse the sentence-level module results verbatim.
-            emotion_result = sentences[0].emotion
-            sentiment_result = sentences[0].sentiment or sentiment_result
-            intent_result = sentences[0].intent or intent_result
+        if len(content) == 1 and content[0].emotion is not None:
+            # One (content) sentence: reuse the sentence-level module results verbatim.
+            emotion_result = content[0].emotion
+            sentiment_result = content[0].sentiment or sentiment_result
+            intent_result = content[0].intent or intent_result
+        # 1.1.0a17 (real mails): a closing that asks for an action (ご確認のほどよろしくお願いいたします /
+        # ご検討よろしく…) often carries the mail's only request — keep it in the speech act, while the
+        # label, sentiment and keywords still come from the content sentences
+        if mail and intent_result is not None and intent_result.axes is not None and intent_result.axes.speech_act == "statement":
+            from kotobacore.core.mail import is_action_closing
+
+            if any(s.boilerplate == "closing" and is_action_closing(s.text) for s in sentences):
+                import dataclasses
+
+                intent_result = dataclasses.replace(
+                    intent_result, axes=dataclasses.replace(intent_result.axes, speech_act="request"))
 
         result = AnalysisResult(
-            meta=MetaInfo(version=__version__, schema_version=SCHEMA_VERSION, mode="document", backend=self.backend, components=_component_meta()),
+            meta=MetaInfo(version=__version__, schema_version=SCHEMA_VERSION, mode="mail" if mail else "document", backend=self.backend, components=_component_meta()),
             text=TextInfo(original=text, normalized=normalized, offset_map=nt.origin),
             tokens=tokens, semantic_tokens=semantic_tokens, chunks=chunks, entities=entities,
             predicates=predicates, relations=relations, events=events,

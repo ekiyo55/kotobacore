@@ -1,0 +1,410 @@
+surface,type,normalized,aliases,priority,keep_as_unit
+プロセスレター,TOPIC,プロセスレター,Process Letter|入札要綱,80,true
+一次入札,TOPIC,一次入札,1次入札|First Round Bid,80,true
+二次入札,TOPIC,二次入札,2次入札|Second Round Bid,80,true
+DDスコープ,TOPIC,DDスコープ,調査範囲|DD範囲|Scope of DD,80,true
+重要性の基準値,TOPIC,重要性の基準値,マテリアリティ|Materiality,80,true
+ストラクチャリング,TOPIC,ストラクチャリング,スキーム検討|Structuring,80,true
+買収スキーム,TOPIC,買収スキーム,取引スキーム|ディールストラクチャー,80,true
+株式譲渡,TOPIC,株式譲渡,株式売却,80,true
+資産譲渡,TOPIC,資産譲渡,Asset Transfer,80,true
+譲渡価額,TOPIC,譲渡価額,譲渡価格|取引価格|Purchase Price,80,true
+買収価格,TOPIC,買収価格,買収金額|取得価額,80,true
+現金対価,TOPIC,現金対価,Cash Consideration,80,true
+株式対価,TOPIC,株式対価,Share Consideration|株対価,80,true
+受皿会社,TOPIC,受皿会社,受け皿会社|NewCo,80,true
+SPC,TOPIC,SPC,特別目的会社|Special Purpose Company|買収SPC,80,true
+持株会社,TOPIC,持株会社,ホールディングス|Holding Company,80,true
+持株会社化,TOPIC,持株会社化,ホールディングス化,80,true
+コントロールプレミアム,TOPIC,コントロールプレミアム,Control Premium|支配権プレミアム,80,true
+TOBプレミアム,TOPIC,TOBプレミアム,買収プレミアム,80,true
+非流動性ディスカウント,TOPIC,非流動性ディスカウント,流動性ディスカウント|DLOM,80,true
+マイノリティ出資,TOPIC,マイノリティ出資,少数出資|Minority Investment,80,true
+資本業務提携,TOPIC,資本業務提携,資本提携|Capital and Business Alliance,80,true
+ジョイントベンチャー,TOPIC,ジョイントベンチャー,JV|合弁会社|合弁事業,80,true
+開示別紙,TOPIC,開示別紙,ディスクロージャー・スケジュール|Disclosure Schedule|開示リスト,80,true
+表明保証違反,TOPIC,表明保証違反,表明保証の違反|Breach of Representations,80,true
+補償請求期間,TOPIC,補償請求期間,請求期限|Survival Period|存続期間,80,true
+サンドバッギング,TOPIC,サンドバッギング,Sandbagging,80,true
+アンチサンドバッギング,TOPIC,アンチサンドバッギング,Anti-sandbagging,80,true
+運転資本調整,TOPIC,運転資本調整,ワーキングキャピタル調整|Working Capital Adjustment,80,true
+ネットデット調整,TOPIC,ネットデット調整,Net Debt Adjustment,80,true
+クロージング後誓約,TOPIC,クロージング後誓約,Post-closing Covenants|クロージング後の義務,80,true
+実行前提条件,TOPIC,実行前提条件,クロージング条件,80,true
+クリアランス,TOPIC,クリアランス,競争法クリアランス|Clearance,80,true
+待機期間,TOPIC,待機期間,Waiting Period,80,true
+ディールタイムライン,TOPIC,ディールタイムライン,スケジュール表|Deal Timeline,80,true
+エグジット,TOPIC,エグジット,Exit|投資回収,80,true
+セカンダリー取引,TOPIC,セカンダリー取引,Secondary Transaction,80,true
+ロールオーバー,TOPIC,ロールオーバー,再出資|Rollover,80,true
+マネジメント出資,TOPIC,マネジメント出資,経営陣出資|Management Equity,80,true
+ベンダーローン,TOPIC,ベンダーローン,売主ローン|Vendor Loan|セラーファイナンス,80,true
+取得関連費用,TOPIC,取得関連費用,M&A費用|Transaction Costs|アドバイザリー費用,80,true
+成功報酬,TOPIC,成功報酬,Success Fee|レーマン方式,80,true
+仲介会社,TOPIC,仲介会社,M&A仲介|仲介業者,80,true
+事業承継,TOPIC,事業承継,Business Succession,80,true
+後継者問題,TOPIC,後継者問題,後継者不在,80,true
+前受金,TOPIC,前受金,契約負債|Advances Received,80,true
+前払費用,TOPIC,前払費用,Prepaid Expenses,80,true
+未払金,TOPIC,未払金,Accounts Payable-other,80,true
+未払費用,TOPIC,未払費用,Accrued Expenses,80,true
+未収入金,TOPIC,未収入金,未収金|Other Receivables,80,true
+仮払金,TOPIC,仮払金,,80,true
+仮受金,TOPIC,仮受金,,80,true
+預り金,TOPIC,預り金,Deposits Received,80,true
+貸付金,TOPIC,貸付金,Loans Receivable,80,true
+立替金,TOPIC,立替金,,80,true
+敷金,TOPIC,敷金,Security Deposit,80,false
+差入保証金,TOPIC,差入保証金,保証金|差入敷金,80,true
+投資有価証券,TOPIC,投資有価証券,Investment Securities,80,true
+関係会社株式,TOPIC,関係会社株式,子会社株式|Shares of Subsidiaries,80,true
+有形固定資産,TOPIC,有形固定資産,PP&E|Property Plant and Equipment,80,true
+無形固定資産,TOPIC,無形固定資産,無形資産|Intangible Assets,80,true
+建設仮勘定,TOPIC,建設仮勘定,CIP|Construction in Progress,80,true
+ソフトウェア資産,TOPIC,ソフトウェア資産,ソフトウェア仮勘定|自社利用ソフトウェア,80,true
+資産除去債務,TOPIC,資産除去債務,ARO|Asset Retirement Obligation,80,true
+固定資産台帳,TOPIC,固定資産台帳,Fixed Asset Register,80,true
+減価償却累計額,TOPIC,減価償却累計額,Accumulated Depreciation,80,true
+耐用年数,TOPIC,耐用年数,Useful Life,80,true
+評価損,TOPIC,評価損,Valuation Loss,80,true
+棚卸資産評価損,TOPIC,棚卸資産評価損,在庫評価損|棚卸評価損,80,true
+滞留在庫,TOPIC,滞留在庫,長期滞留在庫|Slow-moving Inventory,80,true
+陳腐化在庫,TOPIC,陳腐化在庫,Obsolete Inventory,80,true
+在庫回転率,TOPIC,在庫回転率,棚卸資産回転率|Inventory Turnover,80,true
+原価計算,TOPIC,原価計算,Cost Accounting,80,true
+標準原価,TOPIC,標準原価,Standard Cost,80,true
+製造原価,TOPIC,製造原価,Manufacturing Cost,80,true
+労務費,TOPIC,労務費,Labor Cost,80,true
+外注費,TOPIC,外注費,Outsourcing Cost,80,true
+製造間接費,TOPIC,製造間接費,Manufacturing Overhead,80,true
+仕掛品,TOPIC,仕掛品,WIP|Work in Process,80,true
+原材料,TOPIC,原材料,Raw Materials,80,true
+貯蔵品,TOPIC,貯蔵品,Supplies,80,true
+為替差損益,TOPIC,為替差損益,為替差損|為替差益|FX Gains and Losses,80,true
+為替予約,TOPIC,為替予約,Forward Exchange Contract,80,true
+デリバティブ,TOPIC,デリバティブ,Derivatives|金融派生商品,80,true
+ヘッジ会計,TOPIC,ヘッジ会計,Hedge Accounting,80,true
+金利スワップ,TOPIC,金利スワップ,Interest Rate Swap,80,true
+資本金,TOPIC,資本金,Capital Stock,80,true
+資本剰余金,TOPIC,資本剰余金,Capital Surplus,80,true
+利益剰余金,TOPIC,利益剰余金,Retained Earnings,80,true
+配当,TOPIC,配当,剰余金の配当|Dividend,80,false
+配当性向,TOPIC,配当性向,Payout Ratio,80,true
+ROE,TOPIC,ROE,自己資本利益率|Return on Equity,80,true
+ROA,TOPIC,ROA,総資産利益率|Return on Assets,80,true
+ROIC,TOPIC,ROIC,投下資本利益率|Return on Invested Capital,80,true
+EPS,TOPIC,EPS,1株当たり利益|Earnings Per Share,80,true
+PER,TOPIC,PER,株価収益率|P/E,80,true
+PBR,TOPIC,PBR,株価純資産倍率|P/B,80,true
+流動比率,TOPIC,流動比率,Current Ratio,80,true
+当座比率,TOPIC,当座比率,Quick Ratio,80,true
+インタレスト・カバレッジ・レシオ,TOPIC,インタレスト・カバレッジ・レシオ,ICR|インタレストカバレッジレシオ|Interest Coverage Ratio,80,true
+DSCR,TOPIC,DSCR,債務償還余裕率|Debt Service Coverage Ratio,80,true
+ネットレバレッジ,TOPIC,ネットレバレッジ,Net Debt/EBITDA|ネットデット・EBITDA倍率|レバレッジレシオ,80,true
+債務超過,TOPIC,債務超過,Negative Net Worth|実質債務超過,80,true
+継続企業の前提,TOPIC,継続企業の前提,ゴーイング・コンサーン|Going Concern|GC注記,80,true
+後発事象,TOPIC,後発事象,Subsequent Events,80,true
+監査法人,TOPIC,監査法人,会計監査人|Audit Firm,80,true
+限定付適正意見,TOPIC,限定付適正意見,Qualified Opinion,80,true
+修正再表示,TOPIC,修正再表示,Restatement|過年度修正,80,true
+IFRS,TOPIC,IFRS,国際財務報告基準|国際会計基準,80,true
+日本基準,TOPIC,日本基準,J-GAAP|日本の会計基準,80,true
+米国会計基準,TOPIC,米国会計基準,US GAAP,80,true
+新リース会計基準,TOPIC,新リース会計基準,リース会計基準|使用権資産,80,true
+税効果会計,TOPIC,税効果会計,Tax Effect Accounting,80,true
+退職給付会計,TOPIC,退職給付会計,Retirement Benefit Accounting,80,true
+減損会計,TOPIC,減損会計,固定資産の減損会計,80,true
+連結財務諸表,TOPIC,連結財務諸表,連結決算|Consolidated Financial Statements,80,true
+連結子会社,TOPIC,連結子会社,連結対象会社|Consolidated Subsidiary,80,true
+持分法適用会社,TOPIC,持分法適用会社,関連会社|Equity-method Affiliate,80,true
+非支配株主持分,TOPIC,非支配株主持分,少数株主持分|NCI|Non-controlling Interest,80,true
+取得原価の配分,TOPIC,取得原価の配分,PPA|Purchase Price Allocation|パーチェス・プライス・アロケーション,80,true
+顧客関連資産,TOPIC,顧客関連資産,Customer-related Intangible Assets,80,true
+公正価値,TOPIC,公正価値,時価|Fair Value,80,true
+簿価,TOPIC,簿価,帳簿価額|Book Value,80,false
+未実現利益,TOPIC,未実現利益,Unrealized Profit,80,true
+内部取引消去,TOPIC,内部取引消去,連結消去|Intercompany Elimination,80,true
+グループ間取引,TOPIC,グループ間取引,グループ内取引|Intercompany Transactions,80,true
+資金繰り表,TOPIC,資金繰り表,資金繰り|Cash Flow Forecast,80,true
+キャッシュ・マネジメント・システム,TOPIC,キャッシュ・マネジメント・システム,CMS|Cash Management System,80,true
+季節性,TOPIC,季節性,季節変動|Seasonality,80,true
+前年同期比,TOPIC,前年同期比,YoY|前年比|Year over Year,80,true
+年平均成長率,TOPIC,年平均成長率,CAGR|Compound Annual Growth Rate,80,true
+KPI,TOPIC,KPI,重要業績評価指標|Key Performance Indicator,80,true
+売上リベート,TOPIC,売上リベート,リベート|販売奨励金|Rebate,80,true
+売上値引,TOPIC,売上値引,値引|Sales Discount,80,true
+返品調整,TOPIC,返品調整,返品|返品引当,80,true
+広告宣伝費,TOPIC,広告宣伝費,Advertising Expenses,80,true
+研究開発費,TOPIC,研究開発費,R&D費|R&D Expenses,80,true
+人件費,TOPIC,人件費,Personnel Expenses,80,true
+地代家賃,TOPIC,地代家賃,賃借料|Rent Expenses,80,true
+支払手数料,TOPIC,支払手数料,Fees Paid,80,true
+交際費,TOPIC,交際費,接待交際費|Entertainment Expenses,80,true
+貸倒損失,TOPIC,貸倒損失,Bad Debt Loss,80,true
+固定資産売却損益,TOPIC,固定資産売却損益,固定資産売却益|固定資産売却損,80,true
+保証引当金,TOPIC,保証引当金,製品保証引当金|Warranty Provision,80,true
+受注損失引当金,TOPIC,受注損失引当金,Provision for Loss on Orders,80,true
+役員退職慰労引当金,TOPIC,役員退職慰労引当金,,80,true
+訴訟損失引当金,TOPIC,訴訟損失引当金,Provision for Litigation Losses,80,true
+ポイント引当金,TOPIC,ポイント引当金,契約負債(ポイント),80,true
+コミットメントライン,TOPIC,コミットメントライン,融資枠|Commitment Line,80,true
+シンジケートローン,TOPIC,シンジケートローン,協調融資|Syndicated Loan,80,true
+メインバンク,TOPIC,メインバンク,主力銀行|Main Bank,80,true
+担保提供資産,TOPIC,担保提供資産,Pledged Assets,80,true
+リファイナンス,TOPIC,リファイナンス,借換え|Refinancing,80,true
+法人税,TOPIC,法人税,Corporate Tax,80,true
+事業税,TOPIC,事業税,Enterprise Tax,80,true
+住民税,TOPIC,住民税,法人住民税,80,true
+消費税,TOPIC,消費税,Consumption Tax|VAT,80,true
+外形標準課税,TOPIC,外形標準課税,付加価値割|資本割,80,true
+欠損金の繰戻し還付,TOPIC,欠損金の繰戻し還付,繰戻還付|NOL Carryback,80,true
+青色申告,TOPIC,青色申告,青色申告承認,80,true
+損金不算入,TOPIC,損金不算入,Non-deductible Expenses,80,true
+益金不算入,TOPIC,益金不算入,Non-taxable Income,80,true
+受取配当等の益金不算入,TOPIC,受取配当等の益金不算入,受取配当益金不算入,80,true
+寄附金課税,TOPIC,寄附金課税,寄附金の損金不算入,80,true
+役員給与,TOPIC,役員給与,Director Compensation,80,true
+定期同額給与,TOPIC,定期同額給与,,80,true
+事前確定届出給与,TOPIC,事前確定届出給与,,80,true
+過大役員給与,TOPIC,過大役員給与,,80,true
+同族会社,TOPIC,同族会社,Family Company,80,true
+留保金課税,TOPIC,留保金課税,特定同族会社の留保金課税,80,true
+外国税額控除,TOPIC,外国税額控除,Foreign Tax Credit,80,true
+恒久的施設,TOPIC,恒久的施設,Permanent Establishment,80,true
+租税条約,TOPIC,租税条約,Tax Treaty,80,true
+BEPS,TOPIC,BEPS,税源浸食と利益移転,80,true
+グローバル・ミニマム課税,TOPIC,グローバル・ミニマム課税,グローバルミニマム課税|Pillar Two|第2の柱,80,true
+事業承継税制,TOPIC,事業承継税制,納税猶予,80,true
+適格合併,TOPIC,適格合併,,80,true
+非適格合併,TOPIC,非適格合併,,80,true
+適格分割,TOPIC,適格分割,,80,true
+適格株式交換,TOPIC,適格株式交換,,80,true
+繰越欠損金の引継ぎ,TOPIC,繰越欠損金の引継ぎ,欠損金の引継ぎ,80,true
+欠損金の使用制限,TOPIC,欠損金の使用制限,繰越欠損金の使用制限|欠損等法人,80,true
+特定資本関係,TOPIC,特定資本関係,支配関係,80,true
+特定資産譲渡等損失,TOPIC,特定資産譲渡等損失,含み損資産の譲渡等損失,80,true
+登録免許税,TOPIC,登録免許税,Registration Tax,80,true
+不動産取得税,TOPIC,不動産取得税,Real Estate Acquisition Tax,80,true
+譲渡所得,TOPIC,譲渡所得,株式譲渡益|キャピタルゲイン|Capital Gain,80,true
+純資産価額方式,TOPIC,純資産価額方式,純資産価額,80,true
+類似業種比準方式,TOPIC,類似業種比準方式,類似業種比準価額,80,true
+税務否認,TOPIC,税務否認,税務上の否認,80,true
+税務ストラクチャー,TOPIC,税務ストラクチャー,Tax Structure|タックスプランニング,80,true
+タックスヘイブン,TOPIC,タックスヘイブン,軽課税国|Tax Haven,80,true
+移転価格文書,TOPIC,移転価格文書,ローカルファイル|マスターファイル|国別報告書|CbCR,80,true
+源泉徴収漏れ,TOPIC,源泉徴収漏れ,源泉漏れ|源泉徴収義務違反,80,true
+消費税の還付,TOPIC,消費税の還付,消費税還付,80,true
+仕入税額控除,TOPIC,仕入税額控除,Input Tax Credit,80,true
+税務調査対応,TOPIC,税務調査対応,調査対応,80,true
+未払法人税等,TOPIC,未払法人税等,Income Taxes Payable,80,true
+税務デューデリジェンス報告書,TOPIC,税務デューデリジェンス報告書,税務DDレポート,80,true
+定款変更,TOPIC,定款変更,Amendment of Articles,80,true
+株式譲渡制限,TOPIC,株式譲渡制限,譲渡制限株式|Transfer Restriction,80,true
+取締役会設置会社,TOPIC,取締役会設置会社,,80,true
+監査役,TOPIC,監査役,監査役会|Statutory Auditor,80,true
+監査等委員会,TOPIC,監査等委員会,監査等委員会設置会社,80,true
+株主総会特別決議,TOPIC,株主総会特別決議,特別決議|Special Resolution,80,true
+株主総会普通決議,TOPIC,株主総会普通決議,普通決議|Ordinary Resolution,80,true
+少数株主,TOPIC,少数株主,Minority Shareholders|少数株主権,80,true
+株式買取請求権,TOPIC,株式買取請求権,反対株主の株式買取請求|Appraisal Right,80,true
+債権者保護手続,TOPIC,債権者保護手続,債権者異議手続,80,true
+名義株,TOPIC,名義株,名義株式|Nominee Shares,80,true
+株式の帰属,TOPIC,株式の帰属,株主の確定,80,true
+善管注意義務,TOPIC,善管注意義務,善良な管理者の注意義務|Duty of Care,80,true
+忠実義務,TOPIC,忠実義務,Duty of Loyalty,80,true
+利益相反取引,TOPIC,利益相反取引,自己取引|Self-dealing,80,true
+競業取引,TOPIC,競業取引,取締役の競業,80,true
+役員賠償責任保険,TOPIC,役員賠償責任保険,D&O保険|D&O Insurance,80,true
+内部通報制度,TOPIC,内部通報制度,Whistleblowing|ホットライン,80,true
+公益通報者保護法,TOPIC,公益通報者保護法,,80,true
+反社条項,TOPIC,反社条項,暴排条項|暴力団排除条項,80,true
+契約期間,TOPIC,契約期間,有効期間,80,true
+自動更新条項,TOPIC,自動更新条項,自動更新|Automatic Renewal,80,true
+中途解約条項,TOPIC,中途解約条項,中途解約|Termination for Convenience,80,true
+違約金,TOPIC,違約金,Penalty|違約罰,80,true
+損害賠償額の予定,TOPIC,損害賠償額の予定,Liquidated Damages,80,true
+遅延損害金,TOPIC,遅延損害金,Late Payment Charges,80,true
+不可抗力条項,TOPIC,不可抗力条項,不可抗力|Force Majeure,80,true
+秘密保持義務,TOPIC,秘密保持義務,守秘義務|Confidentiality Obligation,80,true
+残存条項,TOPIC,残存条項,Survival Clause,80,true
+完全合意条項,TOPIC,完全合意条項,Entire Agreement Clause,80,true
+相殺,TOPIC,相殺,Set-off,80,false
+債権譲渡,TOPIC,債権譲渡,Assignment of Receivables,80,true
+契約上の地位の移転,TOPIC,契約上の地位の移転,契約譲渡|地位移転,80,true
+連帯保証,TOPIC,連帯保証,連帯保証人|Joint and Several Guarantee,80,true
+根保証,TOPIC,根保証,包括根保証,80,true
+経営者保証,TOPIC,経営者保証,個人保証|Personal Guarantee,80,true
+ネガティブ・プレッジ,TOPIC,ネガティブ・プレッジ,担保提供制限条項|Negative Pledge,80,true
+クロスデフォルト条項,TOPIC,クロスデフォルト条項,クロスデフォルト|Cross Default,80,true
+純資産維持条項,TOPIC,純資産維持条項,Net Worth Covenant,80,true
+利益維持条項,TOPIC,利益維持条項,Profit Covenant,80,true
+独占販売権,TOPIC,独占販売権,Exclusive Distribution Rights,80,true
+最低購入数量,TOPIC,最低購入数量,Minimum Purchase Commitment|MOQ,80,true
+テイク・オア・ペイ,TOPIC,テイク・オア・ペイ,Take or Pay,80,true
+価格改定条項,TOPIC,価格改定条項,価格調整条項(取引)|Price Revision,80,true
+再委託,TOPIC,再委託,Subcontracting,80,true
+著作権,TOPIC,著作権,Copyright,80,true
+実用新案権,TOPIC,実用新案権,Utility Model,80,true
+意匠権,TOPIC,意匠権,Design Right,80,true
+ノウハウ,TOPIC,ノウハウ,Know-how,80,true
+ロイヤリティ,TOPIC,ロイヤリティ,ライセンス料|使用料|Royalty,80,true
+クロスライセンス,TOPIC,クロスライセンス,Cross License,80,true
+特許侵害,TOPIC,特許侵害,特許権侵害|Patent Infringement,80,true
+職務発明規程,TOPIC,職務発明規程,職務発明規則,80,true
+不正競争防止法,TOPIC,不正競争防止法,不競法,80,true
+個人データの第三者提供,TOPIC,個人データの第三者提供,第三者提供,80,true
+越境移転,TOPIC,越境移転,国外移転|Cross-border Transfer,80,true
+委託先の監督,TOPIC,委託先の監督,委託先監督,80,true
+安全管理措置,TOPIC,安全管理措置,Security Control Measures,80,true
+漏えい等報告,TOPIC,漏えい等報告,漏えい報告|個人情報漏えい報告,80,true
+プライバシーポリシー,TOPIC,プライバシーポリシー,個人情報保護方針|Privacy Policy,80,true
+金融商品取引法,TOPIC,金融商品取引法,金商法|FIEA,80,true
+インサイダー取引,TOPIC,インサイダー取引,内部者取引|Insider Trading,80,true
+大量保有報告,TOPIC,大量保有報告,5%ルール|大量保有報告書,80,true
+有価証券報告書,TOPIC,有価証券報告書,有報|Annual Securities Report,80,true
+適時開示,TOPIC,適時開示,Timely Disclosure,80,true
+建築基準法,TOPIC,建築基準法,建基法,80,true
+消防法,TOPIC,消防法,Fire Service Act,80,true
+都市計画法,TOPIC,都市計画法,,80,true
+廃棄物処理法,TOPIC,廃棄物処理法,廃掃法|廃棄物の処理及び清掃に関する法律,80,true
+土壌汚染対策法,TOPIC,土壌汚染対策法,土対法,80,true
+アスベスト,TOPIC,アスベスト,石綿|Asbestos,80,true
+PCB,TOPIC,PCB,ポリ塩化ビフェニル|PCB廃棄物,80,true
+労働安全衛生法,TOPIC,労働安全衛生法,安衛法,80,true
+薬機法,TOPIC,薬機法,医薬品医療機器等法|旧薬事法,80,true
+食品衛生法,TOPIC,食品衛生法,,80,true
+建設業許可,TOPIC,建設業許可,,80,true
+宅地建物取引業免許,TOPIC,宅地建物取引業免許,宅建業免許,80,true
+貸金業登録,TOPIC,貸金業登録,,80,true
+資金決済法,TOPIC,資金決済法,資金決済に関する法律,80,true
+補助金,TOPIC,補助金,Subsidy,80,true
+補助金返還,TOPIC,補助金返還,補助金の返還,80,true
+助成金,TOPIC,助成金,雇用関係助成金,80,true
+仲裁,TOPIC,仲裁,Arbitration,80,false
+調停,TOPIC,調停,Mediation,80,false
+和解,TOPIC,和解,Settlement,80,false
+判決,TOPIC,判決,Judgment,80,false
+仮差押え,TOPIC,仮差押え,仮差押|Provisional Attachment,80,true
+差押え,TOPIC,差押え,差押|Attachment,80,true
+強制執行,TOPIC,強制執行,Compulsory Execution,80,true
+内容証明,TOPIC,内容証明,内容証明郵便,80,true
+リコール,TOPIC,リコール,製品回収|Recall,80,true
+行政指導,TOPIC,行政指導,Administrative Guidance,80,true
+課徴金,TOPIC,課徴金,Surcharge|Administrative Fine,80,true
+景表法違反,TOPIC,景表法違反,不当表示,80,true
+カルテル,TOPIC,カルテル,談合|Cartel,80,true
+優越的地位の濫用,TOPIC,優越的地位の濫用,Abuse of Superior Bargaining Position,80,true
+フリーランス法,TOPIC,フリーランス法,特定受託事業者に係る取引の適正化等に関する法律|フリーランス新法,80,true
+労働時間管理,TOPIC,労働時間管理,勤怠管理|Working Hours Management,80,true
+裁量労働制,TOPIC,裁量労働制,Discretionary Work System,80,true
+みなし労働時間制,TOPIC,みなし労働時間制,事業場外みなし労働,80,true
+固定残業代,TOPIC,固定残業代,みなし残業代|定額残業代|固定残業手当,80,true
+変形労働時間制,TOPIC,変形労働時間制,,80,true
+フレックスタイム制,TOPIC,フレックスタイム制,フレックス|Flextime,80,true
+年次有給休暇,TOPIC,年次有給休暇,年休|有給休暇|有休,80,true
+年5日の有給取得義務,TOPIC,年5日の有給取得義務,有給取得義務,80,true
+割増賃金,TOPIC,割増賃金,残業代|時間外手当|Overtime Pay,80,true
+深夜割増賃金,TOPIC,深夜割増賃金,深夜手当,80,true
+休日労働,TOPIC,休日労働,休日出勤,80,true
+長時間労働,TOPIC,長時間労働,過重労働,80,true
+過労死ライン,TOPIC,過労死ライン,,80,true
+安全配慮義務,TOPIC,安全配慮義務,Duty of Care for Safety,80,true
+未払賃金請求,TOPIC,未払賃金請求,残業代請求|未払残業代請求,80,true
+付加金,TOPIC,付加金,,80,true
+賃金請求権の消滅時効,TOPIC,賃金請求権の消滅時効,消滅時効(賃金),80,true
+解雇,TOPIC,解雇,Dismissal,80,false
+整理解雇,TOPIC,整理解雇,Redundancy Dismissal,80,true
+雇止め,TOPIC,雇止め,有期契約の更新拒絶,80,true
+無期転換ルール,TOPIC,無期転換ルール,無期転換|無期転換申込権,80,true
+有期雇用,TOPIC,有期雇用,有期労働契約|契約社員,80,true
+同一労働同一賃金,TOPIC,同一労働同一賃金,Equal Pay for Equal Work,80,true
+パートタイム・有期雇用労働法,TOPIC,パートタイム・有期雇用労働法,パート有期法,80,true
+労働者派遣法,TOPIC,労働者派遣法,派遣法,80,true
+個人事業主,TOPIC,個人事業主,フリーランス|業務委託者,80,true
+労働組合,TOPIC,労働組合,Labor Union,80,true
+団体交渉,TOPIC,団体交渉,団交|Collective Bargaining,80,true
+労使協定,TOPIC,労使協定,,80,true
+従業員代表,TOPIC,従業員代表,過半数代表者,80,true
+人事評価制度,TOPIC,人事評価制度,評価制度|Performance Evaluation,80,true
+賃金テーブル,TOPIC,賃金テーブル,給与テーブル|等級制度,80,true
+年金資産,TOPIC,年金資産,Plan Assets,80,true
+積立不足,TOPIC,積立不足,Underfunding|退職給付の積立不足,80,true
+数理計算上の差異,TOPIC,数理計算上の差異,Actuarial Gains and Losses,80,true
+退職一時金,TOPIC,退職一時金,Lump-sum Retirement Benefit,80,true
+中小企業退職金共済,TOPIC,中小企業退職金共済,中退共,80,true
+従業員持株会,TOPIC,従業員持株会,持株会|ESOP,80,true
+転籍,TOPIC,転籍,Transfer of Employment,80,false
+外国人技能実習生,TOPIC,外国人技能実習生,技能実習|技能実習生,80,true
+特定技能,TOPIC,特定技能,,80,true
+在留資格,TOPIC,在留資格,ビザ|Status of Residence,80,true
+障害者雇用率,TOPIC,障害者雇用率,法定雇用率,80,true
+育児介護休業,TOPIC,育児介護休業,育児休業|介護休業|育休,80,true
+メンタルヘルス,TOPIC,メンタルヘルス,ストレスチェック,80,true
+労働審判,TOPIC,労働審判,Labor Tribunal,80,true
+労働基準法,TOPIC,労働基準法,労基法,80,true
+最低賃金,TOPIC,最低賃金,Minimum Wage,80,true
+社会保険未加入,TOPIC,社会保険未加入,社保未加入,80,true
+役員報酬規程,TOPIC,役員報酬規程,,80,true
+組織図,TOPIC,組織図,Organization Chart,80,true
+キーパーソンの退職,TOPIC,キーパーソンの退職,キーマン離脱|Key Person Risk,80,true
+ビジネスモデル,TOPIC,ビジネスモデル,Business Model|収益モデル,80,true
+競争優位性,TOPIC,競争優位性,Competitive Advantage,80,true
+参入障壁,TOPIC,参入障壁,Barriers to Entry,80,true
+価格決定力,TOPIC,価格決定力,Pricing Power,80,true
+価格転嫁,TOPIC,価格転嫁,Price Pass-through|値上げ転嫁,80,true
+顧客満足度,TOPIC,顧客満足度,Customer Satisfaction,80,true
+NPS,TOPIC,NPS,ネット・プロモーター・スコア|Net Promoter Score,80,true
+販売チャネル,TOPIC,販売チャネル,Sales Channel|販路,80,true
+代理店網,TOPIC,代理店網,販売代理店網,80,true
+サプライチェーン,TOPIC,サプライチェーン,Supply Chain|供給網,80,true
+調達リスク,TOPIC,調達リスク,Procurement Risk,80,true
+為替リスク,TOPIC,為替リスク,FX Risk|為替変動リスク,80,true
+原材料価格,TOPIC,原材料価格,原材料費|Raw Material Prices,80,true
+生産能力,TOPIC,生産能力,Production Capacity|キャパシティ,80,true
+稼働率,TOPIC,稼働率,Utilization Rate,80,true
+設備老朽化,TOPIC,設備老朽化,老朽化|Aging Facilities,80,true
+歩留まり,TOPIC,歩留まり,歩留り|Yield,80,true
+品質不正,TOPIC,品質不正,検査不正|データ改ざん,80,true
+製品保証,TOPIC,製品保証,Warranty,80,true
+事業継続計画,TOPIC,事業継続計画,BCP|Business Continuity Plan,80,true
+カントリーリスク,TOPIC,カントリーリスク,Country Risk,80,true
+規制リスク,TOPIC,規制リスク,Regulatory Risk,80,true
+オーナー企業,TOPIC,オーナー企業,同族企業|オーナー経営,80,true
+コーポレートガバナンス,TOPIC,コーポレートガバナンス,企業統治|ガバナンス|Corporate Governance,80,true
+コーポレートガバナンス・コード,TOPIC,コーポレートガバナンス・コード,CGコード,80,true
+社外取締役,TOPIC,社外取締役,Outside Director|独立社外取締役,80,true
+SaaS,TOPIC,SaaS,サース|Software as a Service,80,true
+サブスクリプション,TOPIC,サブスクリプション,サブスク|Subscription,80,true
+クラウド移行,TOPIC,クラウド移行,Cloud Migration,80,true
+オンプレミス,TOPIC,オンプレミス,On-premises|オンプレ,80,true
+レガシーシステム,TOPIC,レガシーシステム,Legacy System,80,true
+システム障害,TOPIC,システム障害,System Failure,80,true
+脆弱性診断,TOPIC,脆弱性診断,Vulnerability Assessment,80,true
+ペネトレーションテスト,TOPIC,ペネトレーションテスト,侵入テスト|Penetration Test|ペンテスト,80,true
+ISMS,TOPIC,ISMS,ISO27001|ISO/IEC 27001|情報セキュリティマネジメントシステム,80,true
+SOC2,TOPIC,SOC2,SOC2報告書|SOC 2,80,true
+プライバシーマーク,TOPIC,プライバシーマーク,Pマーク,80,true
+データガバナンス,TOPIC,データガバナンス,Data Governance,80,true
+DX,TOPIC,DX,デジタルトランスフォーメーション|Digital Transformation,80,true
+ベンダーロックイン,TOPIC,ベンダーロックイン,Vendor Lock-in,80,true
+IT投資,TOPIC,IT投資,IT Investment|システム投資,80,true
+保守期限,TOPIC,保守期限,サポート終了|EOL|EOS|End of Life,80,true
+ソフトウェアライセンス違反,TOPIC,ソフトウェアライセンス違反,ライセンス違反|ライセンス監査,80,true
+不正アクセス,TOPIC,不正アクセス,Unauthorized Access,80,true
+多要素認証,TOPIC,多要素認証,MFA|二要素認証|Multi-factor Authentication,80,true
+バックアップ,TOPIC,バックアップ,Backup|バックアップ体制,80,true
+マルウェア,TOPIC,マルウェア,Malware|コンピュータウイルス,80,true
+標的型攻撃,TOPIC,標的型攻撃,標的型メール攻撃,80,true
+サプライチェーン攻撃,TOPIC,サプライチェーン攻撃,Supply Chain Attack,80,true
+脱炭素,TOPIC,脱炭素,カーボンニュートラル|Decarbonization,80,true
+温室効果ガス排出量,TOPIC,温室効果ガス排出量,GHG排出量|CO2排出量|GHG Emissions,80,true
+Scope3,TOPIC,Scope3,スコープ3|サプライチェーン排出量,80,true
+TCFD,TOPIC,TCFD,気候関連財務情報開示タスクフォース,80,true
+SBT,TOPIC,SBT,Science Based Targets,80,true
+人権デューデリジェンス,TOPIC,人権デューデリジェンス,人権DD|Human Rights Due Diligence,80,true
+紛争鉱物,TOPIC,紛争鉱物,Conflict Minerals,80,true
+生物多様性,TOPIC,生物多様性,Biodiversity|TNFD,80,true
+ESG評価,TOPIC,ESG評価,ESGスコア|ESG Rating,80,true
+サステナビリティ開示,TOPIC,サステナビリティ開示,サステナビリティ情報開示|SSBJ,80,true
+強制労働,TOPIC,強制労働,Forced Labor,80,true
+児童労働,TOPIC,児童労働,Child Labor,80,true

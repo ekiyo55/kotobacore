@@ -4,7 +4,8 @@
 # Unified to 1.0 at KotobaCore 1.0.0 (2026-09-09). Pre-1.0 internal lineage, for the record:
 #   cascade pipeline (≤ v0.1) → lattice + Viterbi (v0.2) → granularity="fine" (v0.2.6) → onomatopoeia /
 #   repetition (v0.2.7) → evaluative-word nodes (v0.5.x) → okurigana variant nodes + 仮定形 tails (v0.6.3, "2.4")
-TOKENIZER_VERSION = "1.0"
+# 1.1 (KotobaCore 1.0.2): granularity="fine" splits all-kanji compounds 自然|言語|処理 (coarse unchanged).
+TOKENIZER_VERSION = "1.1"
 
 from kotobacore.core.token.base import TokenizerBackend
 from kotobacore.core.token.karuizawa_backend import KaruizawaBackend

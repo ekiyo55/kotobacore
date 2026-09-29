@@ -36,8 +36,10 @@ def get_analyzer(
     enable_rag: bool,
     use_external_dictionaries: bool,
     granularity: str,
+    user_dicts: tuple[str, ...] = (),
 ) -> Analyzer:
     return Analyzer(
+        user_dict_path=list(user_dicts) or None,
         mode=mode,
         enable_semantic_chunk=enable_semantic_chunk,
         enable_emotion=enable_emotion,
@@ -167,9 +169,27 @@ A モードでも entity / slang は壊れません。普通名詞の刻み方�
         horizontal=True,
         help=(
             "coarse (既定): 意味単位を保つ長め分割 (思い出した / 締め切り)。\n\n"
-            "fine: LM 語彙向けに 語幹 / 送り仮名 / 活用語尾 へ分解 (思|い|出|した)。"
+            "fine: LM 語彙向けに 語幹 / 送り仮名 / 活用語尾 へ分解 (思|い|出|した)、"
+            "辞書にない漢字の複合語も語単位に分割 (自然|言語|処理)。"
             "Tokens タブだけが細かくなり、chunks / emotion / intent / RAG は常に "
             "coarse で計算されます。"
+        ),
+    )
+
+    # v1.1: bundled domain dictionaries (the same files a kotobacore.yaml can list)
+    from kotobacore.config import domain_dictionaries
+
+    _domains = domain_dictionaries()
+    domain_choice = st.multiselect(
+        "業種別辞書 (ユーザー辞書)",
+        options=sorted(_domains),
+        default=[],
+        format_func=lambda k: f"builtin:{k} — {_domains[k]['description'].split('（')[0]} ({_domains[k]['rows']} 見出し)",
+        help=(
+            "同梱の業種別辞書を読み込みます。略語・別名が見出し語にそろい (D&O保険 → 役員賠償責任保険、"
+            "PPA → 取得原価の配分)、Entity と検索用索引語にも出ます。\n\n"
+            "自社の辞書は entity.csv 形式の CSV (必須列は surface のみ) で作り、設定ファイル kotobacore.yaml の "
+            "dictionaries に追記すると Analyzer / CLI / HTTP API が自動で読み込みます (docs/USER_DICTIONARY.md)。"
         ),
     )
 
@@ -204,6 +224,12 @@ A モードでも entity / slang は壊れません。普通名詞の刻み方�
         "文書モード (Document mode)",
         value=True,
         help="Document → Paragraph → Sentence の階層で解析し、検索用チャンク (document_chunks) も生成します。1 文でも結果は単文解析と同じなので常時オン推奨。オフにすると単文 API (analyze) の出力になります。",
+    )
+    mail_mode = st.checkbox(
+        "メールとして解析 (Mail mode)",
+        value=False,
+        help="宛名・挨拶・自己紹介・結び・署名・引用を定型句として見分け、文書全体の意図・極性・感情・キーワードから外します"
+        "（例: 結びの「よろしくお願いいたします」でどのメールも依頼になるのを防ぐ）。文書タブの「定型句」列で判定を確認できます。",
     )
     reference_date_str = st.text_input(
         "基準日 (Reference date, YYYY-MM-DD)",
@@ -417,6 +443,7 @@ if analyze_clicked and text.strip():
         enable_rag=enable_rag,
         use_external_dictionaries=use_external,
         granularity=granularity,
+        user_dicts=tuple(f"builtin:{k}" for k in domain_choice),
     )
 
     if reference_date_str.strip():
@@ -431,7 +458,10 @@ if analyze_clicked and text.strip():
         analyzer.reference_date = None
 
     with st.spinner("Analyzing..."):
-        result = analyzer.analyze_document(text) if doc_mode else analyzer.analyze(text)
+        if mail_mode:
+            result = analyzer.analyze_mail(text)
+        else:
+            result = analyzer.analyze_document(text) if doc_mode else analyzer.analyze(text)
 
     # ----------- Summary row
     cols = st.columns(4)
@@ -638,6 +668,17 @@ if analyze_clicked and text.strip():
                 for c in result.intent.candidates
             ]
             st.dataframe(cand_rows, use_container_width=True, hide_index=True)
+            ax = getattr(result.intent, "axes", None)
+            if ax is not None:
+                # v1.1 (schema 1.1): independent axes behind the label — compose business categories from these
+                st.markdown("**意図の軸** (`intent.axes`: 業務の区分はこれを組み合わせて作る。例: 依頼＋否定評価＝苦情)")
+                _AX_JA = {"question": "質問", "request": "依頼", "statement": "表明", "positive": "肯定", "negative": "否定",
+                          "none": "なし", "object": "対象物", "self": "自分の体験", "speaker": "本人", "third_party": "第三者"}
+                st.dataframe(
+                    [{"発話の種類": _AX_JA.get(ax.speech_act, ax.speech_act), "評価の極性": _AX_JA.get(ax.evaluation, ax.evaluation),
+                      "評価の対象": _AX_JA.get(ax.target, ax.target), "発言者": _AX_JA.get(ax.holder, ax.holder)}],
+                    use_container_width=True, hide_index=True,
+                )
         else:
             st.info("意図は分類されませんでした。")
 
@@ -705,7 +746,7 @@ if analyze_clicked and text.strip():
 
     # ----- Document tab (v0.4 FR-050 / FR-081): hierarchy and retrieval chunks
     with tab_document:
-        if not doc_mode:
+        if not (doc_mode or mail_mode):
             st.info("サイドバーの「文書モード」を有効にすると、段落 / 文 / 検索チャンクを表示します。")
         else:
             st.subheader(f"段落 {len(result.paragraphs)} · 文 {len(result.sentences)} · チャンク {len(result.document_chunks)}")
@@ -716,6 +757,8 @@ if analyze_clicked and text.strip():
                     "極性": (s_.sentiment.polarity if s_.sentiment else None) or "",
                     "感情": (s_.emotion.primary if s_.emotion else None) or "",
                     "意図": (s_.intent.label if s_.intent else None) or "",
+                    "定型句": {"salutation": "宛名", "greeting": "挨拶", "self_intro": "自己紹介", "closing": "結び",
+                               "signature": "署名", "quote": "引用"}.get(getattr(s_, "boilerplate", None) or "", ""),
                     "entities": ", ".join(s_.entity_ids),
                 }
                 for s_ in result.sentences
@@ -746,6 +789,17 @@ if analyze_clicked and text.strip():
                 for t in result.tokens
             ]
             st.dataframe(tok_rows, use_container_width=True, hide_index=True)
+            # v1.1: search index terms (token + written form + lemma + compound parts)
+            st.markdown("**検索用索引語** (`search_terms`: BM25 等のキーワード索引向け。語・表層・原形・複合語の構成語)")
+            try:
+                terms = analyzer.search_terms(text)
+                st.dataframe(
+                    [{"term": x.term, "kind": x.kind, "begin": x.begin, "end": x.end, "token_id": x.token_id}
+                     for x in terms],
+                    use_container_width=True, hide_index=True,
+                )
+            except Exception as exc:  # noqa: BLE001
+                st.warning(f"search_terms failed: {exc}")
         else:
             st.info("No tokens.")
 

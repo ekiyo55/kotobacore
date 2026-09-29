@@ -1,4 +1,4 @@
-"""v0.6.4: the pre-v0.3 import paths still work but warn (deprecated 0.6.4, removed 1.1 — 要件定義書 §3.2)."""
+"""v0.6.4: the pre-v0.3 import paths still work but warn (deprecated 0.6.4, removed 2.0 (was 1.1) — 要件定義書 §3.2)."""
 
 import importlib
 import sys

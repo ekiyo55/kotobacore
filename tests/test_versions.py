@@ -34,7 +34,7 @@ def test_component_versions_complete():
     v = component_versions()
     assert v["kotobacore"] == kotobacore.__version__ and v["schema"] == SCHEMA_VERSION and v["tokenizer"] == TOKENIZER_VERSION
     assert set(v["modules"]) == {"intent", "emotion", "sentiment", "topic"} == set(MODULE_VERSIONS)
-    assert v["vocab_format"].startswith("kotobacore-vocab-") and v["legacy_imports"]["removed_in"] == "1.1"
+    assert v["vocab_format"].startswith("kotobacore-vocab-") and v["legacy_imports"]["removed_in"] == "2.0"
     assert "okurigana.csv" in v["dictionaries"] and "emotion.csv" in v["dictionaries"]
     md = compatibility_matrix_markdown()
     assert md.startswith("| 対象 | 版 | 互換ポリシー |") and "Tokenizer (Karuizawa)" in md and TOKENIZER_VERSION in md

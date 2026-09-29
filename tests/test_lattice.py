@@ -195,6 +195,39 @@ def test_fine_granularity_splits_unknown_hiragana_runs():
     assert all(len(t) <= 4 for t in toks)
 
 
+def test_fine_granularity_splits_kanji_compounds():
+    # v1.0.2 (tokenizer 1.1): 辞書にない 3 字以上の漢字連続を語単位に分割する
+    coarse = Analyzer(pipeline="lattice")
+    fine = Analyzer(pipeline="lattice", granularity="fine")
+    assert _surfaces(coarse, "自然言語処理の研究開発") == ["自然言語処理", "の", "研究開発"]
+    assert _surfaces(fine, "自然言語処理の研究開発") == ["自然", "言語", "処理", "の", "研究", "開発"]
+    assert _surfaces(fine, "人工知能技術") == ["人工", "知能", "技術"]
+    # 奇数長は一字接尾辞を語末側に置く
+    assert _surfaces(fine, "経済産業省") == ["経済", "産業", "省"]
+    assert _surfaces(fine, "感染症対策") == ["感染", "症", "対策"]
+    assert _surfaces(fine, "合理的な判断") == ["合理", "的", "な", "判断"]
+    assert _surfaces(fine, "満足感") == ["満足", "感"]
+    assert _surfaces(fine, "少子高齢化社会") == ["少子", "高齢", "化", "社会"]
+    assert _surfaces(fine, "不動産投資信託") == ["不", "動産", "投資", "信託"]
+    # 漢数字の数・日付は割らない
+    assert _surfaces(fine, "一九九五年一月") == _surfaces(coarse, "一九九五年一月")
+    # 接辞の手がかりがない 3 字の漢字語は割らない
+    for w in ("雰囲気", "出来事", "不動産", "新制度", "力不足"):
+        assert _surfaces(fine, w) == [w], w
+    # 辞書語は部品として残す / 辞書語そのものは割らない
+    assert _surfaces(fine, "東京都知事選挙") == ["東京都", "知事", "選挙"]
+    assert _surfaces(fine, "株式会社山田商事の鈴木です")[:3] == ["株式会社", "山田", "商事"]
+    assert _surfaces(fine, "地方公共団体") == _surfaces(coarse, "地方公共団体")
+    # 々 の直前では切らない
+    assert _surfaces(fine, "代々木公園") == ["代々木", "公園"]
+    # 2 字の漢字語はそのまま
+    assert _surfaces(fine, "研究") == ["研究"]
+    # オフセットが原文と一致する
+    toks = fine.tokenize("国際連合安全保障理事会")
+    assert "".join(t.surface for t in toks) == "国際連合安全保障理事会"
+    assert all(toks[k].end == toks[k + 1].begin for k in range(len(toks) - 1))
+
+
 def test_fine_analyze_keeps_semantic_layer_coarse():
     fine = Analyzer(pipeline="lattice", granularity="fine")
     r = fine.analyze("締め切りが近いのにバグが出た。もう無理かも...")
@@ -284,3 +317,82 @@ def test_hira_adjective_does_not_absorb_dict_word():
     assert a.analyze("うきうきしてくる").emotion.primary == "joy"
     # 正当なひらがな形容詞活用は維持
     assert "おかしく" in _surfaces(a, "様子がおかしくなっていた")
+
+
+# ---------------------------------------------------------------------------
+# v1.1 (DD evaluation report §5.2): 連用形名詞 / kanji compound particles
+# ---------------------------------------------------------------------------
+
+
+def test_renyou_nouns_are_one_token():
+    a = Analyzer()
+    assert _surfaces(a, "見込みは事業計画に")[0] == "見込み"
+    assert _surfaces(a, "期限切れとなる") == ["期限", "切れ", "と", "なる"]
+    assert _surfaces(a, "使用料支払いにかかる源泉徴収漏れの可能性") == [
+        "使用料", "支払い", "に", "かかる", "源泉徴収", "漏れ", "の", "可能性"]
+    assert _surfaces(a, "現金及び預金") == ["現金", "及び", "預金"]
+    assert _surfaces(a, "残りは創業者一族")[0] == "残り"
+    assert _surfaces(a, "攻撃を受け、一部業務が")[2] == "受け"
+    assert "向け" in _surfaces(a, "みなと精機株式会社向けが全体の")
+    # conjugations and 交ぜ書き compounds are untouched
+    assert _surfaces(a, "高いと思う")[0] == "高い"
+    assert _surfaces(a, "打ち合わせした")[0] == "打ち合わせ"
+    assert _surfaces(a, "今日は疲れた")[-1] == "疲れた"
+    assert _surfaces(a, "取り組みを進める")[0] == "取り組み"
+
+
+def test_kanji_compound_particles():
+    a = Analyzer()
+    assert _surfaces(a, "本件に関して開示") == ["本件", "に関して", "開示"]
+    assert _surfaces(a, "契約に基づき支払う") == ["契約", "に基づき", "支払う"]
+    assert _surfaces(a, "顧客に対して説明") == ["顧客", "に対して", "説明"]
+
+
+# ---------------------------------------------------------------------------
+# v1.1 (DD evaluation report §5.1): numbers, dates, article references
+# ---------------------------------------------------------------------------
+
+
+def test_numeric_expressions_are_whole_tokens():
+    a = Analyzer()
+    assert _surfaces(a, "売上高は1,234百万円（△56百万円）") == [
+        "売上高", "は", "1,234", "百万円", "(", "△", "56", "百万円", ")"]
+    assert _surfaces(a, "営業損失(1,234)千円") == ["営業損失", "(", "1,234", ")", "千円"]
+    assert _surfaces(a, "粗利率32.5%、2026/9/29時点") == ["粗利率", "32.5", "%", "、", "2026/9/29", "時点"]
+    assert _surfaces(a, "第12条第3項第2号") == ["第12条", "第3項", "第2号"]
+    assert _surfaces(a, "百万円）、第12条") == ["百万円", ")", "、", "第12条"]
+    assert _surfaces(a, "一部業務が3日間停止した")[2:5] == ["3", "日間", "停止"]
+    assert _surfaces(a, "1万人突破") == ["1", "万人", "突破"]
+    assert _surfaces(a, "3件届いております")[:3] == ["3", "件", "届いて"]
+    # unchanged: digits and units stay apart, version strings are not decimals
+    assert _surfaces(a, "2026年4月1日に3億円") == ["2026", "年", "4", "月", "1", "日", "に", "3", "億円"]
+    assert _surfaces(a, "2024年3月期と")[:4] == ["2024", "年", "3", "月期"]
+    assert "2.3" not in _surfaces(a, "バージョン2.3.0を公開")
+
+
+# ---------------------------------------------------------------------------
+# v1.1 independent evaluation (2026-09-29) §6 defects
+# ---------------------------------------------------------------------------
+
+
+def test_independent_eval_defects_fixed():
+    a = Analyzer(use_external_dictionaries=False, use_config=False)
+
+    def toks(s):
+        return [(t.surface, t.pos.split("-")[0], t.dictionary_form) for t in a.tokenize(s)]
+
+    # 1: 難い stays an adjective (was 難く)
+    assert ("難い", "形容詞", "難い") in toks("言い難い")
+    # 2: a lone middle dot is punctuation; katakana names keep it
+    assert ("・", "記号", "・") in toks("利払い前・税引き前")
+    assert toks("トム・クルーズ")[0][0] == "トム・クルーズ"
+    assert "・" not in [x.term for x in a.search_terms("利払い前・税引き前")]
+    # 3: okurigana-dictionary noun is a noun with the canonical lemma (was 動詞 / 割当つ)
+    assert ("割当て", "名詞", "割り当て") in toks("新株予約権の割当て")
+    # 4: suffix 等 is split off, words ending with 等 are not
+    assert [t[0] for t in toks("監査等の発生等")] == ["監査", "等", "の", "発生", "等"]
+    assert toks("平等に扱う")[0][0] == "平等" and toks("等しい")[0][0] == "等しい" and toks("彼等は")[0][0] == "彼等"
+    # 5: compound parts on word boundaries (was 設立|時募|集株|式)
+    assert {"設立", "募集", "株式"} <= {x.term for x in a.search_terms("設立時募集株式")}
+    # 6: legal okurigana words share one spelling
+    assert a.tokenize("備付け")[0].normalized == a.tokenize("備え付け")[0].normalized == "備え付け"

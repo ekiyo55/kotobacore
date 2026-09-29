@@ -70,11 +70,12 @@ def analyze(
     no_sentiment: bool = typer.Option(False, "--no-sentiment", help="Disable sentiment (polarity) module"),
     no_rag: bool = typer.Option(False, "--no-rag", help="Disable RAG optimization"),
     config: str | None = typer.Option(None, "--config", help="Path to YAML config"),
-    user_dict: str | None = typer.Option(None, "--dict", help="Path to user dictionary CSV"),
+    user_dict: str | None = typer.Option(None, "--dict", help="User dictionary: a CSV in entity.csv format (surface[,type,normalized,aliases,priority,keep_as_unit]) or a directory of dictionary CSVs"),
     granularity: str = typer.Option(
         "coarse", "--granularity", help="Token granularity: coarse (semantic units) | fine (語幹/送り仮名/活用語尾)"
     ),
     document: bool = typer.Option(False, "--document", help="Treat input as a multi-sentence document (paragraphs / sentences / document_chunks)"),
+    mail: bool = typer.Option(False, "--mail", help="Treat input as a business mail: greeting / closing / signature / quotes are labelled and left out of the document-level intent, sentiment and keywords"),
     file: bool = typer.Option(False, "--file", help="Read the text from the file at TEXT"),
     reference_date: str | None = typer.Option(None, "--reference-date", help="YYYY-MM-DD for relative dates (今日 / 3日前)"),
 ) -> None:
@@ -84,7 +85,10 @@ def analyze(
         analyzer.reference_date = _dt.date.fromisoformat(reference_date)
     if file:
         text = Path(text).read_text(encoding="utf-8")
-    result = analyzer.analyze_document(text) if document else analyzer.analyze(text)
+    if mail:
+        result = analyzer.analyze_mail(text)
+    else:
+        result = analyzer.analyze_document(text) if document else analyzer.analyze(text)
     payload = result.to_dict()
 
     if semantic_only:
@@ -102,9 +106,10 @@ def tokenize(
     granularity: str = typer.Option(
         "coarse", "--granularity", help="Token granularity: coarse (semantic units) | fine (語幹/送り仮名/活用語尾)"
     ),
+    user_dict: str | None = typer.Option(None, "--dict", help="User dictionary CSV (entity.csv format) or directory"),
 ) -> None:
     """Emit token list only."""
-    analyzer = Analyzer(mode=mode, granularity=granularity)
+    analyzer = Analyzer(mode=mode, granularity=granularity, user_dict_path=user_dict)
     tokens = analyzer.tokenize(text)
     # Token may be dataclass list or empty (Phase 5 fills in).
     if tokens and hasattr(tokens[0], "__dict__"):
@@ -113,6 +118,44 @@ def tokenize(
     else:
         data = tokens
     typer.echo(json.dumps(data, ensure_ascii=False, indent=2 if pretty else None))
+
+
+@app.command()
+def terms(
+    text: str,
+    user_dict: str | None = typer.Option(None, "--dict", help="User dictionary CSV (entity.csv format) or directory"),
+    synonyms: bool = typer.Option(False, "--synonyms", help="Also emit synonym.csv group members"),
+    plain: bool = typer.Option(False, "--plain", help="Space-separated terms only (for piping into an indexer)"),
+    pretty: bool = typer.Option(False, "--pretty"),
+) -> None:
+    """Emit search index terms (token + written form + lemma + compound parts)."""
+    from dataclasses import asdict as _asdict
+
+    analyzer = Analyzer(user_dict_path=user_dict, enable_emotion=False, enable_intent=False, enable_sentiment=False)
+    items = analyzer.search_terms(text, synonyms=synonyms)
+    if plain:
+        typer.echo(" ".join(t.term for t in items))
+    else:
+        typer.echo(json.dumps([_asdict(t) for t in items], ensure_ascii=False, indent=2 if pretty else None))
+
+
+@app.command("config")
+def show_config(
+    config: str | None = typer.Option(None, "--config", help="Config file (default: KOTOBACORE_CONFIG / ./kotobacore.yaml / ~/.config/kotobacore/config.yaml)"),
+) -> None:
+    """Show the config file in effect, its dictionaries and the bundled domain dictionaries."""
+    from kotobacore.config import domain_dictionaries, load_config
+    from kotobacore.dictionary.loader import load_user_entities
+
+    cfg = load_config(config)
+    out = {"config": str(cfg.path) if cfg.path else None, "dictionaries": []}
+    for p in cfg.dictionaries:
+        item = {"path": p, "exists": Path(p).exists()}
+        if Path(p).is_file():
+            item["entries"] = len(load_user_entities(p))
+        out["dictionaries"].append(item)
+    out["builtin"] = {k: {"rows": v["rows"], "description": v["description"]} for k, v in domain_dictionaries().items()}
+    typer.echo(json.dumps(out, ensure_ascii=False, indent=2))
 
 
 @app.command()

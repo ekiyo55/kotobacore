@@ -161,6 +161,8 @@ def _scan_dictionary_matches(
         df = tok.dictionary_form
         if not df or df == tok.surface or df not in cand_by_surface:
             continue
+        if tok.conjugation_form == "連用" and any("一" <= c <= "鿿" for c in tok.surface):
+            continue  # kanji adjective in adverbial く (遅く / 誇らしく思う): its lemma is new in v1.1 and is for search; the semantic layer keeps the pre-1.1 surface reading
         if any(claimed[tok.begin:tok.end]):
             continue
         cand = cand_by_surface[df]
@@ -196,8 +198,9 @@ def _tokens_in_span(tokens: list[Token], start: int, end: int) -> list[Token]:
     return [t for t in tokens if t.begin >= start and t.end <= end]
 
 
-def _is_stopword_token(tok: Token, stopwords: set[str], sw_prefixes: set[str]) -> bool:
-    return tok.surface in stopwords or any(tok.surface.startswith(sw) for sw in sw_prefixes)
+def _is_stopword_token(tok: Token, stopwords: set[str], sw_prefixes: tuple[str, ...]) -> bool:
+    # one C-level str.startswith(tuple) instead of a Python loop over the prefixes (v1.1 speed-up)
+    return tok.surface in stopwords or (bool(sw_prefixes) and tok.surface.startswith(sw_prefixes))
 
 
 def _pos_based_chunks(
@@ -206,7 +209,7 @@ def _pos_based_chunks(
     gap_end: int,
     next_chunk_id: int,
     stopwords: set[str] = frozenset(),
-    sw_prefixes: set[str] = frozenset(),
+    sw_prefixes: tuple[str, ...] = (),
 ) -> list[SemanticChunk]:
     """Group tokens in [gap_start, gap_end) into POS-driven chunks.
 
@@ -292,7 +295,7 @@ def chunk(
 
     matches = _scan_dictionary_matches(normalized_text, bundle, tokens)
     stopwords = bundle.stopword_set()
-    sw_prefixes = {sw for sw in stopwords if len(sw) >= 2}
+    sw_prefixes = tuple(sw for sw in stopwords if len(sw) >= 2)
 
     chunks: list[SemanticChunk] = []
     cursor = 0

@@ -42,6 +42,8 @@ _ADVERSATIVES: tuple[str, ...] = (
 # clause. Weight-neutral like のに.
 _SOFT_BOUNDARIES: tuple[str, ...] = ("のに", "し、", "て、", "で、")
 
+_BOUNDARY_FIRST_CHARS: frozenset[str] = frozenset(m[0] for m in (*_ADVERSATIVES, *_SOFT_BOUNDARIES) if m)
+
 # Weight applied to clauses in a sentence relative to its last adversative.
 _PRE_ADVERSATIVE_WEIGHT = 0.7
 _POST_ADVERSATIVE_WEIGHT = 1.2
@@ -56,6 +58,8 @@ class Clause:
 
 def _find_adversative(text: str, pos: int) -> tuple[int, bool]:
     """Return ``(marker_len, weighted)`` for a boundary at ``pos``, else (0, False)."""
+    if text[pos:pos + 1] not in _BOUNDARY_FIRST_CHARS:  # v1.1 speed-up: most positions start no marker
+        return 0, False
     for marker in _ADVERSATIVES:
         if text.startswith(marker, pos):
             return len(marker), True
@@ -202,6 +206,10 @@ def is_bullet_line(line: str) -> bool:
     return t.startswith(_BULLET_PREFIXES) and len(t) > 1 and t[1:2] in (" ", "　", "") or t[:1] == "・"
 
 
+_URL_RE = re.compile(r"(?:https?|ftp)://[!#-&*-;=?-Z\^-z|~]+")  # half-width URL characters (no quotes / brackets / <>)
+_URL_TRAIL = ".,!?;:！？"
+
+
 def split_sentences(text: str) -> list[tuple[int, int]]:
     """Return sentence spans ``(begin, end)`` (half-open, whitespace-trimmed).
 
@@ -218,6 +226,15 @@ def split_sentences(text: str) -> list[tuple[int, int]]:
     start = 0
     depth = 0
     i = 0
+    # a URL is never split (https://example.com/a?id=3 — found on real mails, 1.1.0a17);
+    # punctuation right after it (….com。 / ….com? ) still ends the sentence
+    url_end: dict[int, int] = {}
+    if "://" in text:
+        for m in _URL_RE.finditer(text):
+            e = m.end()
+            while e > m.start() and text[e - 1] in _URL_TRAIL:
+                e -= 1
+            url_end[m.start()] = e
 
     def _emit(b: int, e: int) -> None:
         while b < e and text[b].isspace():
@@ -234,6 +251,9 @@ def split_sentences(text: str) -> list[tuple[int, int]]:
             start = i + 1
             depth = 0
             i += 1
+            continue
+        if url_end and i in url_end:
+            i = url_end[i]
             continue
         if ch in _OPEN_QUOTES:
             depth += 1

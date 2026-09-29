@@ -25,6 +25,8 @@ downstream semantic layer works unchanged.
 
 from __future__ import annotations
 
+import re
+
 from kotobacore.core.ir import Token
 from kotobacore.core.matching import SurfaceMatcher
 from kotobacore.core.token.conjugation import analyze_conjugation
@@ -200,8 +202,29 @@ _COPULA_TAILS: frozenset[str] = frozenset({
 # Subset claimed ahead of keep_as_unit surfaces: the SNS interjection おけ is
 # keep_as_unit, so における can only win if it is claimed first. Kept minimal
 # on purpose — として would wrongly claim 落と|して.
+# v1.1 (DD evaluation): nominalised 連用形 — KANJI stem + ONE okurigana kana
+# used as a noun or clause-final verb (見込み / 残り / 漏れ / 支払い / 受け /
+# 向け / 及び / 期限|切れ). _classify_okurigana rejects a lone kana, so these
+# fell apart into stem + stray hiragana (見込|み). し (サ変) and に/て/で (particles)
+# are excluded on purpose.
+_RENYOU_KANA = frozenset("いきちびみりれけえめ")
+# what may follow the kana: a particle / conjunction start, or any non-hiragana
+_RENYOU_NEXT_HIRA = frozenset("のはがをにとでもへやか")
+_RENYOU_BONUS = 3.5  # below an assembled verb/adjective of the same span (高い stays 形容詞)
+
 _PRIORITY_PARTICLES: frozenset[str] = frozenset({
     "における", "において", "においては", "においても",
+    # v1.1 (DD evaluation): kanji compound particles — without them the kanji
+    # is stranded as a noun (本件に|関|して / 契約に|基|づき).
+    "に関して", "に関しては", "に関し", "に関する",
+    "に対して", "に対しては", "に対し", "に対する",
+    "に基づき", "に基づいて", "に基づく",
+    "に伴い", "に伴って", "に伴う",
+    "に際して", "に際し",
+    "に応じて", "に応じた",
+    "に従い", "に従って",
+    "を通じて", "を通して",
+    "に加えて", "に比べて", "に向けて", "に向けた",
 })
 
 
@@ -212,11 +235,11 @@ def _is_kana_or_choon(c: str) -> bool:
 
 
 class _Node:
-    __slots__ = ("cost", "dform", "end", "fine", "pos", "start")
+    __slots__ = ("cost", "dform", "end", "fine", "pos", "run", "start")
 
     def __init__(
         self, start: int, end: int, pos: str, dform: str | None, cost: float,
-        fine: bool = False,
+        fine: bool = False, run: bool = False,
     ):
         self.start = start
         self.end = end
@@ -226,6 +249,9 @@ class _Node:
         # True for assembled nodes (verb/adjective/交ぜ書き/hiragana verb) that
         # granularity="fine" may split into 語幹 / 送り仮名 / 活用語尾.
         self.fine = fine
+        # True for plain character-category run nodes (no dictionary backing);
+        # granularity="fine" may split an all-kanji one into words (v1.0.2).
+        self.run = run
 
 
 def _cost(table: tuple[float, float], length: int) -> float:
@@ -388,6 +414,71 @@ def _is_hira_verb(seg: str, known_hira: frozenset[str] = frozenset()) -> bool:
     return False
 
 
+# v1.1 (DD evaluation report §5.1): numeric expressions claimed as whole tokens,
+# the same way keep_as_unit surfaces are — a boundary inside them is never right.
+#   1,234 / 1,234.5 / 32.5      numbers with a thousands separator or a decimal
+#   2026/9/29 / 2026-09-29       dates
+#   第12条 / 第3項 / 第2号       article references, one token per level
+#   △ / ▲ before a number        accounting minus sign (split from a bracket: (△56)
+#   % / ％ after a number, and 、 。 — punctuation never glues to a symbol ()、 / %、)
+#   unit after a number when the kanji run goes on: 3|日間|停止, 100|万円|未満
+# Plain digits and units stay separate tokens (2026 / 年 / 4 / 月) as before.
+_NUM_CLAIMS: tuple[tuple[re.Pattern[str], str], ...] = (
+    (re.compile(r"(?<![0-9.,])[0-9]{1,3}(?:,[0-9]{3})+(?:\.[0-9]+)?(?![0-9]|,[0-9])"), "名詞-数詞"),
+    (re.compile(r"(?<![0-9.])[0-9]+\.[0-9]+(?![0-9.])"), "名詞-数詞"),
+    (re.compile(r"(?<![0-9])[0-9]{4}[/-][0-9]{1,2}[/-][0-9]{1,2}(?![0-9])"), "名詞-数詞"),
+    (re.compile(r"第[0-9]+(?:条|項|号|章|節|款|目|編)(?:の[0-9]+)?"), "名詞-普通名詞-一般"),
+    (re.compile(r"[△▲](?=[0-9])"), "記号"),
+    (re.compile(r"(?<=[0-9])[%％]"), "記号"),
+    # 、。 never glue to a neighbouring symbol (1,234)、 / 32.5%、)
+    (re.compile(r"[、。]"), "記号"),
+)
+_NUM_UNITS = sorted(
+    ("日間", "か月", "ヶ月", "カ月", "箇月", "週間", "時間", "年間", "年度", "月期", "月末", "日", "年", "月",
+     "分", "秒", "件", "名", "人", "社", "個", "回", "倍", "歳", "円", "期", "割", "台", "店", "本", "枚", "株",
+     "点", "位", "部", "階", "番", "行", "字", "頁"),
+    key=len, reverse=True,
+)
+# number scale words that may precede a unit (1|万人|突破 / 1,234|百万円) or stand alone (3|億)
+_NUM_SCALES = ("百万", "千万", "万", "億", "兆", "千", "百")
+_UNIT_AFTER_NUM = re.compile(
+    "(?<=[0-9])(?:(?:" + "|".join(_NUM_SCALES) + ")?(?:" + "|".join(_NUM_UNITS) + ")|" + "|".join(_NUM_SCALES) + ")"
+)
+
+
+# v1.1: the suffix 等 after a word is its own token (監査|等、備付け|等、発生|等) — except in words
+# that end with 等 (平等 / 同等 / 彼等) and before し (等しい)
+_TO_SUFFIX = re.compile(r"(?<=[\u4e00-\u9fff\u3005\u3041-\u3093\u30a1-\u30f6\u30fc])等(?![\u4e00-\u9fff\u3005し])")
+_TO_WORDS = frozenset((
+    "平等", "同等", "対等", "均等", "上等", "高等", "優等", "劣等", "初等", "中等", "特等", "下等", "一等", "二等", "三等",
+    "親等", "彼等", "我等", "何等", "吾等", "汝等", "是等", "此等", "其等", "之等", "不等", "次等", "郎等", "郎党",
+))
+
+
+def _numeric_claims(text: str) -> list[tuple[int, int, str]]:
+    out = [(m.start(), m.end(), pos) for rx, pos in _NUM_CLAIMS for m in rx.finditer(text)]
+    out += [(m.start(), m.end(), "接尾辞-名詞的-一般") for m in _TO_SUFFIX.finditer(text)
+            if text[max(0, m.start() - 1):m.end()] not in _TO_WORDS]
+    # the LONGEST unit after the number, claimed only when more kanji follow (3|日間|停止,
+    # but 1,234|百万円（ and 3|月期|と keep the lattice's usual reading)
+    out += [(m.start(), m.end(), "名詞-普通名詞-一般") for m in _UNIT_AFTER_NUM.finditer(text)
+            if m.end() < len(text) and _char_cat(text[m.end()]) == "KANJI"]
+    return sorted(out, key=lambda x: (x[0], -(x[1] - x[0])))
+
+
+def _prefix_score(prefix: str, lex: frozenset[str]) -> int:
+    """How word-like a kanji prefix left of a 連用形 stem is (higher = better).
+
+    dictionary word > ends in a 1-kanji suffix (使用料 / 物流株式会社) >
+    even length (期限 / 源泉徴収 — Sino-Japanese words come in 2-kanji units).
+    """
+    if prefix in lex:
+        return 3
+    if len(prefix) >= 2 and prefix[-1] in _KANJI_SUFFIXES:
+        return 2
+    return 1 if len(prefix) % 2 == 0 else 0
+
+
 def _propose_nodes(text: str, bundle: DictionaryBundle) -> list[list[_Node]]:
     """Return nodes grouped by start position."""
     n = len(text)
@@ -411,6 +502,14 @@ def _propose_nodes(text: str, bundle: DictionaryBundle) -> list[list[_Node]]:
             by_start[s].append(_Node(s, e, pos, dform, _cost(cost_t, e - s)))
             for i in range(s, e):
                 claimed[i] = 1
+    # v1.1: numeric expressions (1,234 / 32.5 / 2026/9/29 / 第12条 / 3|日間|停止)
+    num_claim_ends: list[int] = []
+    for s0, e0, pos in _numeric_claims(text):
+        if not any(claimed[s0:e0]):
+            by_start[s0].append(_Node(s0, e0, pos, text[s0:e0], _cost(_COST_KAU, e0 - s0)))
+            for i in range(s0, e0):
+                claimed[i] = 1
+            num_claim_ends.append(e0)
 
     def _free(s: int, e: int) -> bool:
         return not any(claimed[s:e])
@@ -425,6 +524,9 @@ def _propose_nodes(text: str, bundle: DictionaryBundle) -> list[list[_Node]]:
             content_start[s] = 1
             dict_spans.add((s, e))
     mid_ok = bytearray(n)  # positions where a mid-KANJI-run stem may start
+    for e0 in num_claim_ends:  # a verb may start right after a claimed unit (3件|届いております)
+        if e0 < n:
+            mid_ok[e0] = 1
 
     def _cap(s: int, e: int) -> int:
         """Largest end ≤ e such that [s, end) is free of claimed chars."""
@@ -445,6 +547,16 @@ def _propose_nodes(text: str, bundle: DictionaryBundle) -> list[list[_Node]]:
     for r in runs:
         for i in range(r[0], r[1]):
             run_of[i] = r
+
+    # v1.1: a dictionary word with okurigana that starts inside a KANJI run
+    # (偽装|請け負い / 退職|引き継ぎ) — give the path a node for the run part
+    # before it; pure-kanji words embedded in a run are left alone.
+    for s1, e1 in dict_spans:
+        rs1, re1, cat1 = run_of[s1]
+        if cat1 == "KANJI" and rs1 < s1 and e1 > re1 and _free(rs1, s1):
+            by_start[rs1].append(
+                _Node(rs1, s1, _RUN_POS["KANJI"], text[rs1:s1], _cost(_COST_RUN, s1 - rs1), run=True)
+            )
 
     for rs0, re0, cat0 in runs:
         if cat0 != "HIRAGANA":
@@ -543,10 +655,12 @@ def _propose_nodes(text: str, bundle: DictionaryBundle) -> list[list[_Node]]:
                               _cost(_COST_HIRA_RUN, length - 1) - 2.5, fine=True)
                     )
         else:
+            # v1.1: a run of middle dots only (利払い前・税引き前) is punctuation, not a katakana noun
+            rpos = "記号" if all(ch == "・" for ch in text[i:cap]) else _RUN_POS[cat]
             if length > 1:
-                by_start[i].append(_Node(i, i + 1, _RUN_POS[cat], text[i], 8.0))
+                by_start[i].append(_Node(i, i + 1, "記号" if text[i] == "・" else _RUN_POS[cat], text[i], 8.0, run=True))
             by_start[i].append(
-                _Node(i, cap, _RUN_POS[cat], text[i:cap], _cost(_COST_RUN, length))
+                _Node(i, cap, rpos, text[i:cap], _cost(_COST_RUN, length), run=True)
             )
             # KANJI run prefix (突然|云い出した / 何|時間かかる): the run minus
             # the 1–2 kanji that a following verb / compound stem may take.
@@ -561,7 +675,7 @@ def _propose_nodes(text: str, bundle: DictionaryBundle) -> list[list[_Node]]:
                         mid_ok[pe] = 1
                         by_start[i].append(
                             _Node(i, pe, _RUN_POS[cat], text[i:pe],
-                                  _cost(_COST_RUN, pe - i) + 1.0)
+                                  _cost(_COST_RUN, pe - i) + 1.0, run=True)
                         )
         # Fixed KANJI+kana words (同じ / 大きな) — any script boundary
         for ln in range(min(_MAX_FIXED_LEN, n - i), 1, -1):
@@ -794,6 +908,42 @@ def _propose_nodes(text: str, bundle: DictionaryBundle) -> list[list[_Node]]:
                                               fine=True)
                                     )
 
+    # 12. Nominalised 連用形 (見込み / 源泉徴収|漏れ / 使用料|支払い / 現金|及び).
+    # The stem is the last 1–2 kanji of a KANJI run; when it starts mid-run the
+    # rest of the run gets its own run node so the path can reach the stem.
+    # A 2-kanji run is one stem (見込み); in a longer run the stem length is
+    # chosen by how word-like the remaining prefix is (_prefix_score).
+    kanji_lex = _kanji_lexicon(bundle)[0]
+    for rs, re_, cat in runs:
+        if cat != "KANJI" or re_ >= n or text[re_] not in _RENYOU_KANA:
+            continue
+        nxt = re_ + 1
+        if nxt < n and run_of[nxt][2] == "HIRAGANA" and text[nxt] not in _RENYOU_NEXT_HIRA:
+            continue  # 関して / 受けた / 漏れる — a conjugation, not a noun
+        if nxt < n and run_of[nxt][2] == "KANJI" and text[re_] != "び":
+            continue  # 打ち|合わせ is a 交ぜ書き compound; only 及び / 並び link to a kanji word
+        if not _free(re_, nxt):
+            continue
+        run_len = re_ - rs
+        if run_len <= 2:
+            stems = (run_len,)
+        else:
+            p1, p2 = text[rs:re_ - 1], text[rs:re_ - 2]
+            stems = (1,) if _prefix_score(p1, kanji_lex) >= _prefix_score(p2, kanji_lex) else (2,)
+        for stem_len in stems:
+            st = re_ - stem_len
+            if st < rs or not _free(st, re_) or text[st:re_] in protected:
+                continue
+            by_start[st].append(
+                _Node(st, nxt, "名詞-普通名詞-一般", text[st:nxt],
+                      _cost(_COST_COMPOUND, nxt - st) - _RENYOU_BONUS, fine=True)
+            )
+            if st > rs and _free(rs, st):
+                by_start[rs].append(
+                    _Node(rs, st, _RUN_POS["KANJI"], text[rs:st],
+                          _cost(_COST_RUN, st - rs), run=True)
+                )
+
     return by_start
 
 
@@ -912,6 +1062,153 @@ def _fine_pieces(
     return pieces
 
 
+# --------------------------------------------------------------------------
+# fine: kanji compound splitting (v1.0.2 / tokenizer 1.1)
+# --------------------------------------------------------------------------
+
+# One-kanji affixes that stand alone inside a compound. A kanji run of odd
+# length needs a 1-char piece or a 3-kanji word somewhere; suffixes belong at
+# the end of a word (東京都|知事 / 理事|会 / 合理|的 / 満足|感 / 感染|症),
+# prefixes at the head of a longer run (新|制度改革).
+_KANJI_SUFFIXES: frozenset[str] = frozenset(
+    "的性化者会都府県市区町村党省庁局部課係長員家業法型式率費料力品用感派様済勢"
+    "内外中後上下間別界学論史際圏層群類版号回数量額値点線面体物所場院館社店"
+    "症病薬機器具製賞展祭戦権制案書税金時簿"
+)
+_KANJI_PREFIXES: frozenset[str] = frozenset("新旧再非不未無超副総第初最諸両当同現元全各毎前本")
+# suffixes that almost never end a 2-kanji word themselves win a tie (源泉|所得|税, not 源泉|所|得税)
+_KANJI_STRONG_SUFFIXES: frozenset[str] = frozenset("的性化者省庁税法率費料症感製済勢派様")
+# Built-in pieces that the bundled dictionaries do not list as words
+# (company-type words: 株式会社|山田|商事, not 株式|会社|…).
+_KANJI_BUILTIN_WORDS: frozenset[str] = frozenset(
+    ("株式会社", "有限会社", "合同会社", "合資会社", "合名会社", "財団法人", "社団法人")
+)
+_MIN_SPLIT_KANJI = 3
+# Kanji numerals: a run with two in a row is a number / date (一九九五年一月,
+# 三十代) — kept whole like digit runs.
+_KANJI_NUMERALS = "〇一二三四五六七八九十百千万億兆"
+_KANJI_NUMERAL_PAIR = re.compile(f"[{_KANJI_NUMERALS}]{{2}}")
+_MAX_LEX_KANJI = 6
+_KC_LEX = 1.0       # known all-kanji dictionary word
+_KC_ATTESTED = 1.6  # 2-kanji word attested standalone in the bundled texts (v1.1)
+_KC_TWO = 2.0       # unknown 2-kanji chunk (the typical Sino-Japanese word)
+_KC_SUFFIX = 2.4    # 1-kanji suffix after the head (tie-break: suffix beats prefix)
+_KC_STRONG_SUFFIX = 2.35  # strong suffix: wins a tie against a weaker one elsewhere
+_KC_PREFIX = 2.5    # 1-kanji prefix at the head
+_KC_THREE = 4.45    # unknown 3-kanji word (雰囲気 / 出来事 / 不動産): kept whole unless
+#                     a suffix split (満足|感 = 4.4) is cheaper — a bare 3-kanji run
+#                     is usually one word, so prefix splits (新|制度 = 4.5) lose
+_KC_THREE_LONG = 4.9  # same inside a 4+ kanji run (不|動産|投資|信託 beats 不動|産投|資信託)
+_KC_ONE = 4.0       # any other single kanji (+0.01 per char before the end)
+
+
+_ATTESTED: frozenset[str] | None = None
+
+
+def _attested_kanji_words() -> frozenset[str]:
+    """2-kanji words that stand alone (between non-kanji) in the bundled dictionaries and SNS examples.
+
+    A soft word list for the compound splitter (v1.1): without one, 2-kanji chunks
+    fall on the wrong boundary (設立|時募|集株|式). Built only from resources that ship
+    with the package — no evaluation data.
+    """
+    global _ATTESTED
+    if _ATTESTED is None:
+        from kotobacore.dictionary.loader import _DEFAULT_DICT_DIR
+
+        rx = re.compile(r"(?<![\u4e00-\u9fff\u3005])[\u4e00-\u9fff\u3005]{2}(?![\u4e00-\u9fff\u3005])")
+        words: set[str] = set()
+        for p in [*sorted(_DEFAULT_DICT_DIR.glob("*.csv")), *sorted(_DEFAULT_DICT_DIR.glob("domains/*.csv")),
+                  *sorted(_DEFAULT_DICT_DIR.glob("*.txt"))]:
+            try:
+                words.update(rx.findall(p.read_text(encoding="utf-8")))
+            except OSError:
+                continue
+        _ATTESTED = frozenset(words)
+    return _ATTESTED
+
+
+def _is_kanji_run(surface: str) -> bool:
+    return bool(surface) and all(_char_cat(ch) == "KANJI" for ch in surface)
+
+
+def _kanji_lexicon(bundle: DictionaryBundle) -> tuple[frozenset[str], frozenset[str]]:
+    """(all-kanji dictionary words usable as pieces, surfaces never split)."""
+    res = bundle._cache.get("kanji_lexicon")
+    if res is not None:
+        return res
+    words: set[str] = set()
+    for e in (*bundle.emotion, *bundle.external_emotion, *bundle.slang, *bundle.sentiment):
+        words.add(e.surface)
+    for e in bundle.entity:
+        words.add(e.surface)
+        words.update(e.aliases)
+    for e in bundle.okurigana:
+        words.add(e.canonical)
+        words.update(e.variants)
+    for e in bundle.synonym:
+        words.add(e.canonical)
+        words.update(e.synonyms)
+    for e in bundle.stopwords:
+        words.add(e.surface)
+    words.update(bundle.keep_as_unit_surfaces())
+    keep = frozenset(w for w in words if w and _is_kanji_run(w))
+    lex = frozenset(w for w in keep if 2 <= len(w) <= _MAX_LEX_KANJI) | _KANJI_BUILTIN_WORDS
+    res = (lex, keep)
+    bundle._cache["kanji_lexicon"] = res
+    return res
+
+
+def _split_kanji_compound(surface: str, lex: frozenset[str]) -> list[tuple[int, int]]:
+    """Cheapest segmentation of an all-kanji compound into word-sized pieces.
+
+    Known dictionary words win, unknown stretches fall back to 2-kanji chunks
+    (自然|言語|処理), odd leftovers become 1-kanji affixes (理事|会 / 満足|感) or,
+    failing that, one 3-kanji word (雰囲気 / 語彙|力|消失 / 力不足).
+    A piece never ends right before the iteration mark 々 (代々木 stays whole).
+    """
+    n = len(surface)
+    inf = float("inf")
+    best = [0.0] + [inf] * n
+    back = [0] * (n + 1)
+    for i in range(n):
+        if best[i] == inf:
+            continue
+        for ln in range(1, min(_MAX_LEX_KANJI, n - i) + 1):
+            if i + ln < n and surface[i + ln] == "々":
+                continue
+            seg = surface[i:i + ln]
+            if ln >= 2 and seg in lex:
+                c = _KC_LEX
+            elif ln == 2 and seg in _attested_kanji_words():
+                c = _KC_ATTESTED
+            elif ln == 2 or (ln == 3 and seg[1] == "々"):
+                c = _KC_TWO
+            elif ln == 3:
+                c = _KC_THREE if n == 3 else _KC_THREE_LONG
+            elif ln == 1:
+                if i > 0 and seg in _KANJI_SUFFIXES:
+                    c = _KC_STRONG_SUFFIX if seg in _KANJI_STRONG_SUFFIXES else _KC_SUFFIX
+                elif i == 0 and seg in _KANJI_PREFIXES:
+                    c = _KC_PREFIX
+                else:
+                    c = _KC_ONE + 0.01 * (n - 1 - i)
+            else:
+                continue
+            if best[i] + c < best[i + ln]:
+                best[i + ln] = best[i] + c
+                back[i + ln] = i
+    if best[n] == inf:
+        return [(0, n)]
+    out: list[tuple[int, int]] = []
+    j = n
+    while j > 0:
+        out.append((back[j], j))
+        j = back[j]
+    out.reverse()
+    return out
+
+
 def lattice_tokenize(
     text: str, bundle: DictionaryBundle, granularity: str = "coarse"
 ) -> list[Token]:
@@ -919,9 +1216,10 @@ def lattice_tokenize(
 
     ``granularity``: "coarse" (default — semantic units: 思い出した / 締め切り)
     or "fine" (assembled verbs / adjectives / 交ぜ書き compounds are split into
-    語幹・送り仮名・活用語尾 — for language-model vocabularies where ~2 chars
-    per token is too long). Dictionary entities and keep_as_unit surfaces are
-    never split.
+    語幹・送り仮名・活用語尾, and all-kanji compounds of 3+ chars with no
+    dictionary backing are split into word-sized pieces 自然|言語|処理 — for
+    language-model vocabularies where ~2 chars per token is too long).
+    Dictionary entities and keep_as_unit surfaces are never split.
     """
     n = len(text)
     if n == 0:
@@ -970,11 +1268,25 @@ def lattice_tokenize(
     tokens: list[Token] = []
     fine = granularity == "fine"
     oku_map = bundle.okurigana_map()
+    ent_norm = bundle.entity_normalized_map()
+    oku_nouns = bundle._cache.get("okurigana_nouns")
+    if oku_nouns is None:  # built once per bundle (rebuilding it per call cost ~7% of analyze())
+        oku_nouns = frozenset(v for e in bundle.okurigana if e.pos.startswith("名詞") for v in (e.canonical, *e.variants))
+        bundle._cache["okurigana_nouns"] = oku_nouns
+    kanji_lex, kanji_keep = _kanji_lexicon(bundle) if fine else (frozenset(), frozenset())
     for node in path:
         if node.pos == "空白":
             continue
         if fine and node.fine:
             spans = _fine_pieces(node, text, known_hira)
+        elif fine and node.run \
+                and node.end - node.start >= _MIN_SPLIT_KANJI \
+                and _is_kanji_run(text[node.start:node.end]) \
+                and text[node.start:node.end] not in kanji_keep                 and not _KANJI_NUMERAL_PAIR.search(text[node.start:node.end]):
+            spans = [
+                (node.start + a, node.start + b, node.pos)
+                for a, b in _split_kanji_compound(text[node.start:node.end], kanji_lex)
+            ]
         else:
             spans = [(node.start, node.end, node.pos)]
         for ps, pe, ppos in spans:
@@ -982,19 +1294,26 @@ def lattice_tokenize(
             whole = ps == node.start and pe == node.end
             dform = (node.dform or surface) if whole else surface
             ctype = cform = None
+            if whole and ppos.startswith("動詞") and surface in oku_nouns:
+                # v1.1: an okurigana-dictionary noun (割当て / 見積り) is a noun, lemma = canonical spelling
+                ppos, dform = "名詞-普通名詞-一般", oku_map[surface]
             if whole and ppos.startswith(("動詞", "形容詞")):
                 # N4: lemma / 活用型 / 活用形 for assembled verbs and adjectives
                 info = analyze_conjugation(surface, ppos)
                 if info is not None:
                     ctype, cform = info.conjugation_type, info.conjugation_form
-                    if dform == surface:
+                    if dform == surface or (
+                        ppos.startswith("形容詞") and info.conjugation_type != "形容詞"
+                    ):
+                        # v1.1: a 形容詞 node whose surface is really a verb (関わりたくない → 関わる)
                         dform = info.lemma
             tokens.append(
                 Token(
                     id=len(tokens),
                     surface=surface,
-                    # N4: okurigana variants share one normalized spelling (引落 → 引き落とし)
-                    normalized=oku_map.get(surface, surface) if whole else surface,
+                    # N4: okurigana variants share one normalized spelling (引落 → 引き落とし);
+                    # v1.1: entity aliases carry the canonical name (D&O保険 → 役員賠償責任保険)
+                    normalized=(ent_norm.get(surface) or oku_map.get(surface, surface)) if whole else surface,
                     dictionary_form=dform,
                     reading=None,
                     pos=ppos,

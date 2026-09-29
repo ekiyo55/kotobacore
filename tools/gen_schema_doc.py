@@ -23,12 +23,14 @@ from kotobacore.versions import component_versions
 ORDER = [
     "AnalysisResult", "MetaInfo", "TextInfo", "Token", "SemanticToken", "SemanticChunk", "Entity", "Argument", "Predicate",
     "Relation", "Event", "EmotionExpression", "EmotionResult", "SentimentExpression", "SentimentResult", "IntentCandidate",
-    "IntentResult", "Topic", "TopicResult", "Paragraph", "Sentence", "DocumentChunk", "QueryIR", "RagResult", "KotobaError",
+    "IntentResult", "IntentAxes", "Topic", "TopicResult", "Paragraph", "Sentence", "DocumentChunk", "QueryIR", "RagResult", "KotobaError",
 ]
 SINCE = {  # field → version it was added (post-0.3 additions only; everything else is 0.3 = v0.3.0 base)
     "Entity.canonical_id": "0.4 (v0.6.2)", "Entity.aliases": "0.4 (v0.6.2)", "Token.conjugation_type": "0.4 (v0.6.3)",
     "Token.conjugation_form": "0.4 (v0.6.3)", "MetaInfo.components": "0.4 (v0.6.4)", "DocumentChunk.heading_path": "0.3 (v0.5.2)",
-    "DocumentChunk.context": "0.3 (v0.5.2)",
+    "DocumentChunk.context": "0.3 (v0.5.2)", "IntentResult.axes": "1.1 (v1.1.0)", "IntentAxes.speech_act": "1.1 (v1.1.0)",
+    "IntentAxes.evaluation": "1.1 (v1.1.0)", "IntentAxes.target": "1.1 (v1.1.0)", "IntentAxes.holder": "1.1 (v1.1.0)",
+    "Sentence.boilerplate": "1.1 (v1.1.0)",
 }
 
 
@@ -47,7 +49,7 @@ def main() -> None:
         "- All spans (`begin` / `end`) are **original-text** character offsets (FR-002 位置写像); `text.offset_map` maps normalized → original.",
         "- Ids: tokens `int` (0-based), entities `e1…`, predicates `p1…`, relations `r1…`, events `ev1…` — unique within one result; coreference shares `canonical_id`, never the id.",
         f"- Component versions stamped in `meta.components`: tokenizer {v['tokenizer']}, dictionary_set {v['dictionary_set']}, modules {v['modules']}.",
-        "- Schema history: 0.1 (v0.1 flat result) → 0.2 (v0.4 document hierarchy, entities, query IR) → 0.3 (v0.5 predicates / relations / events / topics, chunk context) → 0.4 (v0.6 coreference, conjugation, components).",
+        "- Schema history: 0.1 (v0.1 flat result) → 0.2 (v0.4 document hierarchy, entities, query IR) → 0.3 (v0.5 predicates / relations / events / topics, chunk context) → 0.4 (v0.6 coreference, conjugation, components) → 1.0 (v1.0.0 frozen) → 1.1 (v1.1.0 intent axes).",
         "",
     ]
     for name in ORDER:

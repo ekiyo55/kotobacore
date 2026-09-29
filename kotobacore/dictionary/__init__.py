@@ -17,8 +17,10 @@ from kotobacore.dictionary.loader import (
     SlangEntry,
     StopwordEntry,
     SynonymEntry,
+    apply_user_dictionary,
     load_default_bundle,
     load_dictionary_bundle,
+    load_user_entities,
 )
 
 __all__ = [
@@ -31,6 +33,7 @@ __all__ = [
     "SlangEntry",
     "StopwordEntry",
     "SynonymEntry",
+    "apply_user_dictionary",
     "load_bundle_with_external",
     "load_default_bundle",
     "load_dictionary_bundle",
@@ -38,4 +41,5 @@ __all__ = [
     "load_gemini_examples_dir",
     "load_nrc_lexicon",
     "load_user_bundle",
+    "load_user_entities",
 ]

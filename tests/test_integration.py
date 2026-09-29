@@ -151,4 +151,4 @@ def test_fixed_corpus_analyzes_without_error():
         json.loads(r.to_json())
         # Each must have meta
         assert r.meta.version == kotobacore.__version__
-        assert r.meta.schema_version == "1.0"
+        assert r.meta.schema_version == "1.1"

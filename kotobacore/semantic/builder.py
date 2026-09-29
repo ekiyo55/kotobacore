@@ -1,4 +1,4 @@
-"""Compatibility shim: moved to kotobacore.core.entity (v0.3). Deprecated since 0.6.4, removed in 1.1."""
+"""Compatibility shim: moved to kotobacore.core.entity (v0.3). Deprecated since 0.6.4, removed in 2.0."""
 
 import kotobacore.core.entity as _m
 from kotobacore._compat import deprecated_module as _dep

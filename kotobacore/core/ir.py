@@ -14,7 +14,7 @@ from typing import Any
 # (backward compatible), removals / type changes are major. History: 0.1 flat result → 0.2 document
 # hierarchy / entities / query IR → 0.3 predicates / relations / events / topics / chunk context →
 # 0.4 coreference / conjugation / components → 1.0 freeze (same fields as 0.4).
-SCHEMA_VERSION = "1.0"
+SCHEMA_VERSION = "1.1"  # 1.1 (KotobaCore 1.1): IntentResult.axes added (backward compatible)
 
 
 @dataclass
@@ -142,10 +142,32 @@ class IntentCandidate:
 
 
 @dataclass
+class IntentAxes:
+    """Intent decomposed into independent axes (schema 1.1).
+
+    The single ``IntentResult.label`` mixes several decisions; each axis is
+    easier to get right on its own, and an application composes the categories
+    it needs (e.g. request + negative evaluation = complaint).
+
+    * ``speech_act``  question / request / statement
+    * ``evaluation``  positive / negative / none — does the text evaluate something
+    * ``target``      object (a product / service / organization / thing) / self (the
+                      writer's own experience) / none (no evaluation)
+    * ``holder``      speaker / third_party — whose feeling or evaluation it is
+    """
+
+    speech_act: str
+    evaluation: str
+    target: str
+    holder: str
+
+
+@dataclass
 class IntentResult:
     label: str | None
     confidence: float
     candidates: list[IntentCandidate] = field(default_factory=list)
+    axes: IntentAxes | None = None  # schema 1.1
 
 
 @dataclass
@@ -267,6 +289,7 @@ class Sentence:
     emotion: EmotionResult | None = None
     sentiment: SentimentResult | None = None
     intent: IntentResult | None = None
+    boilerplate: str | None = None  # schema 1.1, analyze_mail: salutation / greeting / self_intro / closing / signature / quote
 
 
 @dataclass

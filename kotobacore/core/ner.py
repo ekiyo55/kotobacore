@@ -297,6 +297,25 @@ _PERSON_BLOCK = {
 }
 _HIRAGANA_RE = re.compile(r"^[ぁ-ゖー]+$")
 _LEGAL_PREFIX = ("株式会社", "有限会社", "合同会社", "一般社団法人", "公益社団法人", "一般財団法人", "公益財団法人", "社会福祉法人", "学校法人", "医療法人", "特定非営利活動法人")
+# v1.1 speed-up: lookup structures for the per-token loops in _pattern_candidates (same results as the tuple scans)
+_LEGAL_PREFIX_SET = frozenset(_LEGAL_PREFIX)
+_LEGAL_PREFIX_HEADS = frozenset(p[:2] for p in _LEGAL_PREFIX)
+_SUFFIX_INDEX: list[tuple[frozenset[str], tuple[int, ...], dict[str, int], tuple[str, ...], str]] = [
+    (frozenset(g), tuple(sorted({len(s) for s in g})), {s: k for k, s in reversed(list(enumerate(g)))}, g, t)
+    for g, t in _SUFFIX_TABLE
+]
+
+
+def _first_suffix(surf: str, sset: frozenset[str], lens: tuple[int, ...], order: dict[str, int]) -> str | None:
+    """The suffix that the original ``for sfx in suffixes`` scan would hit first (tuple order), or None."""
+    best = None
+    n = len(surf)
+    for L in lens:
+        if n > L:
+            s = surf[-L:]
+            if s in sset and (best is None or order[s] < order[best]):
+                best = s
+    return best
 
 
 def _is_nounish(tok: Token) -> bool:
@@ -365,24 +384,27 @@ def _pattern_candidates(text: str, tokens: list[Token], claimed: bytearray, stop
     for i, tok in enumerate(tokens):
         surf = tok.surface
         # legal-form prefix glued into one token by the lattice: 株式会社北斗物流 (v0.6.2)
-        glued = next((p for p in _LEGAL_PREFIX if surf.startswith(p) and len(surf) >= len(p) + 2), None)
-        if glued and _is_nounish(tok) and surf not in _LEGAL_PREFIX:
+        glued = (next((p for p in _LEGAL_PREFIX if surf.startswith(p) and len(surf) >= len(p) + 2), None)
+                 if surf[:2] in _LEGAL_PREFIX_HEADS else None)
+        if glued and _is_nounish(tok) and surf not in _LEGAL_PREFIX_SET:
             j = i
             while j + 1 < n and _is_nounish(tokens[j + 1]) and tokens[j + 1].begin == tokens[j].end and tokens[j + 1].surface not in _PERSON_SUFFIX:
                 j += 1
             _push("ORGANIZATION", tok.begin, tokens[j].end, text[tok.begin + len(glued):tokens[j].end])
             continue
         # legal-form prefix: 株式会社 + Name
-        if surf in _LEGAL_PREFIX and i + 1 < n and _is_nounish(tokens[i + 1]) and tokens[i + 1].begin == tok.end:
+        if surf in _LEGAL_PREFIX_SET and i + 1 < n and _is_nounish(tokens[i + 1]) and tokens[i + 1].begin == tok.end:
             j = i + 1
             while j + 1 < n and _is_nounish(tokens[j + 1]) and tokens[j + 1].begin == tokens[j].end and tokens[j + 1].surface not in _PERSON_SUFFIX:
                 j += 1
             _push("ORGANIZATION", tok.begin, tokens[j].end, text[tokens[i + 1].begin:tokens[j].end])
             continue
-        for suffixes, typ in _SUFFIX_TABLE:
+        nounish = _is_nounish(tok)
+        for sset, slens, sorder, _suffixes, typ in _SUFFIX_INDEX:
             hit = None
+            in_suffixes = surf in sset
             # (a) the token itself is the suffix → merge with preceding noun token(s)
-            if surf in suffixes and i > 0:
+            if in_suffixes and i > 0:
                 prev = tokens[i - 1]
                 if prev.end == tok.begin and _is_nounish(prev) and prev.surface not in stopwords:
                     name = prev.surface
@@ -398,32 +420,32 @@ def _pattern_candidates(text: str, tokens: list[Token], claimed: bytearray, stop
                         b = tokens[k].begin
                     hit = (b, tok.end, text[b:prev.end] if typ == "PERSON" else text[b:tok.end])
             # (a') a standalone multi-char EVENT word is an event by itself (説明会 / 会議)
-            if hit is None and surf in suffixes and typ == "EVENT" and len(surf) >= 2:
+            if hit is None and in_suffixes and typ == "EVENT" and len(surf) >= 2:
                 hit = (tok.begin, tok.end, surf)
             # (b) the token ends with the suffix and has a name part in front
-            elif surf not in suffixes:
-                for sfx in suffixes:
-                    if len(surf) > len(sfx) and surf.endswith(sfx) and _is_nounish(tok):
-                        name = surf[: -len(sfx)]
-                        if typ == "PERSON" and (name in _PERSON_BLOCK or _HIRAGANA_RE.match(name) or name.startswith(("お", "ご"))):
-                            break
-                        if sfx in _ONE_CHAR_SUFFIX and (len(name) < 2 or _HIRAGANA_RE.match(name) or name in stopwords):
-                            break
-                        if name in stopwords:
-                            break
-                        b = tok.begin
-                        # extend left over adjacent noun tokens (代々 + 木公園 → 代々木公園)
-                        k = i
-                        while (
-                            typ != "PERSON" and k - 1 >= 0 and tokens[k - 1].end == tokens[k].begin
-                            and not tokens[k - 1].pos.startswith(("助詞", "助動詞", "動詞", "形容詞", "記号", "接続詞", "感動詞"))
-                            and tokens[k - 1].surface not in stopwords and not _HIRAGANA_RE.match(tokens[k - 1].surface)
-                            and not tokens[k - 1].surface.isdigit()
-                        ):
-                            k -= 1
-                            b = tokens[k].begin
-                        hit = (b, tok.end, text[b:tok.end - len(sfx)] if typ == "PERSON" else text[b:tok.end])
+            elif not in_suffixes:
+                sfx0 = _first_suffix(surf, sset, slens, sorder) if nounish else None
+                for sfx in (sfx0,) if sfx0 is not None else ():
+                    name = surf[: -len(sfx)]
+                    if typ == "PERSON" and (name in _PERSON_BLOCK or _HIRAGANA_RE.match(name) or name.startswith(("お", "ご"))):
                         break
+                    if sfx in _ONE_CHAR_SUFFIX and (len(name) < 2 or _HIRAGANA_RE.match(name) or name in stopwords):
+                        break
+                    if name in stopwords:
+                        break
+                    b = tok.begin
+                    # extend left over adjacent noun tokens (代々 + 木公園 → 代々木公園)
+                    k = i
+                    while (
+                        typ != "PERSON" and k - 1 >= 0 and tokens[k - 1].end == tokens[k].begin
+                        and not tokens[k - 1].pos.startswith(("助詞", "助動詞", "動詞", "形容詞", "記号", "接続詞", "感動詞"))
+                        and tokens[k - 1].surface not in stopwords and not _HIRAGANA_RE.match(tokens[k - 1].surface)
+                        and not tokens[k - 1].surface.isdigit()
+                    ):
+                        k -= 1
+                        b = tokens[k].begin
+                    hit = (b, tok.end, text[b:tok.end - len(sfx)] if typ == "PERSON" else text[b:tok.end])
+                    break
             if hit:
                 b, e, norm = hit
                 # EVENT followed by a 4-digit year (テックフェア2026)

@@ -177,22 +177,25 @@ def _n1(text: str) -> tuple[list[str], list[int]]:
 # ---------------------------------------------------------------------------
 
 
-_PATTERN_CACHE: dict[int, tuple[tuple[str, ...], re.Pattern[str] | None]] = {}
+_PATTERN_CACHE: dict[int, tuple[tuple[str, ...], re.Pattern[str] | None, dict[str, str], int]] = {}
 
 
 def _compile_rules(rules: dict[str, str]) -> re.Pattern[str] | None:
     key = id(rules)
-    sources = tuple(s for s in rules if s)
     cached = _PATTERN_CACHE.get(key)
-    if cached is not None and cached[0] == sources:
+    # v1.1 speed-up: the cache keeps a reference to the rule map itself, so its id cannot be reused by
+    # another dict while cached; a hit is "the same object, same size" instead of rebuilding the source
+    # tuple on every call (rule maps come from the bundle cache and are not mutated)
+    if cached is not None and cached[2] is rules and cached[3] == len(rules):
         return cached[1]
+    sources = tuple(s for s in rules if s)
     pattern: re.Pattern[str] | None = None
     if sources:
         ordered = sorted(sources, key=len, reverse=True)  # longest match first
         pattern = re.compile("|".join(re.escape(s) for s in ordered))
     if len(_PATTERN_CACHE) > 16:
         _PATTERN_CACHE.clear()
-    _PATTERN_CACHE[key] = (sources, pattern)
+    _PATTERN_CACHE[key] = (sources, pattern, rules, len(rules))
     return pattern
 
 
@@ -226,8 +229,11 @@ def _n2(chars: list[str], origin: list[int], rules: dict[str, str]) -> tuple[lis
             out_chars.extend(tgt)
             out_origin.extend(origin[m.start() : m.end()])
         else:
+            # v1.1: each target char takes the origin of the source char at the same
+            # index (capped at the last one), so サーバ→サーバー spans all of サーバ
+            # (was: every char on origin[m.start()], giving a 1-char original span)
             out_chars.extend(tgt)
-            out_origin.extend([origin[m.start()]] * len(tgt))
+            out_origin.extend(origin[m.start() + min(k, len(src) - 1)] for k in range(len(tgt)))
         pos = m.end()
     out_chars.extend(chars[pos:])
     out_origin.extend(origin[pos:])
@@ -239,13 +245,47 @@ def _n2(chars: list[str], origin: list[int], rules: dict[str, str]) -> tuple[lis
 # ---------------------------------------------------------------------------
 
 
-def normalize_with_map(text: str, rules: dict[str, str] | None = None) -> NormalizedText:
-    """Run N1 (+ N2 when ``rules`` is given) and return text with origin map."""
+def _n2_compact(chars: list[str], origin: list[int], rules: dict[str, str]) -> tuple[list[str], list[int]]:
+    """N2b (v1.1): okurigana spelling → all-kanji spelling when a kanji follows (引き当て金 → 引当金)."""
+    pattern = _compile_rules(rules)
+    if pattern is None or not chars:
+        return chars, origin
+    text = "".join(chars)
+    out_chars: list[str] = []
+    out_origin: list[int] = []
+    pos = 0
+    for m in pattern.finditer(text):
+        if m.end() >= len(text) or not _is_cjk(text[m.end()]):
+            continue  # 引き当てを行う keeps its okurigana; only compounds are compacted
+        tgt = rules[m.group(0)]
+        out_chars.extend(chars[pos : m.start()])
+        out_origin.extend(origin[pos : m.start()])
+        # keep each target kanji on the original position of the same kanji
+        src_idx = [m.start() + i for i, ch in enumerate(m.group(0)) if not ("ぁ" <= ch <= "ゖ")]
+        for k, ch in enumerate(tgt):
+            out_chars.append(ch)
+            out_origin.append(origin[src_idx[k]] if k < len(src_idx) else origin[m.start()])
+        pos = m.end()
+    out_chars.extend(chars[pos:])
+    out_origin.extend(origin[pos:])
+    return out_chars, out_origin
+
+
+def _is_cjk(ch: str) -> bool:
+    return "\u4e00" <= ch <= "\u9fff" or ch == "々"
+
+
+def normalize_with_map(
+    text: str, rules: dict[str, str] | None = None, compact_rules: dict[str, str] | None = None
+) -> NormalizedText:
+    """Run N1 (+ N2 when ``rules`` is given, + N2b when ``compact_rules`` is given)."""
     if not text:
         return NormalizedText(original=text, normalized=text, origin=[])
     chars, origin = _n1(text)
     if rules:
         chars, origin = _n2(chars, origin, rules)
+    if compact_rules:
+        chars, origin = _n2_compact(chars, origin, compact_rules)
     return NormalizedText(original=text, normalized="".join(chars), origin=origin)
 
 

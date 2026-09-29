@@ -7,8 +7,9 @@
 
 [English](README_en.md) | **日本語**
 
-日本語テキストの意味を構造化データに変換するセマンティックエンジン。  
-LLM前処理・RAG・SNS解析・AIエージェント入力に使えます。
+**LLM や検索エンジンに渡す前の日本語を、きれいに整えて構造化する**セマンティックエンジン。  
+定型句・署名・引用の除去、表記ゆれの統一、日付・金額・社名の抽出、検索用の語の生成を、外部依存ゼロ・手元完結で行います。  
+LLM前処理・RAG・メール／問い合わせ解析・SNS解析・AIエージェント入力に使えます。
 
 ---
 
@@ -28,6 +29,71 @@ keywords : ["クラウドAPI", "課金"]
 ```
 
 単なるトークナイザーではなく、**感情・意図・RAGキーワードまで一括で返す**のが特徴です。
+
+---
+
+## LLM・検索の前処理（v1.1 の中心）
+
+判断は LLM に、下ごしらえは KotobaCore に。LLM は賢い反面、1 回ごとに費用と時間がかかり、答えも揺れます。
+KotobaCore は **無料・高速（実メール 1 通 中央値 51 ms）・同じ入力には必ず同じ結果・社外に文章を出さない** ので、
+LLM や検索エンジンに渡す前の「きれいな入力づくり」に向いています。
+
+| できること | 例 | 実測 |
+|---|---|---|
+| ノイズを取り除く | メールの宛名・挨拶・結び・署名・引用を外し、本文だけにする | 実メール 261 通で評価。定型句由来のキーワード 8.6% → 0% |
+| 表記をそろえる | 送り仮名（申込み／申し込み）、全角半角、別名 → 正式名（MNT → みなと精機） | ユーザー辞書・業種別辞書を設定ファイルで追加 |
+| 大事な情報を取り出す | 日付・金額・数量・条番号・会社名・人名を決まった形で | 例: 45億円 → 4500000000.0 |
+| 検索用の語を作る | 損害賠償請求訴訟 → 損害賠償請求訴訟 / 損害 / 賠償 / 請求 / 訴訟 | DD 資料の BM25 検索で MRR 0.59 → 0.95 |
+
+### メールを整える（`analyze_mail`）
+
+```python
+from kotobacore import Analyzer
+
+a = Analyzer()
+mail = """株式会社サンプル
+営業部 田中様
+
+いつもお世話になっております。
+ABC株式会社の山田です。
+
+先週納品いただいたプリンター20台のうち3台が破損していました。
+10月3日までに交換品をお送りください。
+
+お手数ですがよろしくお願いいたします。
+
+--
+ABC株式会社 山田太郎
+TEL: 03-1234-5678"""
+
+m = a.analyze_mail(mail)
+body = "".join(s.text for s in m.sentences if s.boilerplate is None)   # LLM に渡す本文
+```
+
+```
+定型句   : 宛名 ×2 / 挨拶 / 自己紹介 / 結び / 署名 ×3（Sentence.boilerplate）
+本文     : 先週納品いただいたプリンター20台のうち3台が破損していました。10月3日までに交換品をお送りください。
+           （この例では 158 字 → 52 字）
+keywords : プリンター20台 / 3台 / 先週納品 / 破損 / 10月3日
+           （analyze_document では 株式会社サンプル / 営業部 / 田中様 … と宛名が先頭に来る）
+entities : ABC株式会社 (ORGANIZATION) / 20台・3台 (QUANTITY) / 10月3日 (DATE) …
+intent   : negative_feedback（axes: 依頼 ＋ 否定評価 ＝ 苦情）
+```
+
+### 検索用の語を作る（`search_terms`）
+
+```python
+[(t.term, t.kind) for t in a.search_terms("損害賠償請求訴訟が提起された")]
+# [('損害賠償請求訴訟', 'token'), ('損害', 'part'), ('賠償', 'part'), ('請求', 'part'), ('訴訟', 'part'), ('提起', 'token')]
+```
+
+BM25 などの索引にそのまま入れられます（`begin` / `end` は原文の位置）。
+
+### 判定の精度について
+
+意図（依頼か・苦情か 等）の判定は規則ベースで、人手評価 300 文で意図 70%・発話の種類（質問・依頼・表明）90% です。
+「対応が要るか」のように文脈や差出人で決まる判断は、KotobaCore で整えた本文を LLM に渡して行うのが確実です。
+意図は `intent.axes`（発話の種類・評価の極性・評価の対象・発言者）の組み合わせで、用途に合わせた区分を作れます。
 
 ---
 
@@ -92,6 +158,23 @@ KotobaCore の判定は機械学習モデルではなく、**同梱の人手メ�
 
 `Japanese-SNS-Emotion-Examples-v1.txt` も `resources/dict/` に同梱され、デフォルトで読み込まれます（外部辞書なしでも例文マッチが効きます）。
 各行の `examples`（「、」区切りの複数例文）が展開され、入力文との bigram Jaccard 類似度で感情の confidence を補強します。
+
+### ユーザー辞書・業種別辞書（v1.1）
+
+社内用語・製品名・取引先名・業界用語は **ユーザー辞書**（`entity.csv` と同じ形式の CSV、必須列は `surface` のみ）に書き、設定ファイル `kotobacore.yaml` の `dictionaries` に追記するだけで、`Analyzer()`・CLI・HTTP API・デモ UI が読み込みます。業種別辞書のサンプルとして **`builtin:dd`**（M&A デューデリジェンス、409 見出し・別名 615）を同梱しています。
+
+```yaml
+# kotobacore.yaml（カレントディレクトリ、または環境変数 KOTOBACORE_CONFIG で指定）
+dictionaries:
+  - ./dict/my_terms.csv   # 先に書いたものほど優先
+  - builtin:dd
+```
+
+```python
+Analyzer(user_dict_path=["my_terms.csv", "builtin:dd"])   # コードで直接指定しても同じ
+```
+
+作り方のコツ・設定ファイルの探し方・確認コマンド（`kotobacore config`）は `docs/USER_DICTIONARY.md`、見本は `examples/kotobacore.yaml` と `examples/dictionaries/my_terms.csv`。
 
 ### 任意の外部辞書（NRC、非同梱）
 
@@ -344,6 +427,8 @@ KotobaCoreが埋めているのは「感情・意図・RAGキーワードを一�
 
 ## ステータス
 
+**v1.1.0**（2026-09-29、IR schema 1.1〈フィールド追加のみ〉）。**LLM・検索の前処理を中心に強化**: 検索用索引語 `search_terms`（外部評価キット〈合成 DD 資料・BM25〉で MRR 0.59 → 0.95、未見の法令データで文字 bigram に有意に勝ち Sudachi A/C と有意差なし）、メール解析 `analyze_mail`（定型句・署名・引用の判別、実メール 261 通で評価）、ユーザー辞書・業種別辞書（`builtin:dd`）と設定ファイル `kotobacore.yaml`、送り仮名・表記ゆれ・漢字複合語・数値日付条番号の改善、意図の軸 `intent.axes` と苦情の規則。analyze() は 1.0.1 比 約 1.5 倍速。人手評価 300 文で 極性 82.3% / 感情 84.1% / 意図 70.0% / 発話の種類 90.0% / 分割 F1 0.909 / Entity F1 0.862。旧 import パスの削除は 2.0 に延期。**388 テスト全 PASS**。
+
 **v1.0.1**（2026-09-15、パッチ。書籍『AIに機密情報を持たせる方法』のローカルRAGアプリでの実地検証で見つかった RAG 層の不具合 2 件を修正: 「（1）」形式の列挙項目が見出しに誤判定され `heading_path` が親見出しを失う／`keyword_overlap`・`entity_match` の本文フォールバックが語境界を無視し「AP」が「API」に一致する。感情辞書ライブラリとのベースライン比較ツールを同梱。IR schema・辞書・モジュールは 1.0 のまま）。
 
 **v1.0.0**（2026-09-09、**IR schema 1.0 凍結・全構成要素の版を 1.0 に統一**。Vocab モジュール・HTTP API・Entity 共参照・N4 語形正規化〈動詞原形＋活用型/活用形、送り仮名揺れ〉・互換性マトリクス／旧 import 非推奨化・感情体系 surprise/trust/disgust と意図 inform/share_experience・括弧内固有名・人手評価セット由来の辞書拡充・§9 エラー処理〈回復可能エラーは IR.errors に積んで継続〉）。人手アノテーション 300 文（確定版 annotated_v1）で Sentiment 83% / Emotion 84% / Intent 70% / Entity F1 0.86。同梱辞書のみ（pip install の状態、外部 NRC 辞書なし）では Emotion 83.5% / Intent 69.7%（他は同じ）。MeCab 系ベースラインとの同一セット比較: 極性 83.0% vs pymlask 61.0% / oseti 47.7%、感情 83.5% vs pymlask 23.1%（`tools/benchmark/sentiment_baselines.md`）。NFR-001: 10 万文 110 秒（908 文/s）、1 文平均 1.1 ms、1 万字文書 0.72 秒。6500例文の品質評価で 極性正確度 97% 台 / 処理エラー 0件。人手アノテーション実文 300 文 (下書き) で
@@ -369,26 +454,30 @@ v0.2 の主な変更: Karuizawa の格子+Viterbi 一発分割（bigram 接続�
 
 - `docs/API.md` — Python API / CLI / HTTP API（認証・レート制限・エラー形）
 - `docs/openapi.json` — HTTP API の OpenAPI 3.1（`tools/gen_openapi.py` で生成、`/docs` と同じ内容）
-- `docs/IR_SCHEMA.md` — Semantic IR の全フィールド（`tools/gen_schema_doc.py` で dataclass から生成。schema 1.0）
+- `docs/IR_SCHEMA.md` — Semantic IR の全フィールド（`tools/gen_schema_doc.py` で dataclass から生成。schema 1.1）
 - `docs/TOKENIZATION.md` — 分割基準（coarse = 意味単位 / fine = 語幹・送り仮名・活用語尾）と既知の癖
+- `docs/USER_DICTIONARY.md` — ユーザー辞書の作り方、設定ファイル（`kotobacore.yaml`）での読み込み、業種別辞書 `builtin:dd`
 - `CHANGELOG.md` — 版ごとの変更と計測値
 
-## 互換性マトリクス (v1.0.1、`kotobacore version --matrix` の出力)
+## 互換性マトリクス (v1.1.0、`kotobacore version --matrix` の出力)
 
-1.0.0 で全構成要素を 1.0 に統一しました（IR schema は凍結。旧番号の系譜は各モジュールのコメントと `resources/dict/versions.json` の `history` に残しています）。
+1.0.0 で全構成要素を 1.0 に統一しました（1.1.0 で IR schema 1.1〈フィールド追加のみ〉・トークナイザー・辞書セット・意図モジュールを 1.1 に。旧番号の系譜は各モジュールのコメントと `resources/dict/versions.json` の `history` に残しています）。
 
 | 対象 | 版 | 互換ポリシー |
 |---|---|---|
-| KotobaCore 本体 | 1.0.1 | SemVer。1.0 以降、破壊変更はメジャーのみ |
-| IR Schema | 1.0（凍結） | フィールド追加は後方互換、削除・型変更はメジャー |
-| Tokenizer (Karuizawa) | 1.0 | 分割結果が変わる変更で上げる |
-| 辞書セット | 1.0 | 追加はパッチ、意味変更はマイナー。各 CSV の版は resources/dict/versions.json |
-| Intent / Emotion / Sentiment / Topic module | 1.0 | モジュール単位で独立 |
-| Vocabulary format | kotobacore-vocab-1.0 | 同一メジャー内は追記のみ。語彙データは非同梱 |
+| KotobaCore 本体 | 1.1.0 | SemVer。0.x はマイナーで破壊変更可、1.0 以降はメジャーのみ |
+| IR Schema | 1.1 | フィールド追加は後方互換、削除・型変更はメジャー |
+| Tokenizer (Karuizawa) | 1.1 | 分割結果が変わる変更で上げる |
+| 辞書セット | 1.1 | 追加はパッチ、意味変更はマイナー。各 CSV の版は resources/dict/versions.json |
+| Intent module | 1.1 | モジュール単位で独立 |
+| Emotion module | 1.0 | モジュール単位で独立 |
+| Sentiment module | 1.0 | モジュール単位で独立 |
+| Topic module | 1.0 | モジュール単位で独立 |
+| Vocabulary format | kotobacore-vocab-1.0 | 同一メジャー内は追記のみ |
 | HTTP API | 1.0 | パス・レスポンス形の破壊変更でメジャー |
-| 旧 import パス | deprecated 0.6.4 → removed 1.1 | kotobacore.schema / normalizer / tokenizer / semantic / emotion / intent / clause / matching |
+| 旧 import パス | deprecated 0.6.4 → removed 2.0 | kotobacore.schema / normalizer / tokenizer / semantic / emotion / intent / clause / matching |
 
-解析結果の `meta.components` に tokenizer / dictionary_set / modules の版が刻まれます（再現性）。旧 import パスは `DeprecationWarning` を出しつつ v1.0 まで動作し、v1.1 で削除します。`kotobacore.compat`（Karuizawa 互換 API）は継続します。
+解析結果の `meta.components` に tokenizer / dictionary_set / modules の版が刻まれます（再現性）。旧 import パスは `DeprecationWarning` を出しつつ 1.x の間は動作し、2.0 で削除します（当初予告の 1.1 から延期）。`kotobacore.compat`（Karuizawa 互換 API）は継続します。
 
 ## ライセンス
 
